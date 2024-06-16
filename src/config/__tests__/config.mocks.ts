@@ -4,9 +4,9 @@ export const configMocks = {
     varType: 'number',
     varValue: 3000,
   },
-  getDatabasePath: {
-    varName: 'DATABASE_PATH',
+  getDatabaseUrl: {
+    varName: 'DATABASE_URL',
     varType: 'string',
-    varValue: 'path/to/db',
+    varValue: 'db://name:pass@host:port/name',
   },
 };

@@ -9,8 +9,8 @@ export class ConfigService {
     return this._checkVarExists<number>('PORT');
   }
 
-  getDatabasePath(): string {
-    return this._checkVarExists<string>('DATABASE_PATH');
+  getDatabaseUrl(): string {
+    return this._checkVarExists<string>('DATABASE_URL');
   }
 
   private _checkVarExists<T>(name: any): T {
