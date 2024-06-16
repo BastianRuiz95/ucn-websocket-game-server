@@ -1,4 +1,5 @@
 import helmet from 'helmet';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -16,6 +17,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.useWebSocketAdapter(new WsAdapter(app));
 
   const configService = app.get(ConfigService);
   await app.listen(configService.getAppPort() || 3000);
