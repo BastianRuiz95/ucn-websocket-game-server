@@ -5,7 +5,7 @@ import { ConfigService } from './config.service';
 
 @Module({
   imports: [NestConfigModule.forRoot({ isGlobal: true })],
-  controllers: [],
   providers: [ConfigService],
+  exports: [ConfigService],
 })
 export class ConfigModule {}
