@@ -1,1 +1,1 @@
-export * from './ws-port.const';
+export * from './ws-port.constants';
