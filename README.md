@@ -2,8 +2,10 @@
 This is a WebSocket Server to use in the implementation of the Cross-Game Multiplayer Gameplay for "Advanced Programming Integrator Project" Course.
 
 ## Description
-
 This server is written in Typescript using NestJS Framework. Support Websocket native connection (using ws library).
+
+## How to Connect?
+To use the game server services, you can find the instructions in [This Guide (En español)](./connect-instructions-es.md).
 
 ## Installation
 
