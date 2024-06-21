@@ -71,17 +71,17 @@ Esta funcion sirve para obtener los jugadores conectados y así poder enviarles 
 
 Ejemplo:
 ```json
-// Solicitud
 {
   "event": "get-connected-players"
 }
-
-// Respuesta
+```
+Ejemplo de respuesta:
+```json
 {
-	"event": "get-connected-players",
-	"data": [
-		"20d14ac9-4071-45d9-bc8c-b4ad0562ba93"
-	]
+  "event": "get-connected-players",
+  "data": [
+    "20d14ac9-4071-45d9-bc8c-b4ad0562ba93"
+  ]
 }
 ```
 
@@ -97,18 +97,18 @@ Esta funcion sirve para mandar un mensaje a todos los jugadores conectados al ch
 
 Ejemplo:
 ```json
-// Solicitud
 {
-	"event": "send-public-message",
-	"data": {
-		"message": "Holaaaaaa!"
-	}
+  "event": "send-public-message",
+  "data": {
+    "message": "Holaaaaaa!"
+  }
 }
-
-// Respuesta
+```
+Ejemplo de respuesta:
+```json
 {
-	"event": "send-public-message",
-	"data": "Message sended"
+  "event": "send-public-message",
+  "data": "Message sended"
 }
 ```
 
@@ -123,21 +123,21 @@ Ejemplo:
 
 Esta funcion sirve para mandar un mensaje a un jugador específico que se encuentre conectado. Si el mensaje se envió, recibirá una respuesta de confirmación. Acto seguido, el jugador al que le envió el mensaje recibirá el evento `private-message`, indicando que recibió un mensaje nuevo (véase [Mensaje Privado Recibido](#mensaje-privado-recibido)).
 
-Ejemplo:
+Ejemplo de solicitud:
 ```json
-// Solicitud
 {
-	"event": "send-private-message",
-	"data": {
-		"id": "d830bd74-8bc9-4092-99bf-d88f38ea8006",
-		"message": "Holaaaaaa!"
-	}
+  "event": "send-private-message",
+  "data": {
+    "id": "d830bd74-8bc9-4092-99bf-d88f38ea8006",
+    "message": "Holaaaaaa!"
+  }
 }
-
-// Respuesta
+```
+Ejemplo de respuesta:
+```json
 {
-	"event": "send-private-message",
-	"data": "Message sended"
+  "event": "send-private-message",
+  "data": "Message sended"
 }
 ```
 
@@ -167,11 +167,11 @@ Este evento te indica si lograste conectarte al servidor con éxito. Este es un 
 Ejemplo de respusta:
 ```json
 {
-	"event": "connected-to-server",
-	"data": {
-		"msg": "You are connected to the game server",
-		"id": "d830bd74-8bc9-4092-99bf-d88f38ea8006"
-	}
+  "event": "connected-to-server",
+  "data": {
+    "msg": "You are connected to the game server",
+    "id": "d830bd74-8bc9-4092-99bf-d88f38ea8006"
+  }
 }
 ```
 
@@ -188,11 +188,11 @@ Este evento le avisa que otro jugador se ha conectado al servidor. El mensaje en
 Ejemplo de respusta:
 ```json
 {
-	"event": "player-connected",
-	"data": {
-		"msg": "Player d71fe7f8-e3e7-4222-80df-0dae4199c0a4 has connected",
-		"id": "d71fe7f8-e3e7-4222-80df-0dae4199c0a4"
-	}
+  "event": "player-connected",
+  "data": {
+    "msg": "Player d71fe7f8-e3e7-4222-80df-0dae4199c0a4 has connected",
+    "id": "d71fe7f8-e3e7-4222-80df-0dae4199c0a4"
+  }
 }
 ```
 
@@ -209,11 +209,11 @@ Este evento le avisa que un jugador se ha desconectado del servidor. El mensaje 
 Ejemplo de respusta:
 ```json
 {
-	"event": "player-disconnected",
-	"data": {
-		"msg": "Player 23a3e557-491f-412e-ab85-c5ed6675ca3c has disconnected",
-		"id": "23a3e557-491f-412e-ab85-c5ed6675ca3c"
-	}
+  "event": "player-disconnected",
+  "data": {
+    "msg": "Player 23a3e557-491f-412e-ab85-c5ed6675ca3c has disconnected",
+    "id": "23a3e557-491f-412e-ab85-c5ed6675ca3c"
+  }
 }
 ```
 
@@ -230,11 +230,11 @@ Este evento le avisa que un jugador ha enviado un mensaje a la sala pública. De
 Ejemplo de respusta:
 ```json
 {
-	"event": "public-message",
-	"data": {
-		"id": "0b62b9a1-c51d-4be4-8b76-cdc15b98c82b",
-		"msg": "Holaaaaaa!"
-	}
+  "event": "public-message",
+  "data": {
+    "id": "0b62b9a1-c51d-4be4-8b76-cdc15b98c82b",
+    "msg": "Holaaaaaa!"
+  }
 }
 ```
 
@@ -251,10 +251,10 @@ Este evento le avisa que un jugador le ha enviado un mensaje por privado. De est
 Ejemplo de respusta:
 ```json
 {
-	"event": "send-private-message",
-	"data": {
+  "event": "send-private-message",
+  "data": {
     "id": "d830bd74-8bc9-4092-99bf-d88f38ea8006",
-		"message": "Holaaaaaa!"
-	}
+    "message": "Holaaaaaa!"
+  }
 }
 ```
