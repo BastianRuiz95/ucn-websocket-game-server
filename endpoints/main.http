@@ -1,0 +1,18 @@
+@domain=http://localhost:5001
+
+# ###############################
+#            SCORES
+# ###############################
+@gameId = 5545d651-bf58-4584-99fc-796273c6c60d
+
+### GET SCORES BY GAME
+GET {{domain}}/score/{{gameId}}
+
+### ADD SCORE
+POST {{domain}}/score/{{gameId}}
+Content-Type: application/json
+
+{
+  "playerName": "MTX",
+  "score": 20140,
+}
