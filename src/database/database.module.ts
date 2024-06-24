@@ -1,17 +1,12 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module, Provider } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
 import { getTypeOrmModuleOptions } from './typeorm.config';
 
 import * as ENTITIES from './entities';
-import { SessionRepositoryImp } from './repositories';
-import { SESSION_REPOSITORY } from '../domain/repositories';
-
-const REPOSITORIES: Provider[] = [
-  { provide: SESSION_REPOSITORY, useClass: SessionRepositoryImp },
-];
+import { REPOSITORIES } from './repositories';
 
 @Module({
   imports: [
