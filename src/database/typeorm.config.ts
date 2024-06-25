@@ -7,5 +7,5 @@ export const getTypeOrmModuleOptions = (
   type: 'postgres',
   url: config.getDatabaseUrl(),
   autoLoadEntities: true,
-  synchronize: true,
+  synchronize: false,
 });
