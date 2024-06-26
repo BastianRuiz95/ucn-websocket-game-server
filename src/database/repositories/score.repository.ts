@@ -2,9 +2,8 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ScoreEntity } from '../entities/score.entity';
-
 import { Score } from '../../domain/models';
+import { ScoreEntity } from '../entities/score.entity';
 import { ScoreRepository } from '../../domain/repositories';
 import { AddGameScoreParams } from '../../domain/repositories/params';
 
@@ -25,7 +24,18 @@ export class ScoreRepositoryImp implements ScoreRepository {
 
   getScoresByGame(gameId: string): Promise<Score[]> {
     return this.scoreRepository.find({
+      select: {
+        id: true,
+        playerName: true,
+        score: true,
+        game: {
+          id: false,
+          keyword: false,
+          name: false,
+        },
+      },
       where: { game: { id: gameId } },
+      order: { score: 'DESC' },
       relations: { game: true },
     });
   }
@@ -36,8 +46,11 @@ export class ScoreRepositoryImp implements ScoreRepository {
       score: params.score,
       game: { id: params.gameId },
     });
+
     await this.scoreRepository.insert(score);
-    return score;
+
+    const { game, ...result } = score;
+    return result;
   }
 
   async deleteGameScores(gameId: string): Promise<void> {
