@@ -1,9 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
-import { Game, Score } from '../../domain/models';
-import { EScoreTableColumns, ETableNames } from '../enums';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { GameEntity } from './game.entity';
+import { Game, Score } from '../../domain/models';
+import { EScoreTableColumns, ETableNames } from '../enums';
 
 @Entity({ name: ETableNames.Score })
 export class ScoreEntity implements Score {
@@ -16,6 +21,7 @@ export class ScoreEntity implements Score {
   @Column({ name: EScoreTableColumns.Score })
   score: number;
 
-  @OneToMany(() => GameEntity, (game) => game.id)
+  @ManyToOne(() => GameEntity, (game) => game.scores)
+  @JoinColumn({ name: EScoreTableColumns.GameId })
   game?: Game;
 }
