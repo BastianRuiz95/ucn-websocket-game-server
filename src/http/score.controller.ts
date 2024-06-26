@@ -29,4 +29,11 @@ export class ScoreController {
 
     return { message: 'Score Submitted', data: score };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/')
+  async removeAllScores(@GetUser() game: UserRequest) {
+    await this.scoreService.deleteAllGameScores(game.gameId);
+    return { message: 'Deleted All Scores Successfully' };
+  }
 }
