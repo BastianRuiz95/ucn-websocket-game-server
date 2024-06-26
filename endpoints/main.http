@@ -1,18 +1,24 @@
 @domain=http://localhost:5001
+@token=''
 
 # ###############################
 #            SCORES
 # ###############################
-@gameId = 5545d651-bf58-4584-99fc-796273c6c60d
 
 ### GET SCORES BY GAME
-GET {{domain}}/score/{{gameId}}
+GET {{domain}}/scores/
+Authorization: Bearer {{token}}
 
-### ADD SCORE
-POST {{domain}}/score/{{gameId}}
+### ADD GAME SCORE
+POST {{domain}}/scores/
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "playerName": "MTX",
-  "score": 20140,
+  "playerName": "ScoreTest",
+  "score": 123456
 }
+
+### DELETE ALL GAME SCORE
+DELETE {{domain}}/scores/
+Authorization: Bearer {{token}}

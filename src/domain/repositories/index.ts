@@ -1,2 +1,2 @@
 export * from './score.repository';
-export * from './session.repository';
+export * from './auth.repository';

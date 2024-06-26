@@ -9,4 +9,9 @@ export const configMocks = {
     varType: 'string',
     varValue: 'db://name:pass@host:port/name',
   },
+  getJwtSecret: {
+    varName: 'JWT_SECRET',
+    varType: 'string',
+    varValue: 'secret_word_for_jwt_encrypt',
+  },
 };
