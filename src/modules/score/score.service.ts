@@ -14,6 +14,10 @@ export class ScoreService {
   }
 
   addGameScore(scoreData: AddGameScoreParams) {
-    this.scoreRepository.addGameScore(scoreData);
+    return this.scoreRepository.addGameScore(scoreData);
+  }
+
+  deleteAllGameScores(gameId: string) {
+    return this.scoreRepository.deleteGameScores(gameId);
   }
 }
