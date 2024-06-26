@@ -13,6 +13,10 @@ export class ConfigService {
     return this._checkVarExists<string>('DATABASE_URL');
   }
 
+  getJwtSecret(): string {
+    return this._checkVarExists<string>('JWT_SECRET');
+  }
+
   private _checkVarExists<T>(name: any): T {
     const envVar = this.configService.get<T>(name);
     if (!envVar) {
