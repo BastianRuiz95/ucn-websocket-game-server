@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
 import { NestFactory } from '@nestjs/core';
 
-import { ConfigService } from './src/config/config.service';
-import { ConfigModule } from './src/config/config.module';
+import { ConfigService } from '../config/config.service';
+import { ConfigModule } from '../config/config.module';
 
 export default (async () => {
   const app = await NestFactory.create(ConfigModule, {
