@@ -1,33 +1,32 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 
+import { GetUser } from './auth/decorators';
+import { UserRequest } from './auth/interfaces';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { ScoreService } from '../modules/score/score.service';
+
 import { AddScoreDto } from './dtos';
 
-@Controller('score')
+@Controller('scores')
 export class ScoreController {
   constructor(private readonly scoreService: ScoreService) {}
 
-  @Get(':gameId')
-  getScoreByGameId(@Param('gameId', ParseUUIDPipe) id: string) {
-    return this.scoreService.getScoreByGame(id);
+  @UseGuards(JwtAuthGuard)
+  @Get('/')
+  async getScoreByGameId(@GetUser() game: UserRequest) {
+    const scores = await this.scoreService.getScoreByGame(game.gameId);
+    return { message: 'Score List Received', data: scores };
   }
 
-  @Post(':gameId')
-  addScore(
-    @Param('gameId', ParseUUIDPipe) id: string,
-    @Body() body: AddScoreDto,
-  ) {
-    return this.scoreService.addGameScore({
-      gameId: id,
+  @UseGuards(JwtAuthGuard)
+  @Post('/')
+  async addScore(@GetUser() game: UserRequest, @Body() body: AddScoreDto) {
+    const score = await this.scoreService.addGameScore({
+      gameId: game.gameId,
       score: body.score,
       playerName: body.playerName,
     });
+
+    return { message: 'Score Submitted', data: score };
   }
 }
