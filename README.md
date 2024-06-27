@@ -7,6 +7,8 @@ This server is written in Typescript using NestJS Framework. Support Websocket n
 ## How to Connect?
 To use the game server services, you can find the instructions in [This Guide (En español)](./ws-connect-instructions-es.md).
 
+To use the table score functions, you can follow the instructions in [This Guide (En español)](./score-table-connect-instructions-es.md).
+
 ## Installation
 
 ```bash
