@@ -7,7 +7,7 @@ import { EWsPlayerStatus } from '../enums';
 
 @Injectable()
 export class SocketService {
-  private _players: PlayerSocket[] = [];
+  private readonly _players: PlayerSocket[] = [];
 
   getPlayers(): PlayerSocket[] {
     return this._players;
