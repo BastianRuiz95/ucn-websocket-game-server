@@ -1,1 +1,1 @@
-export const WS_PORT = 4010;
+export const WS_PORT = 8080;
