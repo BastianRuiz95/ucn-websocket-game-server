@@ -4,6 +4,11 @@ export const configMocks = {
     varType: 'number',
     varValue: 3000,
   },
+  getDatabaseType: {
+    varName: 'DATABASE_TYPE',
+    varType: 'string',
+    varValue: 'postgres',
+  },
   getDatabaseUrl: {
     varName: 'DATABASE_URL',
     varType: 'string',

@@ -4,8 +4,19 @@ import { ConfigService } from '../config/config.service';
 export const getTypeOrmModuleOptions = (
   config: ConfigService,
 ): TypeOrmModuleOptions => ({
-  type: 'postgres',
-  url: config.getDatabaseUrl(),
+  ...dbSelector(config),
   autoLoadEntities: true,
   synchronize: false,
 });
+
+export const dbSelector = (config: ConfigService) => {
+  const dbLocation = config.getDatabaseUrl();
+
+  const selector = {
+    sqlite: { type: 'sqlite', database: dbLocation },
+    postgres: { type: 'postgres', url: dbLocation },
+    default: { type: null },
+  };
+
+  return selector[config.getDatabaseType() || 'default'];
+};
