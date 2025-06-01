@@ -1,13 +1,14 @@
 export enum EWsMatchmakingResponse {
   PlayerDisconnected = 'player-disconnected',
+  PlayerInMatch = 'player-in-match',
+  PlayerBusy = 'player-busy',
 
   MatchRequestSended = 'match-request-sended',
   MatchRequestReceived = 'match-request-received',
   MatchAccepted = 'match-accepted',
   MatchRejected = 'match-rejected',
   MatchExpired = 'match-expired',
-  UserInMatch = 'user-in-match',
-  UserBusy = 'user-busy',
+  
   CreatingMatchRoom = 'creating-match-room',
   MatchRoomCreated = 'match-room-created',
 }
