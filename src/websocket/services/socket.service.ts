@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { WsResponse } from '@nestjs/websockets';
 
 import { PlayerSocket } from '../interfaces';
+import { EWsPlayerStatus } from '../enums';
 
 @Injectable()
 export class SocketService {
@@ -24,6 +25,7 @@ export class SocketService {
     const playerSocket: PlayerSocket = {
       socket,
       id: playerId,
+      status: EWsPlayerStatus.Available,
     };
 
     this._players.push(playerSocket);
