@@ -1,6 +1,6 @@
 services:
   crossgame-db:
-    image: postgres:14.3
+    image: postgres:17.5-alpine3.21
     restart: always
     ports:
       - "5432:5432"
@@ -17,15 +17,12 @@ services:
   principal_app:
     build: .
     ports:
-      - "4000:4000"
-      - "4010:4010"
+      - "4000:80"
+      - "4010:8080"
     environment:
-      ENVIRONMENT: ${ENVIRONMENT}
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 5432
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASS: ${DATABASE_PASS}
-      DATABASE_NAME: ${DATABASE_NAME}
+      PORT: 80
+      DATABASE_TYPE: ${DATABASE_TYPE}
+      DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
     depends_on:
       - crossgame-db
