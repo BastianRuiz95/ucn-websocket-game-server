@@ -2,10 +2,10 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Score } from '../../domain/models';
+import { Score } from '../../../domain/models';
 import { ScoreEntity } from '../entities/score.entity';
-import { ScoreRepository } from '../../domain/repositories';
-import { AddGameScoreParams } from '../../domain/repositories/params';
+import { ScoreRepository } from '../../../domain/repositories';
+import { AddGameScoreParams } from '../../../domain/repositories/params';
 
 @Injectable()
 export class ScoreRepositoryImp implements ScoreRepository {

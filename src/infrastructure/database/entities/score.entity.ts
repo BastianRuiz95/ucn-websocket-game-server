@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { GameEntity } from './game.entity';
-import { Game, Score } from '../../domain/models';
+import { Game, Score } from '../../../domain/models';
 import { EScoreTableColumns, ETableNames } from '../enums';
 
 @Entity({ name: ETableNames.Score })
