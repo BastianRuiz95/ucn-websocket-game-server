@@ -10,7 +10,7 @@ import { WebSocket } from 'ws';
 import { WS_PORT } from '../constants';
 import { SocketService } from '../services/socket.service';
 import { EWsLobbyEvent, EWsLobbyResponse } from '../enums';
-import { SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
+import { ChangeNicknameDto, SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
 
 @WebSocketGateway(WS_PORT)
 export class LobbyGateway {
@@ -22,7 +22,38 @@ export class LobbyGateway {
 
     return {
       event: EWsLobbyEvent.GetConnectedPlayers,
-      data: players.map((p) => p.id),
+      data: players.map((p) => ({ id: p.id, name: p.name, status: p.status })),
+    };
+  }
+
+  @SubscribeMessage(EWsLobbyEvent.ChangeNickname)
+  changeNickname(
+    @MessageBody() body: ChangeNicknameDto,
+    @ConnectedSocket() client: WebSocket,
+  ): WsResponse {
+    const player = this.socketService.getPlayerBySocket(client);
+    const oldName = player.name;
+    player.name = body.name;
+
+    return {
+      event: EWsLobbyEvent.ChangeNickname,
+      data: {
+        msg: `Name changed from '${oldName}' to '${body.name}'`,
+        name: body.name,
+      },
+    };
+  }
+
+  @SubscribeMessage(EWsLobbyEvent.GetPlayerData)
+  getPlayerData(@ConnectedSocket() client: WebSocket): WsResponse {
+    const player = this.socketService.getPlayerBySocket(client);
+    return {
+      event: EWsLobbyEvent.GetMyId,
+      data: {
+        id: player.id,
+        name: player.name,
+        status: player.status,
+      },
     };
   }
 
@@ -48,6 +79,7 @@ export class LobbyGateway {
       event: EWsLobbyResponse.PublicMessage,
       data: {
         id: player.id,
+        name: player.name,
         msg: body.message,
       },
     });
@@ -71,6 +103,7 @@ export class LobbyGateway {
       event: EWsLobbyResponse.PrivateMessage,
       data: {
         id: originPlayer.id,
+        name: originPlayer.name,
         msg: body.message,
       },
     });

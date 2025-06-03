@@ -53,6 +53,16 @@ Links de interés:
 ## Función de la sala de espera (Lobby)
 Al realizar la conexión, cada jugador recibirá un mensaje con el id que se le asignó automáticamente. Puede guardarlo para su uso posterior en alguna funcionalidad que lo requiera. Dentro de la sala de espera, usted podrá conversar con el resto de jugadores mediante mensajes públicos y privados.
 
+```json
+{
+	"event": "connected-to-server", // nombre del evento enviado por el servidor
+	"data": {
+		"msg": "You are connected to the game server", // Mensaje descriptivo
+		"id": "a0dbc2a2-8d71-4b9e-ae10-2b1080b9c744" // Identificador en formato UUID
+	}
+}
+```
+
 ### Acciones enviables
 | Nombre             | Evento                 | Descripción                              |
 |--------------------|------------------------|------------------------------------------|

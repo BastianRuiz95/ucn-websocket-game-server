@@ -13,3 +13,8 @@ export class SendPrivateMessageDto {
   @IsString()
   message: string;
 }
+
+export class ChangeNicknameDto {
+  @IsString()
+  name: string;
+}

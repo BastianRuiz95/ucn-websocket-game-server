@@ -1,6 +1,11 @@
 export enum EWsLobbyEvent {
-  GetMyId = 'get-my-id',
+  GetPlayerData = 'get-player-data',
+  GetConnectedPlayers = 'get-connected-players',
+  ChangeNickname = 'change-nickname',
+  
   SendPublicMessage = 'send-public-message',
   SendPrivateMessage = 'send-private-message',
-  GetConnectedPlayers = 'get-connected-players',
+  
+  // @deprecate
+  GetMyId = 'get-my-id',
 }
