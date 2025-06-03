@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ScoreEntity } from './score.entity';
-import { Game, Score } from '../../domain/models';
+import { Game, Score } from '../../../domain/models';
 import { EGameTableColumns, ETableNames } from '../enums';
 
 @Entity({ name: ETableNames.Game })

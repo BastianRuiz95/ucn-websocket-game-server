@@ -14,8 +14,8 @@ export default (async () => {
 
   return new DataSource({
     ...dbSelector(config),
-    entities: ['src/database/entities/*.entity{.js,.ts}'],
-    migrations: ['src/database/migrations/*{.js,.ts}'],
+    entities: ['src/infrastructure/database/entities/*.entity{.js,.ts}'],
+    migrations: ['src/infrastructure/database/migrations/*{.js,.ts}'],
     synchronize: false,
   });
 })();
