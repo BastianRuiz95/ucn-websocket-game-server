@@ -1,4 +1,4 @@
-import { EWsPlayerStatus } from "../enums";
+import { EWsPlayerStatus } from '../enums';
 
 export interface Player {
   id: string;

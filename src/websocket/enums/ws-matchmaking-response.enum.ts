@@ -8,7 +8,7 @@ export enum EWsMatchmakingResponse {
   MatchAccepted = 'match-accepted',
   MatchRejected = 'match-rejected',
   MatchExpired = 'match-expired',
-  
+
   CreatingMatchRoom = 'creating-match-room',
   MatchRoomCreated = 'match-room-created',
 }

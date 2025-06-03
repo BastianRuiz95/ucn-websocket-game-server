@@ -14,13 +14,14 @@ import {
 } from '../enums';
 import { WS_PORT } from '../constants';
 import { PlayerSocket } from '../interfaces';
+import { SendMatchRequestDto } from './dtos/matchmaking.dto';
 
 @WebSocketGateway(WS_PORT)
 export class MatchmakingGateway {
   constructor(private readonly socketService: SocketService) {}
 
   @SubscribeMessage(EWsMatchmakingEvent.SendMatchRequest)
-  sendMatchRequest(@MessageBody() body: any): WsResponse {
+  sendMatchRequest(@MessageBody() body: SendMatchRequestDto): WsResponse {
     const player = this.socketService.getPlayerById(body.id);
 
     if (player?.status == EWsPlayerStatus.Available) {

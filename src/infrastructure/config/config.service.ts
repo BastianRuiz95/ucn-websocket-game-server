@@ -21,7 +21,7 @@ export class ConfigService {
     return this._checkVarExists<string>('JWT_SECRET');
   }
 
-  private _checkVarExists<T>(name: any): T {
+  private _checkVarExists<T>(name: string): T {
     const envVar = this.configService.get<T>(name);
     if (!envVar) {
       throw Error(`No value setted for environment var '${name}'.`);
