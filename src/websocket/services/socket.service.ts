@@ -25,7 +25,7 @@ export class SocketService {
     const playerSocket: PlayerSocket = {
       socket,
       id: playerId,
-      name: `Player ${this._players.length}`,
+      name: `Player ${this._players.length + 1}`,
       status: EWsPlayerStatus.Available,
     };
 
