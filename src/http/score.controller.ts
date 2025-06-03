@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 
-import { GetUser } from './auth/decorators';
-import { UserRequest } from './auth/interfaces';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { GetUser } from '../modules/auth/decorators';
+import { UserRequest } from '../modules/auth/interfaces';
+import { JwtAuthGuard } from '../modules/auth/guards/jwt-auth.guard';
 import { ScoreService } from '../modules/score/score.service';
 
 import { AddScoreDto } from './dtos';
