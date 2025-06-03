@@ -10,7 +10,11 @@ import { WebSocket } from 'ws';
 import { WS_PORT } from '../constants';
 import { SocketService } from '../services/socket.service';
 import { EWsLobbyEvent, EWsLobbyResponse } from '../enums';
-import { ChangeNicknameDto, SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
+import {
+  ChangeNicknameDto,
+  SendPrivateMessageDto,
+  SendPublicMessageDto,
+} from './dtos';
 
 @WebSocketGateway(WS_PORT)
 export class LobbyGateway {
