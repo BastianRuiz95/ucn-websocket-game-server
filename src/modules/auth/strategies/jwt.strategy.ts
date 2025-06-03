@@ -5,7 +5,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { Game } from '../../../domain/models';
 import { JwtPayload, UserRequest } from '../interfaces';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../infrastructure/config/config.service';
 import { AUTH_REPOSITORY, AuthRepository } from '../../../domain/repositories';
 
 @Injectable()
