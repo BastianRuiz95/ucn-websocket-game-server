@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SCORE_REPOSITORY, ScoreRepository } from '../../domain/repositories';
+
 import { AddGameScoreParams } from '../../domain/repositories/params';
+import { SCORE_REPOSITORY, ScoreRepository } from '../../domain/repositories';
 
 @Injectable()
 export class ScoreService {
