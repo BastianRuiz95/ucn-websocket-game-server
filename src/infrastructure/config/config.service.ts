@@ -9,6 +9,10 @@ export class ConfigService {
     return this._checkVarExists<number>('PORT');
   }
 
+  getWsPort(): number {
+    return this._checkVarExists<number>('WS_PORT');
+  }
+
   getDatabaseType(): string {
     return this._checkVarExists<string>('DATABASE_TYPE');
   }
