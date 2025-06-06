@@ -2,13 +2,12 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
+  WsResponse,
 } from '@nestjs/websockets';
 
 import { Player } from '../common/entities';
 import { ConnectedPlayer } from '../common/decorators';
 
-import { Player } from './player';
-import { ChangeUserNameDto } from './dtos';
 import { EPlayerEvent } from './player-event.enum';
 import { ChangeUserNameDto } from './dtos';
 
@@ -18,12 +17,22 @@ export class PlayerGateway {
   changeUserName(
     @ConnectedPlayer() player: Player,
     @MessageBody() data: ChangeUserNameDto,
-  ) {
+  ): WsResponse {
     player.setName(data.name);
+    return {
+      event: EPlayerEvent.ChangeName,
+      data: {
+        msg: 'Name changed',
+        name: data.name,
+      },
+    };
   }
 
   @SubscribeMessage(EPlayerEvent.PlayerData)
-  getPlayerData(@ConnectedPlayer() player: Player) {
-    return player.getPlayerData();
+  getPlayerData(@ConnectedPlayer() player: Player): WsResponse {
+    return {
+      event: EPlayerEvent.PlayerData,
+      data: player.getPlayerData(),
+    };
   }
 }
