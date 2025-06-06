@@ -1,12 +1,7 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WsResponse,
-} from '@nestjs/websockets';
+import { MessageBody, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 
 import { Player } from '../common/entities';
-import { ConnectedPlayer } from '../common/decorators';
+import { ConnectedPlayer, WsEventListener } from '../common/decorators';
 
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 import { MatchmakingService } from './matchmaking.service';
@@ -16,7 +11,7 @@ import { SendMatchRequestDto } from './dtos';
 export class MatchmakingGateway {
   constructor(private readonly matchmakingService: MatchmakingService) {}
 
-  @SubscribeMessage(EMatchmakingEvent.SendMatchRequest)
+  @WsEventListener(EMatchmakingEvent.SendMatchRequest)
   sendMatchRequest(
     @ConnectedPlayer() player: Player,
     @MessageBody() body: SendMatchRequestDto,

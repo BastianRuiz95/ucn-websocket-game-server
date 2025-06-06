@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { WsGameException } from '../config/ws-game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
 
 import { Player } from '../common/entities';
@@ -21,20 +22,27 @@ export class MatchmakingService {
       msg: `Match Request Received from player ${senderPlayer.getName()}`,
       playerId: senderPlayer.getId(),
     });
+    senderPlayer.setStatus(EPlayerStatus.Busy);
 
     return {
-      msg: `Match request sended to player ${playerToSend.getName()}`,
+      msg: `Match request sended to player "${playerToSend.getName()}"`,
     };
   }
 
   private _checkPlayerStatus(player: Player) {
     const playerStatus = player.getStatus();
     if (playerStatus === EPlayerStatus.Busy) {
-      // throw new Error(Player is Busy with another Request. Try again later)
+      throw new WsGameException(
+        `Player "${player.getName()}" is busy. Try again later.`,
+        { playerId: player.getId(), playerName: player.getName() },
+      );
     }
 
     if (playerStatus === EPlayerStatus.InMatch) {
-      // throw new Error(Player is in another match. Wait until this match ends)
+      throw new WsGameException(
+        `Player "${player.getName()}" is in another match. Wait until this match ends.`,
+        { playerId: player.getId(), playerName: player.getName() },
+      );
     }
   }
 }
