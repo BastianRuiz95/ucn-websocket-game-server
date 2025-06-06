@@ -1,13 +1,10 @@
 import { WebSocket } from 'ws';
 import { WsResponse } from '@nestjs/websockets';
 
-import { Match } from './match.entity';
 import { EPlayerStatus } from '../enums';
 import { PlayerPresenter } from '../presenters';
 
 export class Player {
-  private match: Match;
-
   constructor(
     private readonly id: string,
     private readonly socketClient: WebSocket,
@@ -15,7 +12,6 @@ export class Player {
     private status: EPlayerStatus,
   ) {
     this.name = name;
-    this.match = null;
   }
 
   getId(): string {
@@ -44,14 +40,6 @@ export class Player {
 
   getPlayerData(): PlayerPresenter {
     return { id: this.id, name: this.name, status: this.status };
-  }
-
-  getMatch() {
-    return this.match;
-  }
-
-  setMatch(match: Match) {
-    this.match = match;
   }
 
   sendEvent<T = object>(event: string, data: T) {
