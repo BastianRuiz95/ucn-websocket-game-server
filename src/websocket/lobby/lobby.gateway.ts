@@ -7,9 +7,10 @@ import {
 
 import { LobbyService } from './lobby.service';
 
-import { Player } from '../player/player';
+import { Player } from '../common/entities';
+import { ConnectedPlayer } from '../common/decorators';
+
 import { ELobbyEvent } from './lobby-event.enum';
-import { ConnectedPlayer } from '../config/connected-player.decorator';
 import { SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
 
 @WebSocketGateway()

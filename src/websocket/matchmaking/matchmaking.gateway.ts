@@ -5,12 +5,12 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 
-import { MatchmakingService } from './matchmaking.service';
+import { Player } from '../common/entities';
+import { ConnectedPlayer } from '../common/decorators';
 
-import { Player } from '../player/player';
-import { SendMatchRequestDto } from './dtos';
 import { EMatchmakingEvent } from './matchmaking-event.enum';
-import { ConnectedPlayer } from '../config/connected-player.decorator';
+import { MatchmakingService } from './matchmaking.service';
+import { SendMatchRequestDto } from './dtos';
 
 @WebSocketGateway()
 export class MatchmakingGateway {

@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws';
 import { WsResponse } from '@nestjs/websockets';
 
-import { EPlayerStatus } from './enums';
-import { PlayerPresenter } from './player.presenter';
+import { EPlayerStatus } from '../enums';
+import { PlayerPresenter } from '../presenters';
 
 export class Player {
   constructor(
