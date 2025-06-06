@@ -10,11 +10,7 @@ import { ConnectedPlayer } from '../common/decorators';
 
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 import { MatchmakingService } from './matchmaking.service';
-
-import { Player } from '../player/player';
 import { SendMatchRequestDto } from './dtos';
-import { EMatchmakingEvent } from './matchmaking-event.enum';
-import { ConnectedPlayer } from '../config/connected-player.decorator';
 
 @WebSocketGateway()
 export class MatchmakingGateway {
