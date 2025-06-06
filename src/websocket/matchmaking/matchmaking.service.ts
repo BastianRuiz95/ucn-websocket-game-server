@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 import { PlayerListService } from '../player-list/player-list.service';
 
-import { Player } from '../player/player';
-import { EPlayerStatus } from '../player/enums';
+import { Player } from '../common/entities';
+import { EPlayerStatus } from '../common/enums';
+
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 
 @Injectable()

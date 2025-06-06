@@ -1,7 +1,7 @@
 import { WebSocket } from 'ws';
 import { Injectable } from '@nestjs/common';
 
-import { Player } from '../player/player';
+import { Player } from '../common/entities';
 
 @Injectable()
 export class PlayerListService {

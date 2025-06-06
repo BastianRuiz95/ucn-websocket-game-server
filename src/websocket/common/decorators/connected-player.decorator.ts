@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-import { Player } from '../player/player';
-import { PlayerListServiceProvider } from '../player-list/player-service.provider';
+import { Player } from '../entities';
+import { PlayerListServiceProvider } from '../../player-list/player-service.provider';
 
 export const ConnectedPlayer = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): Player => {

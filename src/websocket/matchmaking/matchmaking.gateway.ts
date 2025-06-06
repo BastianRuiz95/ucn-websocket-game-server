@@ -5,6 +5,10 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 
+import { Player } from '../common/entities';
+import { ConnectedPlayer } from '../common/decorators';
+
+import { EMatchmakingEvent } from './matchmaking-event.enum';
 import { MatchmakingService } from './matchmaking.service';
 
 import { Player } from '../player/player';

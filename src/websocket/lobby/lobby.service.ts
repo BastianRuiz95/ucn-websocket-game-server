@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { Player } from '../player/player';
+import { Player } from '../common/entities';
+
 import { ELobbyEvent } from './lobby-event.enum';
 import { PlayerListService } from '../player-list/player-list.service';
 
