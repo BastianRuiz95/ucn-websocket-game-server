@@ -1,57 +1,30 @@
+import { Exclude } from 'class-transformer';
 import { WebSocket } from 'ws';
 import { WsResponse } from '@nestjs/websockets';
 
 import { Match } from './match.entity';
 import { EPlayerStatus } from '../enums';
-import { PlayerPresenter } from '../presenters';
+
+type PlayerPresenter = Omit<
+  Player,
+  'socketClient' | 'getPlayerData' | 'sendEvent' | 'match'
+>;
 
 export class Player {
-  private match: Match;
+  readonly id: string;
+  name: string;
+  status: EPlayerStatus;
+  match: Match;
 
-  constructor(
-    private readonly id: string,
-    private readonly socketClient: WebSocket,
-    private name: string,
-    private status: EPlayerStatus,
-  ) {
-    this.name = name;
-    this.match = null;
-  }
+  @Exclude()
+  readonly socketClient: WebSocket;
 
-  getId(): string {
-    return this.id;
-  }
-
-  getSocketClient(): WebSocket {
-    return this.socketClient;
-  }
-
-  setName(name: string) {
-    this.name = name;
-  }
-
-  getName(): string {
-    return this.name;
-  }
-
-  setStatus(status: EPlayerStatus) {
-    this.status = status;
-  }
-
-  getStatus(): EPlayerStatus {
-    return this.status;
+  constructor(partial: Partial<Player>) {
+    Object.assign(this, partial);
   }
 
   getPlayerData(): PlayerPresenter {
     return { id: this.id, name: this.name, status: this.status };
-  }
-
-  getMatch() {
-    return this.match;
-  }
-
-  setMatch(match: Match) {
-    this.match = match;
   }
 
   sendEvent<T = object>(event: string, data: T) {

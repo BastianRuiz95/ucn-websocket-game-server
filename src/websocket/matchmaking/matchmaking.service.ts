@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 
 import { WsGameException } from '../config/ws-game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
@@ -19,40 +20,43 @@ export class MatchmakingService {
 
     const match = this._setMatch(senderPlayer, playerToSend);
     playerToSend.sendEvent(EMatchmakingEvent.MatchRequestReceived, {
-      msg: `Match Request Received from player ${senderPlayer.getName()}`,
-      playerId: senderPlayer.getId(),
+      msg: `Match Request Received from player ${senderPlayer.name}`,
+      playerId: senderPlayer.id,
     });
 
     return {
-      msg: `Match request sended to player "${playerToSend.getName()}"`,
-      matchId: match.getId(),
+      msg: `Match request sended to player "${playerToSend.name}"`,
+      matchId: match.id,
     };
   }
 
   private _checkPlayerStatus(player: Player) {
-    const playerStatus = player.getStatus();
+    const playerStatus = player.status;
     if (playerStatus === EPlayerStatus.Busy) {
       throw new WsGameException(
-        `Player "${player.getName()}" is busy. Try again later.`,
-        { playerId: player.getId(), playerName: player.getName() },
+        `Player "${player.name}" is busy. Try again later.`,
+        { playerId: player.id, playerName: player.name },
       );
     }
 
     if (playerStatus === EPlayerStatus.InMatch) {
       throw new WsGameException(
-        `Player "${player.getName()}" is in another match. Wait until this match ends.`,
-        { playerId: player.getId(), playerName: player.getName() },
+        `Player "${player.name}" is in another match. Wait until this match ends.`,
+        { playerId: player.id, playerName: player.name },
       );
     }
   }
 
   private _setMatch(playerOne: Player, playerTwo: Player): Match {
-    const match = new Match(EMatchStatus.Requested, playerOne, playerTwo);
+    const match = new Match({
+      id: uuidv4(),
+      playerOne,
+      playerTwo,
+      status: EMatchStatus.Requested,
+    });
 
-    playerOne.setStatus(EPlayerStatus.Busy);
-    playerOne.setMatch(match);
-    playerTwo.setStatus(EPlayerStatus.Busy);
-    playerTwo.setMatch(match);
+    playerOne.status = playerTwo.status = EPlayerStatus.Busy;
+    playerOne.match = playerTwo.match = match;
 
     return match;
   }
