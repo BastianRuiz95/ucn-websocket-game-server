@@ -16,19 +16,19 @@ export class MatchmakingService {
 
     this._checkPlayerStatus(playerToSend);
 
-    playerToSend.setStatus(EPlayerStatus.Busy);
+    playerToSend.status = EPlayerStatus.Busy;
     playerToSend.sendEvent(EMatchmakingEvent.MatchRequestReceived, {
-      msg: `Match Request Received from player ${senderPlayer.getName()}`,
-      playerId: senderPlayer.getId(),
+      msg: `Match Request Received from player ${senderPlayer.name}`,
+      playerId: senderPlayer.id,
     });
 
     return {
-      msg: `Match request sended to player ${playerToSend.getName()}`,
+      msg: `Match request sended to player ${playerToSend.name}`,
     };
   }
 
   private _checkPlayerStatus(player: Player) {
-    const playerStatus = player.getStatus();
+    const playerStatus = player.status;
     if (playerStatus === EPlayerStatus.Busy) {
       // throw new Error(Player is Busy with another Request. Try again later)
     }

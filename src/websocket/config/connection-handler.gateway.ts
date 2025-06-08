@@ -33,8 +33,8 @@ export class ConnectionHandlerGateway
     const player = this.playerService.createPlayer(client, playerName);
 
     this.playerListService.broadcast(EConnectionEvent.PlayerConnected, {
-      msg: `Player '${playerName}' (${player.getId()}) has connected`,
-      id: player.getId(),
+      msg: `Player '${playerName}' (${player.id}) has connected`,
+      id: player.id,
       name: playerName,
     });
 
@@ -42,8 +42,8 @@ export class ConnectionHandlerGateway
 
     player.sendEvent(EConnectionEvent.ConnectedToServer, {
       msg: 'Welcome! You are connected to the game server',
-      id: player.getId(),
-      name: player.getName(),
+      id: player.id,
+      name: player.name,
     });
   }
 
@@ -53,9 +53,9 @@ export class ConnectionHandlerGateway
     this.playerListService.removePlayer(player);
 
     this.playerListService.broadcast(EConnectionEvent.PlayerDisconnected, {
-      msg: `Player '${player.getName()}' (${player.getId()}) has connected`,
-      id: player.getId(),
-      name: player.getName(),
+      msg: `Player '${player.name}' (${player.id}) has connected`,
+      id: player.id,
+      name: player.name,
     });
   }
 
