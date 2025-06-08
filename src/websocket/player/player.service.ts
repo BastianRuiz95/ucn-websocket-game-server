@@ -7,12 +7,12 @@ import { EPlayerStatus } from '../common/enums';
 
 @Injectable()
 export class PlayerService {
-  createPlayer(socketClient: WebSocket, name: string) {
-    return new Player(uuidv4(), socketClient, name, EPlayerStatus.Available);
-  }
-
-  changeUserName(player: Player, name: string) {
-    player.setName(name);
-    return player.getPlayerData();
+  createPlayer(socketClient: WebSocket, name: string): Player {
+    return new Player({
+      id: uuidv4(),
+      socketClient,
+      name,
+      status: EPlayerStatus.Available,
+    });
   }
 }

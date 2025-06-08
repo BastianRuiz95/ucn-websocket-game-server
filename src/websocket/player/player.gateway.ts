@@ -18,12 +18,12 @@ export class PlayerGateway {
     @ConnectedPlayer() player: Player,
     @MessageBody() data: ChangeUserNameDto,
   ): WsResponse {
-    player.setName(data.name);
+    player.name = data.name;
     return {
       event: EPlayerEvent.ChangeName,
       data: {
         msg: 'Name changed',
-        name: data.name,
+        name: player.name,
       },
     };
   }
