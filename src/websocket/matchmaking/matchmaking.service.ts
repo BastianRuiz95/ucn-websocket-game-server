@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { WsGameException } from '../config/ws-game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
 
-import { Player } from '../common/entities';
-import { EPlayerStatus } from '../common/enums';
+import { Match, Player } from '../common/entities';
+import { EMatchStatus, EPlayerStatus } from '../common/enums';
 
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 
@@ -17,15 +17,15 @@ export class MatchmakingService {
 
     this._checkPlayerStatus(playerToSend);
 
-    playerToSend.setStatus(EPlayerStatus.Busy);
+    const match = this._setMatch(senderPlayer, playerToSend);
     playerToSend.sendEvent(EMatchmakingEvent.MatchRequestReceived, {
       msg: `Match Request Received from player ${senderPlayer.getName()}`,
       playerId: senderPlayer.getId(),
     });
-    senderPlayer.setStatus(EPlayerStatus.Busy);
 
     return {
       msg: `Match request sended to player "${playerToSend.getName()}"`,
+      matchId: match.getId(),
     };
   }
 
@@ -44,5 +44,16 @@ export class MatchmakingService {
         { playerId: player.getId(), playerName: player.getName() },
       );
     }
+  }
+
+  private _setMatch(playerOne: Player, playerTwo: Player): Match {
+    const match = new Match(EMatchStatus.Requested, playerOne, playerTwo);
+
+    playerOne.setStatus(EPlayerStatus.Busy);
+    playerOne.setMatch(match);
+    playerTwo.setStatus(EPlayerStatus.Busy);
+    playerTwo.setMatch(match);
+
+    return match;
   }
 }
