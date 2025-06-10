@@ -53,8 +53,8 @@ describe('#MatchmakingService', () => {
 
       expect(result).toBeDefined();
 
-      expect(playerSender.status).toBe(EPlayerStatus.Busy);
-      expect(playerAvailable.status).toBe(EPlayerStatus.Busy);
+      expect(playerSender).toHaveProperty('status', EPlayerStatus.Busy);
+      expect(playerAvailable).toHaveProperty('status', EPlayerStatus.Busy);
 
       expect(playerSender.match).toBeDefined();
       expect(playerAvailable.match).toBeDefined();
@@ -66,7 +66,7 @@ describe('#MatchmakingService', () => {
       expect(playerSender.match.getPlayers()).toContainEqual(
         playerAvailable.getPlayerData(),
       );
-      expect(playerSender.match.id).toBe(result.matchId);
+      expect(playerSender.match).toHaveProperty('id', result.matchId);
     });
 
     it('should not send an invitation if destination player is busy or in match', () => {
@@ -107,5 +107,38 @@ describe('#MatchmakingService', () => {
         service.sendMatchRequest(playerAvailable, playerAvailable.id),
       ).toThrow(GameException);
     });
+  });
+
+  describe('#cancelMatchRequest', () => {
+    it('should cancel the match if it has not started yet', () => {
+      service.sendMatchRequest(playerSender, playerAvailable.id);
+
+      const result = service.cancelMatchRequest(playerSender);
+
+      expect(result).toBeDefined();
+
+      expect(playerSender).toHaveProperty('status', EPlayerStatus.Available);
+      expect(playerAvailable).toHaveProperty('status', EPlayerStatus.Available);
+
+      expect(playerSender).toHaveProperty('match', null);
+      expect(playerAvailable).toHaveProperty('match', null);
+    });
+
+    it('should not cancel the match if this not exists', () => {
+      expect(() => service.cancelMatchRequest(playerSender)).toThrow(
+        GameException,
+      );
+    });
+
+    it('should not cancel the match if the destinator calls the event', () => {
+      service.sendMatchRequest(playerSender, playerAvailable.id);
+      expect(() => service.cancelMatchRequest(playerAvailable)).toThrow(
+        GameException,
+      );
+    });
+
+    // TODO: it('should throw an error if both players had accepted the match', () => {
+    //   expect(() => service.cancelMatchRequest());
+    // });
   });
 });
