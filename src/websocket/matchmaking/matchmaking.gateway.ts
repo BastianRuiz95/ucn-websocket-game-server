@@ -31,6 +31,13 @@ export class MatchmakingGateway {
     return { event: EMatchmakingEvent.CancelMatchRequest, data };
   }
 
+  @WsEventListener(EMatchmakingEvent.AcceptMatch)
+  acceptMatchRequest(@ConnectedPlayer() player: Player): WsResponse {
+    const data = this.matchmakingService.acceptMatchRequest(player);
+
+    return { event: EMatchmakingEvent.AcceptMatch, data };
+  }
+
   @WsEventListener(EMatchmakingEvent.RejectMatch)
   rejectMatchRequest(@ConnectedPlayer() player: Player): WsResponse {
     const data = this.matchmakingService.rejectMatchRequest(player);
