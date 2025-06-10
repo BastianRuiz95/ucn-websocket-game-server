@@ -10,20 +10,6 @@ export const PLAYER_AVAILABLE_MOCK_DATA = {
   socketClient,
 };
 
-export const PLAYER_BUSY_MOCK_DATA = {
-  id: 'player_id_busy',
-  name: 'Player busy',
-  status: EPlayerStatus.Busy,
-  socketClient,
-};
-
-export const PLAYER_IN_MATCH_MOCK_DATA = {
-  id: 'player_id_in_match',
-  name: 'Player in match',
-  status: EPlayerStatus.InMatch,
-  socketClient,
-};
-
 export const PLAYER_SENDER_MOCK_DATA = {
   id: 'player_id_sender',
   name: 'Player sender',
