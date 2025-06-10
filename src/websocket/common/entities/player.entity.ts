@@ -2,17 +2,19 @@ import { Exclude } from 'class-transformer';
 import { WebSocket } from 'ws';
 import { WsResponse } from '@nestjs/websockets';
 
+import { Match } from './match.entity';
 import { EPlayerStatus } from '../enums';
 
 type PlayerPresenter = Omit<
   Player,
-  'socketClient' | 'getPlayerData' | 'sendEvent'
+  'socketClient' | 'getPlayerData' | 'sendEvent' | 'match'
 >;
 
 export class Player {
   readonly id: string;
   name: string;
   status: EPlayerStatus;
+  match: Match;
 
   @Exclude()
   readonly socketClient: WebSocket;

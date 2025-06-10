@@ -1,14 +1,9 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WsResponse,
-} from '@nestjs/websockets';
+import { MessageBody, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 
 import { LobbyService } from './lobby.service';
 
 import { Player } from '../common/entities';
-import { ConnectedPlayer } from '../common/decorators';
+import { ConnectedPlayer, WsEventListener } from '../common/decorators';
 
 import { ELobbyEvent } from './lobby-event.enum';
 import { SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
@@ -17,28 +12,28 @@ import { SendPrivateMessageDto, SendPublicMessageDto } from './dtos';
 export class LobbyGateway {
   constructor(private readonly lobbyService: LobbyService) {}
 
-  @SubscribeMessage(ELobbyEvent.OnlinePlayers)
+  @WsEventListener(ELobbyEvent.OnlinePlayers)
   getConnectedPlayers(): WsResponse {
     const data = this.lobbyService.getOnlinePlayers();
 
     return { event: ELobbyEvent.OnlinePlayers, data };
   }
 
-  @SubscribeMessage(ELobbyEvent.SendPrivateMessage)
+  @WsEventListener(ELobbyEvent.SendPrivateMessage)
   sendPrivateMessage(
     @ConnectedPlayer() player: Player,
     @MessageBody() body: SendPrivateMessageDto,
   ): WsResponse {
     const data = this.lobbyService.sendPrivateMessage(
       player,
-      body.id,
+      body.playerId,
       body.message,
     );
 
     return { event: ELobbyEvent.SendPrivateMessage, data };
   }
 
-  @SubscribeMessage(ELobbyEvent.SendPublicMessage)
+  @WsEventListener(ELobbyEvent.SendPublicMessage)
   sendPublicMessage(
     @ConnectedPlayer() player: Player,
     @MessageBody() body: SendPublicMessageDto,

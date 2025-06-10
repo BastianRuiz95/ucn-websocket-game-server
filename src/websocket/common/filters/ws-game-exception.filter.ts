@@ -1,13 +1,13 @@
 import { WebSocket } from 'ws';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 
-import { WsGameException } from '../../config/ws-game.exception';
+import { GameException } from '../../config/game.exception';
 
-@Catch(WsGameException)
-export class WsErrorFilter implements ExceptionFilter {
+@Catch(GameException)
+export class WsGameExceptionFilter implements ExceptionFilter {
   constructor(private readonly event: string) {}
 
-  catch(exception: WsGameException, host: ArgumentsHost) {
+  catch(exception: GameException, host: ArgumentsHost) {
     const client = host.switchToWs().getClient<WebSocket>();
     client.send(
       JSON.stringify({

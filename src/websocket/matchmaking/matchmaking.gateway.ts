@@ -1,12 +1,7 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WsResponse,
-} from '@nestjs/websockets';
+import { MessageBody, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 
 import { Player } from '../common/entities';
-import { ConnectedPlayer } from '../common/decorators';
+import { ConnectedPlayer, WsEventListener } from '../common/decorators';
 
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 import { MatchmakingService } from './matchmaking.service';
@@ -16,7 +11,7 @@ import { SendMatchRequestDto } from './dtos';
 export class MatchmakingGateway {
   constructor(private readonly matchmakingService: MatchmakingService) {}
 
-  @SubscribeMessage(EMatchmakingEvent.SendMatchRequest)
+  @WsEventListener(EMatchmakingEvent.SendMatchRequest)
   sendMatchRequest(
     @ConnectedPlayer() player: Player,
     @MessageBody() body: SendMatchRequestDto,
@@ -27,5 +22,26 @@ export class MatchmakingGateway {
     );
 
     return { event: EMatchmakingEvent.SendMatchRequest, data };
+  }
+
+  @WsEventListener(EMatchmakingEvent.CancelMatchRequest)
+  cancelMatchRequest(@ConnectedPlayer() player: Player): WsResponse {
+    const data = this.matchmakingService.cancelMatchRequest(player);
+
+    return { event: EMatchmakingEvent.CancelMatchRequest, data };
+  }
+
+  @WsEventListener(EMatchmakingEvent.AcceptMatch)
+  acceptMatchRequest(@ConnectedPlayer() player: Player): WsResponse {
+    const data = this.matchmakingService.acceptMatchRequest(player);
+
+    return { event: EMatchmakingEvent.AcceptMatch, data };
+  }
+
+  @WsEventListener(EMatchmakingEvent.RejectMatch)
+  rejectMatchRequest(@ConnectedPlayer() player: Player): WsResponse {
+    const data = this.matchmakingService.rejectMatchRequest(player);
+
+    return { event: EMatchmakingEvent.RejectMatch, data };
   }
 }
