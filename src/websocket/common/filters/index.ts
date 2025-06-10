@@ -1,1 +1,1 @@
-export * from './ws-error.filter';
+export * from './ws-game-exception.filter';

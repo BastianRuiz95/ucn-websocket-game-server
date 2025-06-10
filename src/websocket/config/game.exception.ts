@@ -1,8 +1,6 @@
-import { WsException } from '@nestjs/websockets';
-
-export class WsGameException extends WsException {
+export class GameException extends Error {
   static throwException(message: string, data: object) {
-    throw new WsGameException(message, data);
+    throw new GameException(message, data);
   }
 
   constructor(

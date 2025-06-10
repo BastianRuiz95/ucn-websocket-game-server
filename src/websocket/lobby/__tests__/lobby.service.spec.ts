@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 
 import { Player } from '../../common/entities';
 import { LobbyService } from '../lobby.service';
-import { WsGameException } from '../../config/ws-game.exception';
+import { GameException } from '../../config/game.exception';
 import { PlayerListService } from '../../player-list/player-list.service';
 
 import {
@@ -52,7 +52,7 @@ describe('LobbyService', () => {
     it('should throw an error if the message is empty', () => {
       [null, undefined, '', ' ', ' \n\t '].forEach((m) => {
         expect(() => service.sendPublicMessage(playerOne, m)).toThrow(
-          WsGameException,
+          GameException,
         );
       });
     });
@@ -69,14 +69,14 @@ describe('LobbyService', () => {
       [null, undefined, '', ' ', ' \n\t '].forEach((m) => {
         expect(() =>
           service.sendPrivateMessage(playerOne, playerTwo.id, m),
-        ).toThrow(WsGameException);
+        ).toThrow(GameException);
       });
     });
 
     it('should throw an error if the destinator player not exists', () => {
       expect(() =>
         service.sendPrivateMessage(playerOne, 'not_id', 'Hello'),
-      ).toThrow(WsGameException);
+      ).toThrow(GameException);
     });
   });
 });

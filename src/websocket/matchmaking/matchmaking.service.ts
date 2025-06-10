@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
-import { WsGameException } from '../config/ws-game.exception';
+import { GameException } from '../config/game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
 
 import { Match, Player } from '../common/entities';
@@ -15,7 +15,7 @@ export class MatchmakingService {
 
   sendMatchRequest(senderPlayer: Player, playerId: string) {
     if (senderPlayer.id === playerId) {
-      WsGameException.throwException(
+      GameException.throwException(
         `You cannot send a match request to yourself.`,
         { playerId },
       );
@@ -45,19 +45,19 @@ export class MatchmakingService {
 
     const match = sender.match;
     if (sender.status === EPlayerStatus.InMatch) {
-      WsGameException.throwException(
+      GameException.throwException(
         `You cannot send match requests because you are already in one.`,
         { matchId: match.id, matchStatus: match.status },
       );
     }
 
     if (sender.id === match.senderPlayer.id) {
-      WsGameException.throwException(
+      GameException.throwException(
         `You have already submitted a match request. Wait for it to be approved or rejected, or wait a few seconds.`,
         { matchId: match.id, matchStatus: match.status },
       );
     } else {
-      WsGameException.throwException(
+      GameException.throwException(
         `You have a pending match request. Approve or reject it before submitting a new one.`,
         { matchId: match.id, matchStatus: match.status },
       );
@@ -67,14 +67,14 @@ export class MatchmakingService {
   private _checkDestintatorStatus(dest: Player) {
     const playerStatus = dest.status;
     if (playerStatus === EPlayerStatus.Busy) {
-      WsGameException.throwException(
+      GameException.throwException(
         `Player "${dest.name}" is busy. Try again later.`,
         { playerId: dest.id, playerName: dest.name },
       );
     }
 
     if (playerStatus === EPlayerStatus.InMatch) {
-      WsGameException.throwException(
+      GameException.throwException(
         `Player "${dest.name}" is in another match. Wait until this match ends.`,
         { playerId: dest.id, playerName: dest.name },
       );

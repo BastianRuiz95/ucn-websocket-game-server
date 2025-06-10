@@ -4,7 +4,7 @@ import { Player } from '../common/entities';
 
 import { ELobbyEvent } from './lobby-event.enum';
 import { PlayerListService } from '../player-list/player-list.service';
-import { WsGameException } from '../config/ws-game.exception';
+import { GameException } from '../config/game.exception';
 
 @Injectable()
 export class LobbyService {
@@ -21,7 +21,7 @@ export class LobbyService {
   ) {
     const playerToSendMsg = this.playerListService.getPlayerById(playerId);
     if (!playerToSendMsg) {
-      WsGameException.throwException(`Player with ID ${playerId} not exists.`, {
+      GameException.throwException(`Player with ID ${playerId} not exists.`, {
         playerId,
       });
     }
@@ -61,7 +61,7 @@ export class LobbyService {
 
   private _checkMessage(message: string) {
     if (!message || message.trim().length === 0) {
-      WsGameException.throwException(`You cannot send an empty message`, {
+      GameException.throwException(`You cannot send an empty message`, {
         message: message ?? typeof message,
       });
     }

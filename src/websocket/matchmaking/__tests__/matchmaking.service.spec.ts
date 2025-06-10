@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { PlayerListService } from '../../player-list/player-list.service';
 import { MatchmakingService } from '../matchmaking.service';
 
-import { WsGameException } from '../../config/ws-game.exception';
+import { GameException } from '../../config/game.exception';
 
 import { EPlayerStatus } from '../../common/enums';
 import { Player } from '../../common/entities';
@@ -72,7 +72,7 @@ describe('#MatchmakingService', () => {
     it('should not send an invitation if destination player is busy or in match', () => {
       [playerBusy, playerInMatch].forEach((p) => {
         expect(() => service.sendMatchRequest(playerSender, p.id)).toThrow(
-          WsGameException,
+          GameException,
         );
 
         expect(playerSender.status).toBe(EPlayerStatus.Available);
@@ -95,7 +95,7 @@ describe('#MatchmakingService', () => {
 
       expect(() =>
         service.sendMatchRequest(playerAvailable, 'new-player-two'),
-      ).toThrow(WsGameException);
+      ).toThrow(GameException);
 
       expect(playerAvailable.status).toBe(EPlayerStatus.Busy);
       expect(playerAvailable.match).toBeDefined();
@@ -105,7 +105,7 @@ describe('#MatchmakingService', () => {
     it('should not send an invitation to himself', () => {
       expect(() =>
         service.sendMatchRequest(playerAvailable, playerAvailable.id),
-      ).toThrow(WsGameException);
+      ).toThrow(GameException);
     });
   });
 });
