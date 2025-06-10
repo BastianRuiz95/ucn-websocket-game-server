@@ -3,8 +3,8 @@ import { EMatchStatus } from '../enums';
 
 export class Match {
   readonly id: string;
-  readonly playerOne: Player;
-  readonly playerTwo: Player;
+  readonly senderPlayer: Player;
+  readonly destPlayer: Player;
   status: EMatchStatus;
 
   constructor(partial: Partial<Match>) {
@@ -12,6 +12,6 @@ export class Match {
   }
 
   getPlayers() {
-    return [this.playerOne.getPlayerData(), this.playerTwo.getPlayerData()];
+    return [this.senderPlayer.getPlayerData(), this.destPlayer.getPlayerData()];
   }
 }
