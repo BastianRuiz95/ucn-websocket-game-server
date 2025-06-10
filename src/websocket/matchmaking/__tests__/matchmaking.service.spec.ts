@@ -80,21 +80,27 @@ describe('#MatchmakingService', () => {
       });
     });
 
-    it('should not send an invitation if sender player is busy', () => {
-      playerListService.addPlayer(
-        new Player({ ...PLAYER_AVAILABLE_MOCK_DATA, id: 'new-player-one' }),
-      );
+    it('should not send an invitation if player has a pending match request (received or sent)', () => {
+      const playerMatchReceived = new Player({
+        ...PLAYER_AVAILABLE_MOCK_DATA,
+        id: 'new-player-one',
+      });
+      playerListService.addPlayer(playerMatchReceived);
       playerListService.addPlayer(
         new Player({ ...PLAYER_AVAILABLE_MOCK_DATA, id: 'new-player-two' }),
       );
 
       const { matchId } = service.sendMatchRequest(
         playerAvailable,
-        'new-player-one',
+        playerMatchReceived.id,
       );
 
       expect(() =>
         service.sendMatchRequest(playerAvailable, 'new-player-two'),
+      ).toThrow(GameException);
+
+      expect(() =>
+        service.sendMatchRequest(playerMatchReceived, playerAvailable.id),
       ).toThrow(GameException);
 
       expect(playerAvailable.status).toBe(EPlayerStatus.Busy);
@@ -139,6 +145,39 @@ describe('#MatchmakingService', () => {
 
     // TODO: it('should throw an error if both players had accepted the match', () => {
     //   expect(() => service.cancelMatchRequest());
+    // });
+  });
+
+  describe('#rejectMatchRequest', () => {
+    it('should reject the match if it has not started yet', () => {
+      service.sendMatchRequest(playerSender, playerAvailable.id);
+
+      const result = service.rejectMatchRequest(playerAvailable);
+
+      expect(result).toBeDefined();
+
+      expect(playerSender).toHaveProperty('status', EPlayerStatus.Available);
+      expect(playerAvailable).toHaveProperty('status', EPlayerStatus.Available);
+
+      expect(playerSender).toHaveProperty('match', null);
+      expect(playerAvailable).toHaveProperty('match', null);
+    });
+
+    it('should not reject the match if this not exists', () => {
+      expect(() => service.rejectMatchRequest(playerAvailable)).toThrow(
+        GameException,
+      );
+    });
+
+    it('should not reject the match if the destinator calls the event', () => {
+      service.sendMatchRequest(playerSender, playerAvailable.id);
+      expect(() => service.rejectMatchRequest(playerSender)).toThrow(
+        GameException,
+      );
+    });
+
+    // TODO: it('should throw an error if both players had accepted the match', () => {
+    //   expect(() => service.rejectMatchRequest());
     // });
   });
 });

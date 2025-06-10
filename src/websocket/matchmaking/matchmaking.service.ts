@@ -28,7 +28,7 @@ export class MatchmakingService {
 
     const match = this._createMatch(senderPlayer, playerToSend);
     playerToSend.sendEvent(EMatchmakingEvent.MatchRequestReceived, {
-      msg: `Match request received from player ${senderPlayer.name}`,
+      msg: `Match request received from player "${senderPlayer.name}"`,
       playerId: senderPlayer.id,
     });
 
@@ -40,20 +40,41 @@ export class MatchmakingService {
 
   cancelMatchRequest(senderPlayer: Player) {
     const { match } = senderPlayer;
-    this._checkCancelRequestExceptions(senderPlayer);
+    this._checkMatchStatus(senderPlayer);
+    this._checkMatchRequestOwner(match, senderPlayer);
 
     const { destPlayer } = match;
-    this._cancelRequestedMatch(match);
+    this._deleteMatchRequest(match);
 
     destPlayer.sendEvent(EMatchmakingEvent.MatchRequestCancelled, {
-      msg: `Player ${senderPlayer.name} has cancelled the match request.`,
+      msg: `Player "${senderPlayer.name}" has cancelled the match request.`,
       playerId: senderPlayer.id,
       playerName: senderPlayer.name,
     });
 
     return {
-      msg: `The match request to player ${destPlayer.name} has been cancelled.`,
+      msg: `The match request to player "${destPlayer.name}" has been cancelled.`,
       playerId: destPlayer.id,
+    };
+  }
+
+  rejectMatchRequest(destPlayer: Player) {
+    const { match } = destPlayer;
+    this._checkMatchStatus(destPlayer);
+    this._checkMatchRequestDestinator(match, destPlayer);
+
+    const { senderPlayer } = match;
+    this._deleteMatchRequest(match);
+
+    senderPlayer.sendEvent(EMatchmakingEvent.MatchRequestCancelled, {
+      msg: `Player "${destPlayer.name}" has rejected your match request.`,
+      playerId: destPlayer.id,
+      playerName: destPlayer.name,
+    });
+
+    return {
+      msg: `The match request from player "${senderPlayer.name}" has been rejected.`,
+      playerId: senderPlayer.id,
     };
   }
 
@@ -63,39 +84,38 @@ export class MatchmakingService {
     }
 
     const match = sender.match;
+    const result = { matchId: match.id, matchStatus: match.status };
+
     if (sender.status === EPlayerStatus.InMatch) {
       GameException.throwException(
         `You cannot send match requests because you are already in one.`,
-        { matchId: match.id, matchStatus: match.status },
+        result,
       );
     }
 
-    if (sender.id === match.senderPlayer.id) {
-      GameException.throwException(
-        `You have already submitted a match request. Wait for it to be approved or rejected, or wait a few seconds.`,
-        { matchId: match.id, matchStatus: match.status },
-      );
-    } else {
-      GameException.throwException(
-        `You have a pending match request. Approve or reject it before submitting a new one.`,
-        { matchId: match.id, matchStatus: match.status },
-      );
-    }
+    GameException.throwException(
+      sender.id === match.senderPlayer.id
+        ? `You have already submitted a match request. Wait for it to be approved or rejected, or wait a few seconds.`
+        : `You have a pending match request. Approve or reject it before submitting a new one.`,
+      result,
+    );
   }
 
   private _checkDestintatorStatus(dest: Player) {
     const playerStatus = dest.status;
+    const result = { playerId: dest.id, playerName: dest.name };
+
     if (playerStatus === EPlayerStatus.Busy) {
       GameException.throwException(
         `Player "${dest.name}" is busy. Try again later.`,
-        { playerId: dest.id, playerName: dest.name },
+        result,
       );
     }
 
     if (playerStatus === EPlayerStatus.InMatch) {
       GameException.throwException(
         `Player "${dest.name}" is in another match. Wait until this match ends.`,
-        { playerId: dest.id, playerName: dest.name },
+        result,
       );
     }
   }
@@ -114,7 +134,7 @@ export class MatchmakingService {
     return match;
   }
 
-  private _checkCancelRequestExceptions(senderPlayer: Player) {
+  private _checkMatchStatus(senderPlayer: Player) {
     const { match } = senderPlayer;
     if (!match) {
       GameException.throwException(`You do not have an active match request.`, {
@@ -124,20 +144,31 @@ export class MatchmakingService {
 
     if (match.status !== EMatchStatus.Requested) {
       GameException.throwException(
-        `Match is in progress and cannot be cancelled.`,
-        { matchStatus: match.status },
-      );
-    }
-
-    if (match.senderPlayer.id !== senderPlayer.id) {
-      GameException.throwException(
-        `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingEvent.RejectMatch}'`,
+        `Match is in progress and cannot be cancelled or rejected.`,
         { matchStatus: match.status },
       );
     }
   }
 
-  private _cancelRequestedMatch(match: Match) {
+  private _checkMatchRequestOwner(match: Match, senderPlayer: Player) {
+    if (match.senderPlayer.id !== senderPlayer.id) {
+      GameException.throwException(
+        `You cannot cancel an incoming match request. You need to reject it with the event "${EMatchmakingEvent.RejectMatch}"`,
+        { matchStatus: match.status },
+      );
+    }
+  }
+
+  private _checkMatchRequestDestinator(match: Match, destPlayer: Player) {
+    if (match.destPlayer.id !== destPlayer.id) {
+      GameException.throwException(
+        `You cannot reject a match request you have sent. You need to cancel it with the event "${EMatchmakingEvent.CancelMatchRequest}"`,
+        { matchStatus: match.status },
+      );
+    }
+  }
+
+  private _deleteMatchRequest(match: Match) {
     const { senderPlayer, destPlayer } = match;
 
     senderPlayer.match = destPlayer.match = null;
