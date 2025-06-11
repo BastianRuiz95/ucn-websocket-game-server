@@ -40,7 +40,7 @@ el mismo mensaje. De esta forma, cuando se reciba esta acción, se puede concate
 o interfaz gráfica y asi tener registro de todos los mensajes enviados por los jugadores.
 
 Ejemplo de respusta:
-```json
+```jsonc
 {
   "event": "public-message",
   "data": {
@@ -69,7 +69,7 @@ los mensajes públicos. Puede agregar este mensaje en su interfaz gráfica (como
 grupal con un indicador diferente) para mantener el historial de la conversación.
 
 Ejemplo de respusta:
-```json
+```jsonc
 {
   "event": "private-message",
   "data": {
@@ -108,7 +108,7 @@ De la respuesta se obtienen tres elementos:
   solicitud de partida (BUSY) o se encuentra actualmente en una partida (IN MATCH).
 
 Ejemplo de solicitud:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "online-players"
@@ -149,7 +149,7 @@ confirmación, y el resto de jugadores recibirán el evento `public-message` con
 [Mensaje público recibido](#mensaje-público-recibido)).
 
 Ejemplo de solicitud:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "send-public-message",
@@ -172,7 +172,7 @@ El evento también retornará una respuesta incorrecta en caso que se envíe un 
 parámetro `message`.
 
 Ejemplo de solicitud incorrecta:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "send-public-message",
@@ -206,7 +206,7 @@ se envió correctamente, recibirá una respuesta de confirmación. Acto seguido,
 mensaje recibirá el evento `private-message`, indicando que recibió un mensaje nuevo (véase [Mensaje privado recibido](#mensaje-privado-recibido)).
 
 Ejemplo de solicitud:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "send-private-message",
@@ -229,7 +229,7 @@ El evento puede retornar una respuesta incorrecta si es que el ID del jugador no
 blanco, o no se envia alguno de los parámetros (`message` o `playerId`).
 
 Ejemplo de solicitudes incorrectas:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "send-public-message",
@@ -245,7 +245,7 @@ Ejemplo de solicitudes incorrectas:
 	}
 }
 ```
-```json
+```jsonc
 // Evento enviado por el jugador
 {
 	"event": "send-private-message",

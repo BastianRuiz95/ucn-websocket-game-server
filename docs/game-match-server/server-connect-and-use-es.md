@@ -36,7 +36,7 @@ utilizando clave-valor.
 La estructura del objeto JSON que se utiliza para el intercambio de eventos (tanto envío como recepción) es el
 siguiente:
 
-```json
+```jsonc
 {
   "event": "connected-to-server",
   "data": {
@@ -52,7 +52,7 @@ siguiente:
 En el caso de los eventos enviados, el servidor responderá con un mensaje en formato JSON con la misma estructura
 anterior, pero agregando un parámetro de validación:
 
-```json
+```jsonc
 {
   "event": "send-public-message",
   "status": "OK",

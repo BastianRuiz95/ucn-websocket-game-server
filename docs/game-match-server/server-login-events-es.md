@@ -43,7 +43,7 @@ realizó correctamente. En el mensaje viene incluido el identificador y el nombr
 el fin de utilizarlo a lo largo de la conexión.
 
 Ejemplo de respusta:
-```json
+```jsonc
 {
   "event": "connected-to-server",
   "data": {
@@ -71,7 +71,7 @@ de juego, agregando al jugador en cuestión. De esta forma, no es necesario llam
 `get-connected-players` para actualizar el listado cuando se produce este evento.
 
 Ejemplo de respusta:
-```json
+```jsonc
 {
   "event": "player-connected",
   "data": {
@@ -98,7 +98,7 @@ desconecta del servidor, ya sea de forma automática, manual o forzosa. Se puede
 actualizar el listado de jugadores conectados, eliminando al jugador en cuestión.
 
 Ejemplo de respusta:
-```json
+```jsonc
 {
   "event": "player-disconnected",
   "data": {
