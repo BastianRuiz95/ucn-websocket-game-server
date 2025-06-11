@@ -53,7 +53,7 @@ export class ConnectionHandlerGateway
     this.playerListService.removePlayer(player);
 
     this.playerListService.broadcast(EConnectionEvent.PlayerDisconnected, {
-      msg: `Player '${player.name}' (${player.id}) has connected`,
+      msg: `Player '${player.name}' (${player.id}) has disconnected`,
       id: player.id,
       name: player.name,
     });
