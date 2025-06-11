@@ -26,7 +26,7 @@ de este, como su nombre u otros parámetros a definir.
 | __Parámetros__  | _Ninguno_.                                                                        |
 | __Respuesta__   | `id` (_string_): ID de jugador.                                                   |
 |                 | `name` (_string_): Nombre de jugador.                                             |
-|                 | `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN MATCH`). |
+|                 | `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN_MATCH`). |
 
 Con este evento es posible recuperar la información actual del jugador, en caso que se haya perdido y deba
 recuperarse. El evento como respuesta retornará el ID del jugador, su nombre y el estado actual.
@@ -34,7 +34,7 @@ recuperarse. El evento como respuesta retornará el ID del jugador, su nombre y 
 Los estados posibles para el jugador son los siguientes:
 - `AVAILABLE`: El jugador se encuentra disponible para recibir solicitudes de partida.
 - `BUSY`: El jugador esta ocupado con una solicitud de partida, por lo que no puede recibir otras.
-- `IN MATCH`: El jugador se encuentra actualmente en una partida, por lo que no puede recibir solicitudes.
+- `IN_MATCH`: El jugador se encuentra actualmente en una partida, por lo que no puede recibir solicitudes.
 
 Ejemplo de solicitud:
 ```jsonc

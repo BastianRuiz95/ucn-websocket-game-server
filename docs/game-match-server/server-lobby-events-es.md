@@ -93,7 +93,7 @@ Ejemplo de respusta:
 |                 | ___Array___ con la información de los jugadores conectados.                         |
 |                 | - `id` (_string_): ID de jugador.                                                   |
 |                 | - `name` (_string_): Nombre de jugador.                                             |
-|                 | - `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN MATCH`). |
+|                 | - `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN_MATCH`). |
 
 Este evento se envia al servidor para obtener los jugadores que se encuentran conectados. Esta función no requiere
 parámetros, por lo que se puede enviar sin un cuerpo establecido (parámetro "data"). Esta función es util para
@@ -105,7 +105,7 @@ De la respuesta se obtienen tres elementos:
 - El nombre del jugador, que ayuda a reconocer a cada uno y evitar que el jugador deba manejarse en la interfaz
   con el identificador.
 - El estado del jugador, que permite saber si se encuentra disponible para jugar (AVAILABLE), esta ocupado con una
-  solicitud de partida (BUSY) o se encuentra actualmente en una partida (IN MATCH).
+  solicitud de partida (BUSY) o se encuentra actualmente en una partida (IN_MATCH).
 
 Ejemplo de solicitud:
 ```jsonc
@@ -127,7 +127,7 @@ Ejemplo de solicitud:
     {
       "id": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
       "name": "Player_Two",
-      "status": "IN MATCH"
+      "status": "IN_MATCH"
     }
   ]
 }
