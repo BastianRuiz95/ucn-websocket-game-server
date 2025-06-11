@@ -2,13 +2,18 @@
 
 > Si necesitas volver al documento anterior, haz clic [aquí](./server-connect-and-use-es.md).
 
+- [Resumen de eventos](#resumen-de-eventos)
+- [Conectado](#conectado)
+- [Jugador conectado](#jugador-conectado)
+- [Jugador desconectado](#jugador-desconectado)
+
 Los eventos de conexión y desconexión son gatillados por el servidor al momento que algun jugador se conecta
 al endpoint de WebSocket establecido. Estas acciones estan definidas principalmente para gestionar de mejor
 forma el listado de usuarios que se mostrará en su juego, y así no tenga la necesidad de ejecutar el evento
 `get-connected-players` cada cierto tiempo.
 
-Los tres tipos de eventos relacionados a la conexión y desconexión son de escucha (Eventos entrantes), por lo
-que su cliente de juego debe realizar alguna acción al momento que los reciba.
+Los tres tipos de eventos relacionados a la conexión y desconexión son de escucha (Eventos entrantes), por
+lo que su cliente de juego debe realizar alguna acción al momento que los reciba.
 
 Estos eventos son enviados por el servidor al momento que este u otro usuario realizan alguna acción. Su
 cliente de juego debe escuchar los mensajes que el servidor puede enviar, interpretarlos, y realizar las
@@ -34,8 +39,8 @@ acciones que sean necesarias para su correcto funcionamiento.
 |                 | `name` (_string_): Nombre de jugador que se te ha asignado al conectarte.               |
 
 Este es un evento gatillado al momento de conectarse al servidor con el fin de saber que la operación se
-realizó correctamente. En el mensaje viene incluido el identificador y el nombre asignado al cliente con el fin
-de utilizarlo a lo largo de la conexión.
+realizó correctamente. En el mensaje viene incluido el identificador y el nombre asignado al cliente con
+el fin de utilizarlo a lo largo de la conexión.
 
 Ejemplo de respusta:
 ```json
@@ -49,7 +54,7 @@ Ejemplo de respusta:
 }
 ```
 
-#### Jugador Conectado
+## Jugador Conectado
 
 | Resumen         |                                                                           |
 |-----------------|---------------------------------------------------------------------------|
@@ -77,7 +82,7 @@ Ejemplo de respusta:
 }
 ```
 
-#### Jugador Desconectado
+## Jugador Desconectado
 
 | Resumen         |                                                                              |
 |-----------------|------------------------------------------------------------------------------|
