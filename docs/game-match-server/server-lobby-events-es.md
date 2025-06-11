@@ -219,6 +219,7 @@ Ejemplo de solicitud:
 // Respuesta entregada por el servidor
 {
   "event": "send-private-message",
+  "status": "OK",
   "data": {
     "msg": "Message sent to Player_0}.-K"
   }
