@@ -37,20 +37,12 @@ describe('#ConfigService', () => {
       expect(getSpyOn).toHaveBeenCalledWith(varName);
     });
 
-    it('should thrown an error if environment var is not setted.', () => {
+    it('should return a null value if environment var is not setted.', () => {
       const getSpyOn = jest.spyOn(nestConfig, 'get').mockReturnValue(undefined);
 
-      try {
-        service[name]();
-      } catch (e) {
-        expect(e).toBeDefined();
-        expect(e.message).toContain(
-          `No value setted for environment var '${varName}'.`,
-        );
-        expect(getSpyOn).toHaveBeenCalledWith(varName);
-        return;
-      }
-      throw new Error();
+      const result = service[name]();
+      expect(result).toBeNull();
+      expect(getSpyOn).toHaveBeenCalledWith(varName);
     });
   });
 });

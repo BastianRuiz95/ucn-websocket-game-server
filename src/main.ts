@@ -21,9 +21,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useWebSocketAdapter(
-    new CustomWsAdapter(app, configService.getWsPort() || 4010),
+    new CustomWsAdapter(app, configService.getWsPort() || 8080),
   );
 
-  await app.listen(configService.getAppPort() || 3000);
+  await app.listen(configService.getAppPort() || 80);
 }
 bootstrap();
