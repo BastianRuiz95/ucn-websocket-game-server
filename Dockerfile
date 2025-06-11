@@ -1,10 +1,14 @@
-FROM node:22-alpine3.20
+FROM node:22-alpine
 
 WORKDIR /home/app
-COPY . .
 
-RUN npm install && npm run build
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+RUN npm run build
 
 EXPOSE 80 8080
 
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
