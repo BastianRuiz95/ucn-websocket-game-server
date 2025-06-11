@@ -238,29 +238,29 @@ Ejemplo de solicitudes incorrectas:
 
 // Respuesta entregada por el servidor
 {
-	"event": "send-private-message",
-	"status": "ERROR",
-	"data": {
-		"msg": "Player with ID undefined not exists."
-	}
+  "event": "send-private-message",
+  "status": "ERROR",
+  "data": {
+    "msg": "Player with ID undefined not exists."
+  }
 }
 ```
 ```jsonc
 // Evento enviado por el jugador
 {
-	"event": "send-private-message",
-	"data": {
-		"playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4"
-	}
+  "event": "send-private-message",
+  "data": {
+    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4"
+  }
 }
 
 // Respuesta entregada por el servidor
 {
-	"event": "send-private-message",
-	"status": "ERROR",
-	"data": {
-		"msg": "You cannot send an empty message",
-		"message": "undefined"
-	}
+  "event": "send-private-message",
+  "status": "ERROR",
+  "data": {
+    "msg": "You cannot send an empty message",
+    "message": "undefined"
+  }
 }
 ```
