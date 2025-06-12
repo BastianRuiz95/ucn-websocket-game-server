@@ -13,8 +13,8 @@ export class WsGameExceptionFilter implements ExceptionFilter {
       JSON.stringify({
         event: this.event,
         status: 'ERROR',
+        msg: exception.gameMessage,
         data: {
-          msg: exception.gameMessage,
           ...exception.data,
         },
       }),
