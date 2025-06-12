@@ -38,7 +38,7 @@ export class MatchmakingService {
 
     return {
       msg: `Match request sent to player '${playerToSend.name}'.`,
-      data: { match: match.id },
+      data: { matchId: match.id },
     };
   }
 
