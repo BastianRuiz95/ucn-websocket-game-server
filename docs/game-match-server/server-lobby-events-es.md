@@ -38,13 +38,13 @@ Este evento avisa que un jugador ha enviado un mensaje por la sala pública, por
 el mismo mensaje. De esta forma, cuando se reciba esta acción, se puede concatentar cada mensaje recibido en un listado
 o interfaz gráfica y asi tener registro de todos los mensajes enviados por los jugadores.
 
-Ejemplo de respusta:
+Ejemplo de respuesta:
 ```jsonc
 {
   "event": "public-message",
   "msg": "Player 'Player_Two' have sent a message.",
   "data": {
-    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "playerName": "Player_Two",
     "playerMsg": "Hola! Cómo estan todos?"
   }
@@ -66,7 +66,7 @@ Este evento le avisa que un jugador le ha enviado un mensaje por privado. La est
 los mensajes públicos. Puede agregar este mensaje en su interfaz gráfica (como una pestaña nueva o dentro del chat
 grupal con un indicador diferente) para mantener el historial de la conversación.
 
-Ejemplo de respusta:
+Ejemplo de respuesta:
 ```jsonc
 {
   "event": "private-message",
@@ -211,7 +211,7 @@ Ejemplo de solicitud:
 {
   "event": "send-private-message",
   "data": {
-    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "message": "Como te encuentras? Quieres jugar una partida?"
   }
 }
@@ -222,7 +222,7 @@ Ejemplo de solicitud:
   "status": "OK",
   "msg": "Message sent to Player_Two.",
   "data": {
-    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "message": "Como te encuentras? Quieres jugar una partida?"
   }
 }
@@ -256,7 +256,7 @@ Ejemplo de solicitudes incorrectas:
 {
   "event": "send-private-message",
   "data": {
-    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4"
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f"
   }
 }
 

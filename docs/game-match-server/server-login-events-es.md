@@ -41,7 +41,7 @@ Este es un evento gatillado al momento de conectarse al servidor con el fin de s
 realizó correctamente. En el mensaje viene incluido el identificador y el nombre asignado al cliente con
 el fin de utilizarlo a lo largo de la conexión.
 
-Ejemplo de respusta:
+Ejemplo de respuesta:
 ```jsonc
 {
   "event": "connected-to-server",
@@ -68,7 +68,7 @@ el identificador y el nombre del jugador. Puede usarse para actualizar el listad
 de juego, agregando al jugador en cuestión. De esta forma, no es necesario llamar al evento
 `get-connected-players` para actualizar el listado cuando se produce este evento.
 
-Ejemplo de respusta:
+Ejemplo de respuesta:
 ```jsonc
 {
   "event": "player-connected",
@@ -94,7 +94,7 @@ De forma contraria al evento anterior, `player-disconnected` es un evento gatill
 desconecta del servidor, ya sea de forma automática, manual o forzosa. Se puede utilizar de igual forma para
 actualizar el listado de jugadores conectados, eliminando al jugador en cuestión.
 
-Ejemplo de respusta:
+Ejemplo de respuesta:
 ```jsonc
 {
   "event": "player-disconnected",
