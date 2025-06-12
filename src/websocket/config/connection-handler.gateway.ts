@@ -32,19 +32,19 @@ export class ConnectionHandlerGateway
     const playerName = `Player_${generateRandomString(5)}`;
     const player = this.playerService.createPlayer(client, playerName);
 
-    this.playerListService.broadcast(EConnectionEvent.PlayerConnected, {
-      msg: `Player '${playerName}' (${player.id}) has connected`,
-      id: player.id,
-      name: playerName,
-    });
+    this.playerListService.broadcast(
+      EConnectionEvent.PlayerConnected,
+      `Player '${playerName}' (${player.id}) has connected`,
+      { id: player.id, name: playerName },
+    );
 
     this.playerListService.addPlayer(player);
 
-    player.sendEvent(EConnectionEvent.ConnectedToServer, {
-      msg: 'Welcome! You are connected to the game server',
-      id: player.id,
-      name: player.name,
-    });
+    player.sendEvent(
+      EConnectionEvent.ConnectedToServer,
+      'Welcome! You are connected to the game server',
+      { id: player.id, name: player.name },
+    );
   }
 
   handleDisconnect(client: WebSocket) {
@@ -52,11 +52,11 @@ export class ConnectionHandlerGateway
 
     this.playerListService.removePlayer(player);
 
-    this.playerListService.broadcast(EConnectionEvent.PlayerDisconnected, {
-      msg: `Player '${player.name}' (${player.id}) has connected`,
-      id: player.id,
-      name: player.name,
-    });
+    this.playerListService.broadcast(
+      EConnectionEvent.PlayerDisconnected,
+      `Player '${player.name}' (${player.id}) has disconnected`,
+      { id: player.id, name: player.name },
+    );
   }
 
   @SubscribeMessage('ping')

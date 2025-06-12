@@ -11,7 +11,13 @@ export class LobbyService {
   constructor(private readonly playerListService: PlayerListService) {}
 
   getOnlinePlayers() {
-    return this.playerListService.getPlayers().map((p) => p.getPlayerData());
+    const playerList = this.playerListService
+      .getPlayers()
+      .map((p) => p.getPlayerData());
+    return {
+      msg: 'Player list obtained.',
+      data: playerList,
+    };
   }
 
   sendPrivateMessage(
@@ -22,21 +28,28 @@ export class LobbyService {
     const playerToSendMsg = this.playerListService.getPlayerById(playerId);
     if (!playerToSendMsg) {
       GameException.throwException(`Player with ID ${playerId} not exists.`, {
-        playerId,
+        playerId: playerId,
       });
     }
 
     this._checkMessage(playerMsg);
 
-    playerToSendMsg.sendEvent(ELobbyEvent.PrivateMessageReceived, {
-      msg: `Player '${senderPlayer.name}' have sent you a private message`,
-      playerId: senderPlayer.id,
-      playerName: senderPlayer.name,
-      playerMsg: playerMsg.trim(),
-    });
+    playerToSendMsg.sendEvent(
+      ELobbyEvent.PrivateMessageReceived,
+      `Player '${senderPlayer.name}' have sent you a private message.`,
+      {
+        playerId: senderPlayer.id,
+        playerName: senderPlayer.name,
+        playerMsg: playerMsg.trim(),
+      },
+    );
 
     return {
       msg: `Message sent to ${playerToSendMsg.name}`,
+      data: {
+        playerId: playerToSendMsg.id,
+        message: playerMsg.trim(),
+      },
     };
   }
 
@@ -45,8 +58,8 @@ export class LobbyService {
 
     this.playerListService.broadcast(
       ELobbyEvent.PublicMessageReceived,
+      `Player '${senderPlayer.name}' have sent a message.`,
       {
-        msg: `Player '${senderPlayer.name}' have sent a message`,
         playerId: senderPlayer.id,
         playerName: senderPlayer.name,
         playerMsg: playerMsg.trim(),
@@ -56,12 +69,13 @@ export class LobbyService {
 
     return {
       msg: 'Message sent to all players',
+      data: { message: playerMsg },
     };
   }
 
   private _checkMessage(message: string) {
     if (!message || message.trim().length === 0) {
-      GameException.throwException(`You cannot send an empty message`, {
+      GameException.throwException(`You cannot send an empty message.`, {
         message: message ?? typeof message,
       });
     }

@@ -1,6 +1,5 @@
-import { Exclude } from 'class-transformer';
 import { WebSocket } from 'ws';
-import { WsResponse } from '@nestjs/websockets';
+import { Exclude } from 'class-transformer';
 
 import { Match } from './match.entity';
 import { EPlayerStatus } from '../enums';
@@ -27,13 +26,7 @@ export class Player {
     return { id: this.id, name: this.name, status: this.status };
   }
 
-  sendEvent<T = object>(event: string, data: T) {
-    const message = this._buildResponseEvent(event, data);
-    this.socketClient.send(message);
-  }
-
-  private _buildResponseEvent<T = object>(event: string, data: T): string {
-    const response: WsResponse = { event, data };
-    return JSON.stringify(response);
+  sendEvent<T = object>(event: string, msg: string, data: T) {
+    this.socketClient.send(JSON.stringify({ event, msg, data }));
   }
 }
