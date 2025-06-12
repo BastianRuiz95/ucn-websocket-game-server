@@ -37,8 +37,8 @@ export class MatchmakingService {
     );
 
     return {
-      msg: `Match request sent to player "${playerToSend.name}".`,
-      matchId: match.id,
+      msg: `Match request sent to player '${playerToSend.name}'.`,
+      data: { match: match.id },
     };
   }
 
@@ -60,8 +60,8 @@ export class MatchmakingService {
     );
 
     return {
-      msg: `The match request to player "${destPlayer.name}" has been cancelled.`,
-      playerId: destPlayer.id,
+      msg: `The match request to player '${destPlayer.name}' has been cancelled.`,
+      data: { playerId: destPlayer.id },
     };
   }
 
@@ -85,10 +85,12 @@ export class MatchmakingService {
     );
 
     return {
-      msg: `The match request from player "${senderPlayer.name}" has been accepted.`,
-      playerId: senderPlayer.id,
-      matchId: match.id,
-      matchStatus: match.status,
+      msg: `The match request from player '${senderPlayer.name}' has been accepted.`,
+      data: {
+        playerId: senderPlayer.id,
+        matchId: match.id,
+        matchStatus: match.status,
+      },
     };
   }
 
@@ -107,8 +109,8 @@ export class MatchmakingService {
     );
 
     return {
-      msg: `The match request from player "${senderPlayer.name}" has been rejected.`,
-      playerId: senderPlayer.id,
+      msg: `The match request from player '${senderPlayer.name}' has been rejected.`,
+      data: { playerId: senderPlayer.id },
     };
   }
 
@@ -141,14 +143,14 @@ export class MatchmakingService {
 
     if (playerStatus === EPlayerStatus.Busy) {
       GameException.throwException(
-        `Player "${dest.name}" is busy. Try again later.`,
+        `Player '${dest.name}' is busy. Try again later.`,
         result,
       );
     }
 
     if (playerStatus === EPlayerStatus.InMatch) {
       GameException.throwException(
-        `Player "${dest.name}" is in another match. Wait until this match ends.`,
+        `Player '${dest.name}' is in another match. Wait until this match ends.`,
         result,
       );
     }
@@ -187,7 +189,7 @@ export class MatchmakingService {
   private _checkCancelMatchRequestOwner(match: Match, senderPlayer: Player) {
     if (match.senderPlayer.id !== senderPlayer.id) {
       GameException.throwException(
-        `You cannot cancel an incoming match request. You need to reject it with the event "${EMatchmakingEvent.RejectMatch}".`,
+        `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingEvent.RejectMatch}'.`,
         { matchStatus: match.status },
       );
     }
@@ -196,7 +198,7 @@ export class MatchmakingService {
   private _checkRejectMatchRequestDestinator(match: Match, destPlayer: Player) {
     if (match.destPlayer.id !== destPlayer.id) {
       GameException.throwException(
-        `You cannot reject a match request you have sent. You need to cancel it with the event "${EMatchmakingEvent.CancelMatchRequest}".`,
+        `You cannot reject a match request you have sent. You need to cancel it with the event '${EMatchmakingEvent.CancelMatchRequest}'.`,
         { matchStatus: match.status },
       );
     }
