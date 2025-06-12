@@ -1,37 +1,33 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WsResponse,
-} from '@nestjs/websockets';
+import { MessageBody, WebSocketGateway } from '@nestjs/websockets';
+
+import { GameResponse } from '../config/game-response.type';
 
 import { Player } from '../common/entities';
-import { ConnectedPlayer } from '../common/decorators';
+import { ConnectedPlayer, WsEventListener } from '../common/decorators';
 
 import { EPlayerEvent } from './player-event.enum';
 import { ChangeUserNameDto } from './dtos';
 
 @WebSocketGateway()
 export class PlayerGateway {
-  @SubscribeMessage(EPlayerEvent.ChangeName)
+  @WsEventListener(EPlayerEvent.ChangeName)
   changeUserName(
     @ConnectedPlayer() player: Player,
     @MessageBody() data: ChangeUserNameDto,
-  ): WsResponse {
+  ): GameResponse {
     player.name = data.name;
     return {
-      event: EPlayerEvent.ChangeName,
+      msg: 'Name changed',
       data: {
-        msg: 'Name changed',
         name: player.name,
       },
     };
   }
 
-  @SubscribeMessage(EPlayerEvent.PlayerData)
-  getPlayerData(@ConnectedPlayer() player: Player): WsResponse {
+  @WsEventListener(EPlayerEvent.PlayerData)
+  getPlayerData(@ConnectedPlayer() player: Player): GameResponse {
     return {
-      event: EPlayerEvent.PlayerData,
+      msg: 'Player list obtained',
       data: player.getPlayerData(),
     };
   }
