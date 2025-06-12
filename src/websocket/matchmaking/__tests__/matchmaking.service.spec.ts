@@ -59,7 +59,8 @@ describe('#MatchmakingService', () => {
       expect(playerSender.match.getPlayers()).toContainEqual(
         playerAvailable.getPlayerData(),
       );
-      expect(playerSender.match).toHaveProperty('id', result.matchId);
+
+      expect(result.data).toHaveProperty('matchId', playerAvailable.match.id);
     });
 
     it('should not send an invitation if destination player is busy', () => {
@@ -107,10 +108,12 @@ describe('#MatchmakingService', () => {
         new Player({ ...PLAYER_AVAILABLE_MOCK_DATA, id: 'new-player-two' }),
       );
 
-      const { matchId } = service.sendMatchRequest(
+      const result = service.sendMatchRequest(
         playerAvailable,
         playerMatchReceived.id,
       );
+
+      const { matchId } = result.data;
 
       expect(() =>
         service.sendMatchRequest(playerAvailable, 'new-player-two'),
@@ -133,7 +136,9 @@ describe('#MatchmakingService', () => {
       playerListService.addPlayer(playerMatchReceived);
 
       service.sendMatchRequest(playerSender, playerMatchReceived.id);
-      const { matchId } = service.acceptMatchRequest(playerMatchReceived);
+      const result = service.acceptMatchRequest(playerMatchReceived);
+
+      const { matchId } = result.data;
 
       expect(() =>
         service.sendMatchRequest(playerSender, playerAvailable.id),
