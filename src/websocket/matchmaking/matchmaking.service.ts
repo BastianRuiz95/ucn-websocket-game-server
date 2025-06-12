@@ -27,10 +27,14 @@ export class MatchmakingService {
     this._checkDestintatorStatus(playerToSend);
 
     const match = this._createMatch(senderPlayer, playerToSend);
-    playerToSend.sendEvent(EMatchmakingEvent.MatchRequestReceived, {
-      msg: `Match request received from player "${senderPlayer.name}"`,
-      playerId: senderPlayer.id,
-    });
+    playerToSend.sendEvent(
+      EMatchmakingEvent.MatchRequestReceived,
+      `Match request received from player '${senderPlayer.name}'`,
+      {
+        playerId: senderPlayer.id,
+        matchId: match.id,
+      },
+    );
 
     return {
       msg: `Match request sent to player "${playerToSend.name}".`,
@@ -46,11 +50,14 @@ export class MatchmakingService {
     const { destPlayer } = match;
     this._deleteMatchRequest(match);
 
-    destPlayer.sendEvent(EMatchmakingEvent.MatchRequestCancelled, {
-      msg: `Player "${senderPlayer.name}" has cancelled the match request.`,
-      playerId: senderPlayer.id,
-      playerName: senderPlayer.name,
-    });
+    destPlayer.sendEvent(
+      EMatchmakingEvent.MatchRequestCancelled,
+      `Player '${senderPlayer.name}' has cancelled the match request.`,
+      {
+        playerId: senderPlayer.id,
+        playerName: senderPlayer.name,
+      },
+    );
 
     return {
       msg: `The match request to player "${destPlayer.name}" has been cancelled.`,
@@ -66,13 +73,16 @@ export class MatchmakingService {
     this._acceptMatch(match);
 
     const { senderPlayer } = match;
-    senderPlayer.sendEvent(EMatchmakingEvent.MatchRequestAccepted, {
-      msg: `Player "${destPlayer.name}" has rejected your match request.`,
-      playerId: destPlayer.id,
-      playerName: destPlayer.name,
-      matchId: match.id,
-      matchStatus: match.status,
-    });
+    senderPlayer.sendEvent(
+      EMatchmakingEvent.MatchRequestAccepted,
+      `Player '${destPlayer.name}' has rejected your match request.`,
+      {
+        playerId: destPlayer.id,
+        playerName: destPlayer.name,
+        matchId: match.id,
+        matchStatus: match.status,
+      },
+    );
 
     return {
       msg: `The match request from player "${senderPlayer.name}" has been accepted.`,
@@ -90,11 +100,11 @@ export class MatchmakingService {
     const { senderPlayer } = match;
     this._deleteMatchRequest(match);
 
-    senderPlayer.sendEvent(EMatchmakingEvent.MatchRequestRejected, {
-      msg: `Player "${destPlayer.name}" has rejected your match request.`,
-      playerId: destPlayer.id,
-      playerName: destPlayer.name,
-    });
+    senderPlayer.sendEvent(
+      EMatchmakingEvent.MatchRequestRejected,
+      `Player '${destPlayer.name}' has rejected your match request.`,
+      { playerId: destPlayer.id, playerName: destPlayer.name },
+    );
 
     return {
       msg: `The match request from player "${senderPlayer.name}" has been rejected.`,

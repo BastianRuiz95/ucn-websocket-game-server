@@ -28,12 +28,15 @@ export class LobbyService {
 
     this._checkMessage(playerMsg);
 
-    playerToSendMsg.sendEvent(ELobbyEvent.PrivateMessageReceived, {
-      msg: `Player '${senderPlayer.name}' have sent you a private message`,
-      playerId: senderPlayer.id,
-      playerName: senderPlayer.name,
-      playerMsg: playerMsg.trim(),
-    });
+    playerToSendMsg.sendEvent(
+      ELobbyEvent.PrivateMessageReceived,
+      `Player '${senderPlayer.name}' have sent you a private message.`,
+      {
+        playerId: senderPlayer.id,
+        playerName: senderPlayer.name,
+        playerMsg: playerMsg.trim(),
+      },
+    );
 
     return {
       msg: `Message sent to ${playerToSendMsg.name}`,
@@ -45,8 +48,8 @@ export class LobbyService {
 
     this.playerListService.broadcast(
       ELobbyEvent.PublicMessageReceived,
+      `Player '${senderPlayer.name}' have sent a message.`,
       {
-        msg: `Player '${senderPlayer.name}' have sent a message`,
         playerId: senderPlayer.id,
         playerName: senderPlayer.name,
         playerMsg: playerMsg.trim(),
