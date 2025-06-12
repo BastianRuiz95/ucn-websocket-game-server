@@ -76,7 +76,7 @@ servidor reconoce el token como válido, se ejecutará la acción solicitada. En
 el servidor respondera con un error de tipo 401, que es un codigo de estado HTTP que indica que 
 el cliente no está autorizado para realizar la acción por la invalidez del token.
 
-```json
+```jsonc
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -162,7 +162,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Score List Received",
   "data": [
@@ -261,7 +261,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Score Submitted",
   "data": {
@@ -304,7 +304,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Deleted All Scores Successfully",
 }
