@@ -30,8 +30,7 @@ de partida (abordados en el documento [Eventos de emparejamiento y creación de 
 | __Evento__      | `public-message`                                                                    |
 | __Tipo__        | Evento entrante (_Listen_).                                                         |
 | __Descripción__ | Evento que indica que se ha recibido un mensaje de un jugador desde el chat grupal. |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                                   |
-|                 | `playerId` (_string_): ID de jugador que ha enviado el mensaje.                     |
+| __Respuesta__   | `playerId` (_string_): ID de jugador que ha enviado el mensaje.                     |
 |                 | `playerName` (_string_): Nombre de jugador que ha enviado el mensaje.               |
 |                 | `playerMsg` (_string_): Mensaje enviado por el jugador.                             |
 
@@ -43,8 +42,8 @@ Ejemplo de respusta:
 ```jsonc
 {
   "event": "public-message",
+  "msg": "Player 'Player_Two' have sent a message.",
   "data": {
-    "msg": "Player 'Player_Two' have sent a message",
     "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
     "playerName": "Player_Two",
     "playerMsg": "Hola! Cómo estan todos?"
@@ -59,8 +58,7 @@ Ejemplo de respusta:
 | __Evento__      | `private-message`                                                               |
 | __Tipo__        | Evento entrante (_Listen_).                                                     |
 | __Descripción__ | Evento que indica que se ha recibido un mensaje de un jugador de forma privada. |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                               |
-|                 | `playerId` (_string_): ID de jugador que ha enviado el mensaje.                 |
+| __Respuesta__   | `playerId` (_string_): ID de jugador que ha enviado el mensaje.                 |
 |                 | `playerName` (_string_): Nombre de jugador que ha enviado el mensaje.           |
 |                 | `playerMsg` (_string_): Mensaje enviado por el jugador.                         |
 
@@ -72,8 +70,8 @@ Ejemplo de respusta:
 ```jsonc
 {
   "event": "private-message",
+  "msg": "Player 'Player_Two' have sent you a private message.",
   "data": {
-    "msg": "Player 'Player_Two' have sent you a private message",
     "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "playerName": "Player_Two",
     "playerMsg": "Como te encuentras? Quieres jugar una partida?"
@@ -89,8 +87,7 @@ Ejemplo de respusta:
 | __Tipo__        | Evento saliente (_Trigger_).                                                        |
 | __Descripción__ | Evento para solicitar el listado de jugadores conectados al servidor.               |
 | __Parámetros__  | _Ninguno_.                                                                          |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                                   |
-|                 | ___Array___ con la información de los jugadores conectados.                         |
+| __Respuesta__   | ___Array___ con la información de los jugadores conectados.                         |
 |                 | - `id` (_string_): ID de jugador.                                                   |
 |                 | - `name` (_string_): Nombre de jugador.                                             |
 |                 | - `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN_MATCH`). |
@@ -118,6 +115,7 @@ Ejemplo de solicitud:
 {
   "event": "online-players",
   "status": "OK",
+  "msg": "Player list obtained.",
   "data": [
     {
       "id": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
@@ -141,7 +139,7 @@ Ejemplo de solicitud:
 | __Tipo__        | Evento saliente (_Trigger_).                                                        |
 | __Descripción__ | Evento para enviar un mensaje a todos los jugadores conectados en el chat grupal.   |
 | __Parámetros__  | `message` (_string_): Mensaje a enviar a los jugadores.                             |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                                   |
+| __Respuesta__   | `message` (_string_): Mensaje enviado por el jugador.                               |
 
 Esta evento permite enviar un mensaje a la sala publica, con el fin de que el resto de jugadores reciban el
 mensaje y puedan comunicarse con usted. Si el mensaje se envió correctamente, usted recibirá una respuesta de
@@ -162,8 +160,9 @@ Ejemplo de solicitud:
 {
   "event": "send-public-message",
   "status": "OK",
+  "msg": "Message sent to all players.",
   "data": {
-    "msg": "Message sent to all players"
+    "message": "Hola! Cómo estan todos?"
   }
 }
 ```
@@ -183,8 +182,8 @@ Ejemplo de solicitud incorrecta:
 {
   "event": "send-public-message",
   "status": "ERROR",
+  "msg": "You cannot send an empty message.",
   "data": {
-    "msg": "You cannot send an empty message",
     "message": "undefined"
   }
 }
@@ -199,7 +198,8 @@ Ejemplo de solicitud incorrecta:
 | __Descripción__ | Evento para enviar un mensaje a un solo jugador conectado en específico. |
 | __Parámetros__  | `playerId` (_string_): Identificador del jugador a enviar el mensaje.    |
 |                 | `message` (_string_): Mensaje que se enviará al jugador.                 |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                        |
+| __Respuesta__   | `playerId` (_string_): ID del jugador que recibió el mensaje.            |
+|                 | `message` (_string_): Mensaje enviado por el jugador.                    |
 
 Este evento sirve para mandar un mensaje a un jugador específico que se encuentre conectado. Si el mensaje
 se envió correctamente, recibirá una respuesta de confirmación. Acto seguido, el jugador destinatario del
@@ -220,8 +220,10 @@ Ejemplo de solicitud:
 {
   "event": "send-private-message",
   "status": "OK",
+  "msg": "Message sent to Player_Two.",
   "data": {
-    "msg": "Message sent to Player_0}.-K"
+    "playerId": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
+    "message": "Como te encuentras? Quieres jugar una partida?"
   }
 }
 ```
@@ -234,15 +236,18 @@ Ejemplo de solicitudes incorrectas:
 // Evento enviado por el jugador
 {
   "event": "send-public-message",
-  "data": { }
+  "data": { 
+    "playerId": ""
+  }
 }
 
 // Respuesta entregada por el servidor
 {
   "event": "send-private-message",
   "status": "ERROR",
+  "msg": "Player with ID undefined not exists.",
   "data": {
-    "msg": "Player with ID undefined not exists."
+    "playerId": ""
   }
 }
 ```
@@ -259,8 +264,8 @@ Ejemplo de solicitudes incorrectas:
 {
   "event": "send-private-message",
   "status": "ERROR",
+  "msg": "You cannot send an empty message.",
   "data": {
-    "msg": "You cannot send an empty message",
     "message": "undefined"
   }
 }

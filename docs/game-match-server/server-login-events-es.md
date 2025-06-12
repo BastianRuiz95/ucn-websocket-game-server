@@ -34,8 +34,7 @@ acciones que sean necesarias para su correcto funcionamiento.
 | __Evento__      | `connected-to-server`                                                                   |
 | __Tipo__        | Evento entrante (_Listen_).                                                             |
 | __Descripción__ | Mensaje recibido para indicar que el cliente se ha conectado al servidor correctamente. |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo indicando la correcta conexión.                   |
-|                 | `id` (_string_): ID de jugador que se te ha asignado al conectarte.                     |
+| __Respuesta__   | `id` (_string_): ID de jugador que se te ha asignado al conectarte.                     |
 |                 | `name` (_string_): Nombre de jugador que se te ha asignado al conectarte.               |
 
 Este es un evento gatillado al momento de conectarse al servidor con el fin de saber que la operación se
@@ -46,8 +45,8 @@ Ejemplo de respusta:
 ```jsonc
 {
   "event": "connected-to-server",
+  "msg": "Welcome! You are connected to the game server",
   "data": {
-    "msg": "Welcome! You are connected to the game server",
     "id": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
     "name": "Player_Name"
   }
@@ -61,8 +60,7 @@ Ejemplo de respusta:
 | __Evento__      | `player-connected`                                                        |
 | __Tipo__        | Evento entrante (_Listen_).                                               |
 | __Descripción__ | Mensaje recibido para indicar que un jugador se ha conectado al servidor. |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                         |
-|                 | `id` (_string_): ID de jugador que se conectó.                            |
+| __Respuesta__   | `id` (_string_): ID de jugador que se conectó.                            |
 |                 | `name` (_string_): Nombre de jugador que se conectó.                      |
 
 Este evento se gatilla cuando otro jugador se ha conectado al servidor. El mensaje recibido contiene tanto
@@ -74,10 +72,10 @@ Ejemplo de respusta:
 ```jsonc
 {
   "event": "player-connected",
+  "msg": "Player 'Player_Two' (5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0) has connected",
   "data": {
-    "msg": "Player 'Player_Two' (5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0) has connected",
     "id": "5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0",
-    "name": "Player_0zjyL"
+    "name": "Player_Two"
   }
 }
 ```
@@ -89,8 +87,7 @@ Ejemplo de respusta:
 | __Evento__      | `player-disconnected`                                                        |
 | __Tipo__        | Evento entrante (_Listen_).                                                  |
 | __Descripción__ | Mensaje recibido para indicar que un jugador se ha desconectado al servidor. |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.                            |
-|                 | `id` (_string_): ID de jugador que se desconectó.                            |
+| __Respuesta__   | `id` (_string_): ID de jugador que se desconectó.                            |
 |                 | `name` (_string_): Nombre de jugador que se desconectó.                      |
 
 De forma contraria al evento anterior, `player-disconnected` es un evento gatillado cuando un jugador se
@@ -101,10 +98,10 @@ Ejemplo de respusta:
 ```jsonc
 {
   "event": "player-disconnected",
+  "msg": "Player 'Player_Two' (5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0) has disconnected",
   "data": {
-    "msg": "Player 'Player_Two' (5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0) has disconnected",
     "id": "5db4f2a5-5982-4f85-a4ea-56f3ad6eafd0",
-    "name": "Player_0zjyL"
+    "name": "Player_Two"
   }
 }
 ```

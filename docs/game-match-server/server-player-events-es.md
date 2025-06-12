@@ -47,6 +47,7 @@ Ejemplo de solicitud:
 {
   "event": "player-data",
   "status": "OK",
+  "msg": "Player data obtained.",
   "data": {
     "id": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "name": "Player_Two",
@@ -63,8 +64,7 @@ Ejemplo de solicitud:
 | __Tipo__        | Evento saliente (_Trigger_).                                 |
 | __Descripción__ | Evento para cambiar el nombre representativo del jugador.    |
 | __Parámetros__  | `name` (_string_): Nombre nuevo del jugador.                 |
-| __Respuesta__   | `msg` (_string_): Mensaje descriptivo del evento.            |
-|                 | `name` (_string_): Nuevo nombre establecido para el jugador. |
+| __Respuesta__   | `name` (_string_): Nuevo nombre establecido para el jugador. |
 
 Al conectarse, el servidor establece un nombre por defecto. Con este evento, es posible cambiar el nombre del
 jugador por el que estime conveniente, el cual se envía por parámetro a la solicitud. Si la solicitud esta
@@ -84,8 +84,8 @@ Ejemplo de solicitud:
 {
   "event": "change-name",
   "status": "OK",
+  "msg": "Name changed.",
   "data": {
-    "msg": "Name changed",
     "name": "Player_Two"
   }
 }

@@ -39,25 +39,27 @@ siguiente:
 ```jsonc
 {
   "event": "connected-to-server",
+  "msg": "Welcome! You are connected to the game server",
   "data": {
-    "msg": "Welcome! You are connected to the game server",
     "id": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
     "name": "Player_Name"
   }
 }
 ```
 - `event` (_string_): Nombre del evento que se enviará o recibira del servidor.
+- `msg` (_string_): Mensaje notificatorio respecto a lo que realizó el evento.
 - `data` (_object_): Conjunto de datos a enviar o recibir con el evento. Variará según el evento solicitado.
 
-En el caso de los eventos enviados, el servidor responderá con un mensaje en formato JSON con la misma estructura
+En el caso de los eventos salientes (_Triggers_), el servidor responderá con un mensaje en formato JSON con la misma estructura
 anterior, pero agregando un parámetro de validación:
 
 ```jsonc
 {
   "event": "send-public-message",
   "status": "OK",
+  "msg": "Message sent to all players",
   "data": {
-    "msg": "Message sent to all players"
+    "message": "Hola! Como estan todos"
   }
 }
 ```
@@ -72,11 +74,11 @@ En primer lugar, debemos definir dos tipos de eventos:
 
 - __Evento Entrante__: Mensajes que son enviados por el servidor y recibidos por los jugadores. Estos eventos son
                        de escucha, y según el evento recibido en el parámetro `event` se deben ejecutar ciertas
-                       acciones en los clientes.
+                       acciones en los clientes. También son llamados como _Listener_.
 - __Evento Saliente__: Mensajes que son enviados por los jugadores hacia el servidor para ejecutar una acción. Estos
                        eventos se deben construir en los clientes y enviarse al servidor. El servidor responderá al
                        cliente con un mensaje de satisfacción o error, y ejecutará las acciones pertinentes al
-                       evento en sí.
+                       evento en sí. También son llamados como _Trigger_.
 
 El servidor tiene (de momento) 5 tipos de eventos, los cuales se encuentran descritos en documentos separados por
 legibilidad. El resumen de los eventos procesados por el servidor  se puede revisar en
