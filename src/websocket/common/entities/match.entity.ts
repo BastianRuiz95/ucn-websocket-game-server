@@ -1,10 +1,15 @@
 import { Player } from './player.entity';
-import { EMatchStatus } from '../enums';
+import { EMatchPlayerStatus, EMatchStatus } from '../enums';
+
+interface MatchPlayer {
+  player: Player;
+  status: EMatchPlayerStatus;
+}
 
 export class Match {
   readonly id: string;
-  readonly senderPlayer: Player;
-  readonly destPlayer: Player;
+  readonly senderPlayer: MatchPlayer;
+  readonly destPlayer: MatchPlayer;
   status: EMatchStatus;
 
   constructor(partial: Partial<Match>) {
@@ -12,6 +17,9 @@ export class Match {
   }
 
   getPlayers() {
-    return [this.senderPlayer.getPlayerData(), this.destPlayer.getPlayerData()];
+    return [
+      this.senderPlayer.player.getPlayerData(),
+      this.destPlayer.player.getPlayerData(),
+    ];
   }
 }

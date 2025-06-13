@@ -7,6 +7,7 @@ import { PlayerListService } from '../player-list/player-list.service';
 import { Match, Player } from '../common/entities';
 import {
   EMatchmakingTriggerEvent,
+  EMatchPlayerStatus,
   EMatchStatus,
   EPlayerStatus,
 } from '../common/enums';
@@ -51,7 +52,7 @@ export class MatchmakingService {
     this._checkMatchStatus(senderPlayer);
     this._checkCancelMatchRequestOwner(match, senderPlayer);
 
-    const { destPlayer } = match;
+    const { player: destPlayer } = match.destPlayer;
     this._deleteMatchRequest(match);
 
     destPlayer.sendEvent(
@@ -76,7 +77,7 @@ export class MatchmakingService {
 
     this._acceptMatch(match);
 
-    const { senderPlayer } = match;
+    const { player: senderPlayer } = match.senderPlayer;
     senderPlayer.sendEvent(
       EMatchmakingEvent.MatchRequestAccepted,
       `Player '${destPlayer.name}' has rejected your match request.`,
@@ -103,7 +104,7 @@ export class MatchmakingService {
     this._checkMatchStatus(destPlayer);
     this._checkRejectMatchRequestDestinator(match, destPlayer);
 
-    const { senderPlayer } = match;
+    const { player: senderPlayer } = match.senderPlayer;
     this._deleteMatchRequest(match);
 
     senderPlayer.sendEvent(
@@ -134,7 +135,7 @@ export class MatchmakingService {
     }
 
     GameException.throwException(
-      sender.id === match.senderPlayer.id
+      sender.id === match.senderPlayer.player.id
         ? `You have already submitted a match request. Wait for it to be approved or rejected, or wait a few seconds.`
         : `You have a pending match request. Approve or reject it before submitting a new one.`,
       result,
@@ -163,8 +164,14 @@ export class MatchmakingService {
   private _createMatch(senderPlayer: Player, destPlayer: Player): Match {
     const match = new Match({
       id: uuidv4(),
-      senderPlayer,
-      destPlayer,
+      senderPlayer: {
+        player: senderPlayer,
+        status: EMatchPlayerStatus.WaitingApprove,
+      },
+      destPlayer: {
+        player: destPlayer,
+        status: EMatchPlayerStatus.WaitingApprove,
+      },
       status: EMatchStatus.Requested,
     });
 
@@ -191,7 +198,7 @@ export class MatchmakingService {
   }
 
   private _checkCancelMatchRequestOwner(match: Match, senderPlayer: Player) {
-    if (match.senderPlayer.id !== senderPlayer.id) {
+    if (match.senderPlayer.player.id !== senderPlayer.id) {
       GameException.throwException(
         `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingTriggerEvent.RejectMatch}'.`,
         { matchStatus: match.status },
@@ -200,7 +207,7 @@ export class MatchmakingService {
   }
 
   private _checkRejectMatchRequestDestinator(match: Match, destPlayer: Player) {
-    if (match.destPlayer.id !== destPlayer.id) {
+    if (match.destPlayer.player.id !== destPlayer.id) {
       GameException.throwException(
         `You cannot reject a match request you have sent. You need to cancel it with the event '${EMatchmakingTriggerEvent.CancelMatchRequest}'.`,
         { matchStatus: match.status },
@@ -209,7 +216,7 @@ export class MatchmakingService {
   }
 
   private _checkAcceptMatchRequestDestinator(match: Match, destPlayer: Player) {
-    if (match.destPlayer.id !== destPlayer.id) {
+    if (match.destPlayer.player.id !== destPlayer.id) {
       GameException.throwException(
         `You cannot accept a match request you have sent.`,
         { matchStatus: match.status },
@@ -218,14 +225,18 @@ export class MatchmakingService {
   }
 
   private _acceptMatch(match: Match) {
-    const { senderPlayer, destPlayer } = match;
+    const { player: senderPlayer } = match.senderPlayer;
+    const { player: destPlayer } = match.destPlayer;
 
     match.status = EMatchStatus.WaitingPlayers;
     senderPlayer.status = destPlayer.status = EPlayerStatus.InMatch;
+    match.senderPlayer.status = match.destPlayer.status =
+      EMatchPlayerStatus.WaitingConnection;
   }
 
   private _deleteMatchRequest(match: Match) {
-    const { senderPlayer, destPlayer } = match;
+    const { player: senderPlayer } = match.senderPlayer;
+    const { player: destPlayer } = match.destPlayer;
 
     senderPlayer.match = destPlayer.match = null;
     senderPlayer.status = destPlayer.status = EPlayerStatus.Available;
