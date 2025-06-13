@@ -26,10 +26,8 @@ export class MatchmakingService {
       );
     }
 
-    const playerToSend = this.playerListService.getPlayerById(playerId);
-
     this._checkSenderStatus(senderPlayer);
-    this._checkDestintatorStatus(playerToSend);
+    const playerToSend = this._checkDestintatorStatus(playerId);
 
     const match = this._createMatch(senderPlayer, playerToSend);
     playerToSend.sendEvent(
@@ -142,7 +140,15 @@ export class MatchmakingService {
     );
   }
 
-  private _checkDestintatorStatus(dest: Player) {
+  private _checkDestintatorStatus(destPlayerId: string) {
+    const dest = this.playerListService.getPlayerById(destPlayerId);
+    if (!dest) {
+      GameException.throwException(
+        `Player with id '${destPlayerId}' not exists.`,
+        { playerId: destPlayerId },
+      );
+    }
+
     const playerStatus = dest.status;
     const result = { playerId: dest.id, playerName: dest.name };
 
@@ -159,6 +165,8 @@ export class MatchmakingService {
         result,
       );
     }
+
+    return dest;
   }
 
   private _createMatch(senderPlayer: Player, destPlayer: Player): Match {
