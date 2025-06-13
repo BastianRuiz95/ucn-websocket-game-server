@@ -5,7 +5,11 @@ import { GameException } from '../config/game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
 
 import { Match, Player } from '../common/entities';
-import { EMatchStatus, EPlayerStatus } from '../common/enums';
+import {
+  EMatchmakingTriggerEvent,
+  EMatchStatus,
+  EPlayerStatus,
+} from '../common/enums';
 
 import { EMatchmakingEvent } from './matchmaking-event.enum';
 
@@ -189,7 +193,7 @@ export class MatchmakingService {
   private _checkCancelMatchRequestOwner(match: Match, senderPlayer: Player) {
     if (match.senderPlayer.id !== senderPlayer.id) {
       GameException.throwException(
-        `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingEvent.RejectMatch}'.`,
+        `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingTriggerEvent.RejectMatch}'.`,
         { matchStatus: match.status },
       );
     }
@@ -198,7 +202,7 @@ export class MatchmakingService {
   private _checkRejectMatchRequestDestinator(match: Match, destPlayer: Player) {
     if (match.destPlayer.id !== destPlayer.id) {
       GameException.throwException(
-        `You cannot reject a match request you have sent. You need to cancel it with the event '${EMatchmakingEvent.CancelMatchRequest}'.`,
+        `You cannot reject a match request you have sent. You need to cancel it with the event '${EMatchmakingTriggerEvent.CancelMatchRequest}'.`,
         { matchStatus: match.status },
       );
     }

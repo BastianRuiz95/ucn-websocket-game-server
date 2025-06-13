@@ -1,5 +1,4 @@
-export enum EPlayerEvent {
-  // Event Trigger
+export enum EPlayerTriggerEvent {
   PlayerData = 'player-data',
   ChangeName = 'change-name',
 }
