@@ -17,6 +17,7 @@ import { PlayerListService } from './player-list/player-list.service';
 import { PlayerListServiceProvider } from './player-list/player-service.provider';
 
 import {
+  EGameMatchTriggerEvent,
   ELobbyTriggerEvent,
   EMatchmakingTriggerEvent,
   EPlayerTriggerEvent,
@@ -24,6 +25,7 @@ import {
 
 import { LobbyEvents } from './lobby/lobby.events';
 import { PlayerEvents } from './player/player.events';
+import { GameMatchEvents } from './game-match/game-match.events';
 import { MatchmakingEvents } from './matchmaking/matchmaking.events';
 import { EConnectionEvent } from './config/connection-event.enum';
 
@@ -38,6 +40,7 @@ export class MainLobbyGateway
     private readonly playerEvents: PlayerEvents,
     private readonly lobbyEvents: LobbyEvents,
     private readonly matchmakingEvents: MatchmakingEvents,
+    private readonly gameMatchEvents: GameMatchEvents,
   ) {}
 
   afterInit() {
@@ -130,5 +133,39 @@ export class MainLobbyGateway
   @WsEventListener(EMatchmakingTriggerEvent.RejectMatch)
   rejectMatchRequest(@ConnectedPlayer() player: Player) {
     return this.matchmakingEvents.rejectMatchRequest(player);
+  }
+
+  // ------------------------------------
+  //         Game Match Events
+  // ------------------------------------
+
+  @WsEventListener(EGameMatchTriggerEvent.ConnectMatch)
+  connectMatch(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.connectMatch(player);
+  }
+
+  @WsEventListener(EGameMatchTriggerEvent.PingMatch)
+  pingMatch(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.pingMatch(player);
+  }
+
+  @WsEventListener(EGameMatchTriggerEvent.SendData)
+  sendData(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.sendData(player);
+  }
+
+  @WsEventListener(EGameMatchTriggerEvent.FinishGame)
+  finishGame(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.finishGame(player);
+  }
+
+  @WsEventListener(EGameMatchTriggerEvent.SendRematchRequest)
+  sendRematchRequest(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.sendRematchRequest(player);
+  }
+
+  @WsEventListener(EGameMatchTriggerEvent.QuitMatch)
+  quitMatch(@ConnectedPlayer() player: Player) {
+    return this.gameMatchEvents.quitMatch(player);
   }
 }
