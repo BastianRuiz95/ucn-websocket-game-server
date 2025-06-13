@@ -2,11 +2,15 @@ import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
 
+import { ConnectMatchUseCase } from './usecases';
+
 @Injectable()
 export class GameMatchService {
-  constructor() {}
+  constructor(private readonly connectMatchUseCase: ConnectMatchUseCase) {}
 
-  connectMatch(player: Player) {}
+  connectMatch(player: Player) {
+    return this.connectMatchUseCase.exec(player);
+  }
 
   pingMatch(player: Player) {}
 
