@@ -5,10 +5,10 @@ import { PlayerModule } from './player/player.module';
 import { PlayerListModule } from './player-list/player-list.module';
 import { MatchmakingModule } from './matchmaking/matchmaking.module';
 
-import { ConnectionHandlerGateway } from './config/connection-handler.gateway';
+import { MainLobbyGateway } from './main-lobby.gateway';
 
 @Module({
   imports: [PlayerModule, PlayerListModule, LobbyModule, MatchmakingModule],
-  providers: [ConnectionHandlerGateway],
+  providers: [MainLobbyGateway],
 })
 export class WebsocketModule {}
