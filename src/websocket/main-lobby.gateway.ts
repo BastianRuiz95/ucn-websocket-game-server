@@ -116,8 +116,8 @@ export class MainLobbyGateway
   // ------------------------------------
 
   @WsEventListener(EMatchmakingTriggerEvent.SendMatchRequest)
-  sendMatchRequest(@ConnectedPlayer() player: Player, @MessageBody() body) {
-    return this.matchmakingEvents.sendMatchRequest(player, body);
+  sendMatchRequest(@ConnectedPlayer() player: Player, @MessageBody() data) {
+    return this.matchmakingEvents.sendMatchRequest(player, data);
   }
 
   @WsEventListener(EMatchmakingTriggerEvent.CancelMatchRequest)
