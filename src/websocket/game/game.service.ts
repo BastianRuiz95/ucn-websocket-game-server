@@ -43,6 +43,7 @@ export class GameService {
   }
 
   checkGameKey(gameId: string, key: string) {
-    return this.getGame(gameId)?.key === key;
+    const game = this.getGame(gameId);
+    return game && game.key === key;
   }
 }
