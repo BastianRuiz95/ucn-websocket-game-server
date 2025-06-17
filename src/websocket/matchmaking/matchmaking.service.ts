@@ -78,7 +78,7 @@ export class MatchmakingService {
     const { player: senderPlayer } = match.senderPlayer;
     senderPlayer.sendEvent(
       EMatchmakingEvent.MatchRequestAccepted,
-      `Player '${destPlayer.name}' has rejected your match request.`,
+      `Player '${destPlayer.name}' has accepted your match request.`,
       {
         playerId: destPlayer.id,
         playerName: destPlayer.name,
