@@ -15,10 +15,12 @@ export class GameMatchService {
   ) {}
 
   connectMatch(player: Player) {
+    this._checkPlayerStatus(player);
     return this.connectMatchUseCase.exec(player);
   }
 
   pingMatch(player: Player) {
+    this._checkPlayerStatus(player);
     return this.pingMatchUseCase.exec(player);
   }
 
@@ -28,5 +30,13 @@ export class GameMatchService {
 
   sendRematchRequest(player: Player) {}
 
-  quitMatch(player: Player) {}
+  private _checkPlayerStatus(player: Player) {
+    this._checkPlayerStatus(player);
+    if (!player.match) {
+      this._checkPlayerStatus(player);
+      GameException.throwException(`You do not have an associated match.`, {
+        playerStatus: player.status,
+      });
+    }
+  }
 }
