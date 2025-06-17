@@ -36,7 +36,6 @@ export class GameService {
 
       this.getGame(data[0]).key = data[1];
     });
-    console.log(this.gameList);
   }
 
   getGame(gameId: string) {
