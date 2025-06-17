@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Match, Player } from 'src/websocket/common/entities';
-import { EMatchPlayerStatus } from 'src/websocket/common/enums';
+import {
+  EGameMatchTriggerEvent,
+  EMatchPlayerStatus,
+} from 'src/websocket/common/enums';
 import { GameException } from 'src/websocket/config/game.exception';
 import { EGameMatchListenerEvent } from '../game-match-events.enum';
 import { GameResponse } from 'src/websocket/config/game-response.type';
@@ -12,12 +15,12 @@ export class ConnectMatchUseCase {
 
     const matchPlayer = this._checkMatchPlayerStatus(match, player);
 
-    matchPlayer.status = EMatchPlayerStatus.Connected;
+    matchPlayer.status = EMatchPlayerStatus.WaitingSync;
 
     this._checkBothPlayers(match);
 
     return {
-      msg: 'You are ready to play.',
+      msg: `You are in the match room. Wait until the '${EGameMatchListenerEvent.PlayersReady}' event triggered.`,
       data: { matchId: match.id },
     };
   }
@@ -28,14 +31,19 @@ export class ConnectMatchUseCase {
     const playerToCheck =
       player === destPlayer.player ? destPlayer : senderPlayer;
 
-    if (playerToCheck.status === EMatchPlayerStatus.Connected) {
-      GameException.throwException(`You are already connected to this match`, {
-        matchId: match.id,
-        matchPlayerStatus: playerToCheck.status,
-      });
+    const { status } = playerToCheck;
+
+    if (status === EMatchPlayerStatus.WaitingSync) {
+      GameException.throwException(
+        `You are already connected to this match. Wait '${EGameMatchListenerEvent.PlayersReady}' event to sync.`,
+        {
+          matchId: match.id,
+          matchPlayerStatus: playerToCheck.status,
+        },
+      );
     }
 
-    if (playerToCheck.status === EMatchPlayerStatus.WaitingApprove) {
+    if (status === EMatchPlayerStatus.WaitingApprove) {
       GameException.throwException(
         `You need to approve this match request first.`,
         { matchId: match.id, matchStatus: match.status },
@@ -51,12 +59,12 @@ export class ConnectMatchUseCase {
 
     if (
       senderStatus === destStatus &&
-      senderStatus === EMatchPlayerStatus.Connected
+      senderStatus === EMatchPlayerStatus.WaitingSync
     ) {
       [senderPlayer, destPlayer].forEach((p) =>
         p.sendEvent(
           EGameMatchListenerEvent.PlayersReady,
-          `Both players are ready to start. GLHF`,
+          `Both players are ready to start. Send ${EGameMatchTriggerEvent.PingMatch} to sync times.`,
           { matchId: match.id },
         ),
       );
