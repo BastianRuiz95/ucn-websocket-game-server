@@ -6,6 +6,7 @@ import {
   ConnectMatchUseCase,
   PingMatchUseCase,
 } from './usecases';
+import { GameException } from '../config/game.exception';
 
 @Injectable()
 export class GameMatchService {
