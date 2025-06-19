@@ -26,7 +26,7 @@ export class GameMatchService {
 
   sendData(player: Player) {}
 
-  finishGame(player: Player) {}
+  sendRematchRequest(player: Player) {}
 
   quitMatch(player: Player) {}
 
