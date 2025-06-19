@@ -28,7 +28,7 @@ export class GameMatchService {
 
   finishGame(player: Player) {}
 
-  sendRematchRequest(player: Player) {}
+  quitMatch(player: Player) {}
 
   private _checkPlayerStatus(player: Player) {
     this._checkPlayerStatus(player);
