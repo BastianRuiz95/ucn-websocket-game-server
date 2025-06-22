@@ -34,9 +34,7 @@ export class GameMatchService {
   quitMatch(player: Player) {}
 
   private _checkPlayerStatus(player: Player) {
-    this._checkPlayerStatus(player);
     if (!player.match) {
-      this._checkPlayerStatus(player);
       GameException.throwException(`You do not have an associated match.`, {
         playerStatus: player.status,
       });
