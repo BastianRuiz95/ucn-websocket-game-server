@@ -7,9 +7,11 @@ import { MatchmakingModule } from './matchmaking/matchmaking.module';
 
 import { MainLobbyGateway } from './main-lobby.gateway';
 import { GameMatchModule } from './game-match/game-match.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
+    GameModule,
     PlayerModule,
     PlayerListModule,
     LobbyModule,

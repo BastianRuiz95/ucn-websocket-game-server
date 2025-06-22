@@ -2,6 +2,7 @@ import { WebSocket } from 'ws';
 import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
+import { EPlayerStatus } from '../common/enums';
 
 @Injectable()
 export class PlayerListService {
@@ -16,7 +17,7 @@ export class PlayerListService {
   }
 
   getPlayers(): Player[] {
-    return this._playerList;
+    return this._playerList.filter((p) => p.status !== EPlayerStatus.NoLogin);
   }
 
   getPlayerBySocket(socketClient: WebSocket): Player {
@@ -26,7 +27,7 @@ export class PlayerListService {
   }
 
   getPlayerById(playerId: string): Player {
-    return this._playerList.find((p) => p.id === playerId) || null;
+    return this.getPlayers().find((p) => p.id === playerId) || null;
   }
 
   broadcast<T = object>(
@@ -35,7 +36,7 @@ export class PlayerListService {
     data: T,
     omitPlayerId: string = null,
   ) {
-    this._playerList.forEach((p) => {
+    this.getPlayers().forEach((p) => {
       if (!omitPlayerId || omitPlayerId != p.id) p.sendEvent(event, msg, data);
     });
   }

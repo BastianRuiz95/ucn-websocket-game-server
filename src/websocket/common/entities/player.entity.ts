@@ -3,15 +3,17 @@ import { Exclude } from 'class-transformer';
 
 import { Match } from './match.entity';
 import { EPlayerStatus } from '../enums';
+import { Game } from './game.entity';
 
 type PlayerPresenter = Omit<
   Player,
-  'socketClient' | 'getPlayerData' | 'sendEvent' | 'match'
->;
+  'socketClient' | 'getPlayerData' | 'sendEvent' | 'match' | 'game'
+> & { game: Omit<Game, 'key'> };
 
 export class Player {
   readonly id: string;
   name: string;
+  game: Game;
   status: EPlayerStatus;
   match: Match;
 
@@ -23,7 +25,13 @@ export class Player {
   }
 
   getPlayerData(): PlayerPresenter {
-    return { id: this.id, name: this.name, status: this.status };
+    const { key, ...gameData } = this.game;
+    return {
+      id: this.id,
+      name: this.name,
+      game: gameData,
+      status: this.status,
+    };
   }
 
   sendEvent<T = object>(event: string, msg: string, data: T) {
