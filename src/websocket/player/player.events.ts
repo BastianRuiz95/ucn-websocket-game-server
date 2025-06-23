@@ -23,8 +23,9 @@ export class PlayerEvents {
     if (!player.game) {
       player.sendEvent(
         EConnectionEvent.ConnectedToServer,
-        'ERROR: GameId do not exists or is invalid.',
+        'GameId do not exists or is invalid.',
         { gameId: gameId ?? null },
+        'ERROR',
       );
       player.socketClient.close(4000);
       return;
@@ -36,6 +37,7 @@ export class PlayerEvents {
       EConnectionEvent.ConnectedToServer,
       `Welcome! You are connected to the game server. Login first with '${EPlayerTriggerEvent.Login}' event`,
       player.getPlayerData(),
+      'OK',
     );
   }
 

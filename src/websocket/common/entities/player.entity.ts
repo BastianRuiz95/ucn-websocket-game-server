@@ -34,7 +34,7 @@ export class Player {
     };
   }
 
-  sendEvent<T = object>(event: string, msg: string, data: T) {
-    this.socketClient.send(JSON.stringify({ event, msg, data }));
+  sendEvent<T = object>(event: string, msg: string, data: T, status?: string) {
+    this.socketClient.send(JSON.stringify({ event, status, msg, data }));
   }
 }
