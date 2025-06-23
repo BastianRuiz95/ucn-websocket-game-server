@@ -16,8 +16,8 @@ export class GameMatchEvents {
     return this.gameMatchService.pingMatch(player);
   }
 
-  sendData(player: Player) {
-    return this.gameMatchService.sendData(player);
+  sendData(player: Player, data: object) {
+    return this.gameMatchService.sendData(player, data);
   }
 
   finishGame(player: Player) {

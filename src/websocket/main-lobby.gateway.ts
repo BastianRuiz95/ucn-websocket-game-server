@@ -155,8 +155,8 @@ export class MainLobbyGateway
   }
 
   @WsEventListener(EGameMatchTriggerEvent.SendData)
-  sendData(@ConnectedPlayer() player: Player) {
-    return this.gameMatchEvents.sendData(player);
+  sendData(@ConnectedPlayer() player: Player, @MessageBody() data) {
+    return this.gameMatchEvents.sendData(player, data);
   }
 
   @WsEventListener(EGameMatchTriggerEvent.FinishGame)

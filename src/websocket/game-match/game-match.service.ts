@@ -5,12 +5,14 @@ import { Player } from '../common/entities';
 import {
   ConnectMatchUseCase,
   PingMatchUseCase,
+  SendDataUseCase,
 } from './usecases';
 import { GameException } from '../config/game.exception';
 
 @Injectable()
 export class GameMatchService {
   constructor(
+    private readonly sendDataUseCase: SendDataUseCase,
     private readonly pingMatchUseCase: PingMatchUseCase,
     private readonly connectMatchUseCase: ConnectMatchUseCase,
   ) {}
@@ -25,7 +27,10 @@ export class GameMatchService {
     return this.pingMatchUseCase.exec(player);
   }
 
-  sendData(player: Player) {}
+  sendData(player: Player, data: object) {
+    this._checkPlayerStatus(player);
+    return this.sendDataUseCase.exec(player, data);
+  }
 
   finishGame(player: Player) {}
 
