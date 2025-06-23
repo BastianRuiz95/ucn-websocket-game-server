@@ -6,29 +6,42 @@ import { EGameMatchListenerEvent } from '../game-match-events.enum';
 import { GameResponse } from 'src/websocket/config/game-response.type';
 
 @Injectable()
-export class SendDataUseCase {
-  exec(player: Player, data: object, opponent: Player): GameResponse {
+export class FinishGameUseCase {
+  exec(player: Player, opponent: Player): GameResponse {
     const { match } = player;
     this._validateMatch(match);
 
+    this._finishGame(match);
+
     opponent.sendEvent(
-      EGameMatchListenerEvent.ReceiveData,
-      `Event received from match.`,
-      data,
+      EGameMatchListenerEvent.GameEnded,
+      `Game over! ${player.name} wins!`,
+      { matchStatus: match.status },
     );
 
     return {
-      msg: 'Data sended successfully.',
+      msg: `Game over! ${player.name} wins!`,
+      data: { matchStatus: match.status },
     };
   }
 
   private _validateMatch(match: Match) {
     const { status } = match;
 
-    if (status !== EMatchStatus.Playing) {
-      GameException.throwException(`The match is not started or is finished.`, {
+    if (status === EMatchStatus.Finished) {
+      GameException.throwException(`The match has already finished.`, {
         matchStatus: status,
       });
     }
+
+    if (status !== EMatchStatus.Playing) {
+      GameException.throwException(`The match has not been started yet.`, {
+        matchStatus: status,
+      });
+    }
+  }
+
+  private _finishGame(match: Match) {
+    match.status = EMatchStatus.Finished;
   }
 }

@@ -4,6 +4,7 @@ import { Player } from '../common/entities';
 
 import {
   ConnectMatchUseCase,
+  FinishGameUseCase,
   PingMatchUseCase,
   SendDataUseCase,
 } from './usecases';
@@ -12,6 +13,7 @@ import { GameException } from '../config/game.exception';
 @Injectable()
 export class GameMatchService {
   constructor(
+    private readonly finishGameUseCase: FinishGameUseCase,
     private readonly sendDataUseCase: SendDataUseCase,
     private readonly pingMatchUseCase: PingMatchUseCase,
     private readonly connectMatchUseCase: ConnectMatchUseCase,
@@ -29,10 +31,15 @@ export class GameMatchService {
 
   sendData(player: Player, data: object) {
     this._checkPlayerStatus(player);
-    return this.sendDataUseCase.exec(player, data);
+    const opponent = this._getOpponent(player);
+    return this.sendDataUseCase.exec(player, data, opponent);
   }
 
-  finishGame(player: Player) {}
+  finishGame(player: Player) {
+    this._checkPlayerStatus(player);
+    const opponent = this._getOpponent(player);
+    return this.finishGameUseCase.exec(player, opponent);
+  }
 
   sendRematchRequest(player: Player) {}
 
@@ -44,5 +51,12 @@ export class GameMatchService {
         playerStatus: player.status,
       });
     }
+  }
+
+  private _getOpponent(player: Player) {
+    const { senderPlayer, destPlayer } = player.match;
+    return player.id === senderPlayer.player.id
+      ? destPlayer.player
+      : senderPlayer.player;
   }
 }
