@@ -6,18 +6,17 @@ import { INestApplication } from '@nestjs/common';
 import { RawData, WebSocket } from 'ws';
 
 import { WebsocketModule } from 'src/websocket/websocket.module';
+import { CustomWsAdapter } from 'src/websocket/config/custom-ws.adapter';
 
 import {
+  EPlayerTriggerEvent,
   EGameMatchTriggerEvent,
   EMatchmakingTriggerEvent,
-  EPlayerStatus,
-  EPlayerTriggerEvent,
-} from 'src/websocket/common/enums';
-import { CustomWsAdapter } from 'src/websocket/config/custom-ws.adapter';
-import { EConnectionEvent } from 'src/websocket/config/connection-event.enum';
-
-import { EMatchmakingEvent } from 'src/websocket/matchmaking/matchmaking-event.enum';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
+  EConnectionListenEvent,
+  EMatchmakingListenEvent,
+  EGameMatchListenEvent,
+} from 'src/websocket/common/events';
+import { EPlayerStatus } from 'src/websocket/common/enums';
 
 import { getEnvVars } from './game-match.e2e-mock';
 
@@ -60,7 +59,7 @@ describe('#GameMatchE2E', () => {
 
       checkError(event, status, msg);
 
-      if (checkEvent(event, EConnectionEvent.ConnectedToServer)) {
+      if (checkEvent(event, EConnectionListenEvent.ConnectedToServer)) {
         expect(data).toHaveProperty('status', EPlayerStatus.NoLogin);
         sendEvent(clientOne, EPlayerTriggerEvent.Login, {
           gameKey: 'SS',
@@ -74,22 +73,22 @@ describe('#GameMatchE2E', () => {
         });
       }
 
-      if (checkEvent(event, EConnectionEvent.PlayerConnected)) {
+      if (checkEvent(event, EConnectionListenEvent.PlayerConnected)) {
         playerTwoId = data.id;
         sendEvent(clientOne, EMatchmakingTriggerEvent.SendMatchRequest, {
           playerId: playerTwoId,
         });
       }
 
-      if (checkEvent(event, EMatchmakingEvent.MatchRequestAccepted)) {
+      if (checkEvent(event, EMatchmakingListenEvent.MatchRequestAccepted)) {
         sendEvent(clientOne, EGameMatchTriggerEvent.ConnectMatch, null);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.PlayersReady)) {
+      if (checkEvent(event, EGameMatchListenEvent.PlayersReady)) {
         sendEvent(clientOne, EGameMatchTriggerEvent.PingMatch, null);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.MatchStart)) {
+      if (checkEvent(event, EGameMatchListenEvent.MatchStart)) {
         sendEvent(clientOne, EGameMatchTriggerEvent.SendData, {
           target: 2,
           name: 1,
@@ -97,7 +96,7 @@ describe('#GameMatchE2E', () => {
         });
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.ReceiveData)) {
+      if (checkEvent(event, EGameMatchListenEvent.ReceiveData)) {
         expect(data).toEqual(dataToSend);
         if (counterOne > 0) {
           counterOne--;
@@ -107,11 +106,11 @@ describe('#GameMatchE2E', () => {
         }
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.RematchRequest)) {
+      if (checkEvent(event, EGameMatchListenEvent.RematchRequest)) {
         sendEvent(clientOne, EGameMatchTriggerEvent.SendRematchRequest, null);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.CloseMatch)) {
+      if (checkEvent(event, EGameMatchListenEvent.CloseMatch)) {
         sendEvent(clientOne, EGameMatchTriggerEvent.QuitMatch, null);
         closeConnections();
       }
@@ -122,7 +121,7 @@ describe('#GameMatchE2E', () => {
 
       checkError(event, status, msg);
 
-      if (checkEvent(event, EConnectionEvent.ConnectedToServer)) {
+      if (checkEvent(event, EConnectionListenEvent.ConnectedToServer)) {
         expect(data).toHaveProperty('status', EPlayerStatus.NoLogin);
       }
 
@@ -130,7 +129,7 @@ describe('#GameMatchE2E', () => {
         expect(data).toHaveProperty('status', EPlayerStatus.Available);
       }
 
-      if (checkEvent(event, EMatchmakingEvent.MatchRequestReceived)) {
+      if (checkEvent(event, EMatchmakingListenEvent.MatchRequestReceived)) {
         sendEvent(clientTwo, EMatchmakingTriggerEvent.AcceptMatch, null);
       }
 
@@ -138,15 +137,15 @@ describe('#GameMatchE2E', () => {
         sendEvent(clientTwo, EGameMatchTriggerEvent.ConnectMatch, null);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.PlayersReady)) {
+      if (checkEvent(event, EGameMatchListenEvent.PlayersReady)) {
         sendEvent(clientTwo, EGameMatchTriggerEvent.PingMatch, null);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.MatchStart)) {
+      if (checkEvent(event, EGameMatchListenEvent.MatchStart)) {
         sendEvent(clientTwo, EGameMatchTriggerEvent.SendData, dataToSend);
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.ReceiveData)) {
+      if (checkEvent(event, EGameMatchListenEvent.ReceiveData)) {
         expect(data).toEqual(dataToSend);
         if (counterTwo > 0) {
           counterTwo--;
@@ -154,7 +153,7 @@ describe('#GameMatchE2E', () => {
         }
       }
 
-      if (checkEvent(event, EGameMatchListenerEvent.GameEnded)) {
+      if (checkEvent(event, EGameMatchListenEvent.GameEnded)) {
         if (rematch) {
           sendEvent(clientTwo, EGameMatchTriggerEvent.SendRematchRequest, null);
           rematch = false;

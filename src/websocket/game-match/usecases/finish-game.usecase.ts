@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Match, Player } from 'src/websocket/common/entities';
+
 import { EMatchStatus } from 'src/websocket/common/enums';
-import { GameException } from 'src/websocket/config/game.exception';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
+import { Match, Player } from 'src/websocket/common/entities';
+import { EGameMatchListenEvent } from 'src/websocket/common/events';
+
 import { GameResponse } from 'src/websocket/config/game-response.type';
+import { GameException } from 'src/websocket/config/game.exception';
 
 @Injectable()
 export class FinishGameUseCase {
@@ -14,7 +16,7 @@ export class FinishGameUseCase {
     this._finishGame(match);
 
     opponent.sendEvent(
-      EGameMatchListenerEvent.GameEnded,
+      EGameMatchListenEvent.GameEnded,
       `Game over! ${player.name} wins!`,
       { matchStatus: match.status },
     );

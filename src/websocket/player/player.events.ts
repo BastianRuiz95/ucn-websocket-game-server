@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
-import { EPlayerStatus, EPlayerTriggerEvent } from '../common/enums';
+import { EPlayerStatus } from '../common/enums';
+import { EConnectionListenEvent, EPlayerTriggerEvent } from '../common/events';
 
 import { GameResponse } from '../config/game-response.type';
 import { GameException } from '../config/game.exception';
-import { EConnectionEvent } from '../config/connection-event.enum';
 
 import { GameService } from '../game/game.service';
 import { PlayerListService } from '../player-list/player-list.service';
@@ -22,7 +22,7 @@ export class PlayerEvents {
   connected(player: Player, gameId: string) {
     if (!player.game) {
       player.sendEvent(
-        EConnectionEvent.ConnectedToServer,
+        EConnectionListenEvent.ConnectedToServer,
         'GameId do not exists or is invalid.',
         { gameId: gameId ?? null },
         'ERROR',
@@ -34,7 +34,7 @@ export class PlayerEvents {
     this.playerListService.addPlayer(player);
 
     player.sendEvent(
-      EConnectionEvent.ConnectedToServer,
+      EConnectionListenEvent.ConnectedToServer,
       `Welcome! You are connected to the game server. Login first with '${EPlayerTriggerEvent.Login}' event`,
       player.getPlayerData(),
       'OK',
@@ -47,7 +47,7 @@ export class PlayerEvents {
     this.playerListService.removePlayer(player);
 
     this.playerListService.broadcast(
-      EConnectionEvent.PlayerDisconnected,
+      EConnectionListenEvent.PlayerDisconnected,
       `Player '${player.name}' (${player.id}) has disconnected`,
       player.getPlayerData(),
     );
@@ -62,7 +62,7 @@ export class PlayerEvents {
       player.status = EPlayerStatus.Available;
 
       this.playerListService.broadcast(
-        EConnectionEvent.PlayerConnected,
+        EConnectionListenEvent.PlayerConnected,
         `Player '${player.name}' (${player.id}) has connected`,
         player.getPlayerData(),
         player.id,

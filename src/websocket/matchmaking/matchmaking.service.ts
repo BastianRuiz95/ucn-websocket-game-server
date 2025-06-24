@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
-import { GameException } from '../config/game.exception';
 import { PlayerListService } from '../player-list/player-list.service';
 
-import { Match, Player } from '../common/entities';
 import {
-  EMatchmakingTriggerEvent,
   EMatchPlayerStatus,
   EMatchStatus,
   EPlayerStatus,
 } from '../common/enums';
+import {
+  EMatchmakingListenEvent,
+  EMatchmakingTriggerEvent,
+} from '../common/events';
+import { Match, Player } from '../common/entities';
 
-import { EMatchmakingEvent } from './matchmaking-event.enum';
+import { GameException } from '../config/game.exception';
 
 @Injectable()
 export class MatchmakingService {
@@ -31,7 +33,7 @@ export class MatchmakingService {
 
     const match = this._createMatch(senderPlayer, playerToSend);
     playerToSend.sendEvent(
-      EMatchmakingEvent.MatchRequestReceived,
+      EMatchmakingListenEvent.MatchRequestReceived,
       `Match request received from player '${senderPlayer.name}'`,
       {
         playerId: senderPlayer.id,
@@ -54,7 +56,7 @@ export class MatchmakingService {
     this._deleteMatchRequest(match);
 
     destPlayer.sendEvent(
-      EMatchmakingEvent.MatchRequestCancelled,
+      EMatchmakingListenEvent.MatchRequestCancelled,
       `Player '${senderPlayer.name}' has cancelled the match request.`,
       {
         playerId: senderPlayer.id,
@@ -77,7 +79,7 @@ export class MatchmakingService {
 
     const { player: senderPlayer } = match.senderPlayer;
     senderPlayer.sendEvent(
-      EMatchmakingEvent.MatchRequestAccepted,
+      EMatchmakingListenEvent.MatchRequestAccepted,
       `Player '${destPlayer.name}' has accepted your match request.`,
       {
         playerId: destPlayer.id,
@@ -106,7 +108,7 @@ export class MatchmakingService {
     this._deleteMatchRequest(match);
 
     senderPlayer.sendEvent(
-      EMatchmakingEvent.MatchRequestRejected,
+      EMatchmakingListenEvent.MatchRequestRejected,
       `Player '${destPlayer.name}' has rejected your match request.`,
       { playerId: destPlayer.id, playerName: destPlayer.name },
     );

@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Match, Player } from 'src/websocket/common/entities';
-import { GameException } from 'src/websocket/config/game.exception';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
+
 import {
+  EGameMatchListenEvent,
   EGameMatchTriggerEvent,
-  EMatchPlayerStatus,
-  EMatchStatus,
-} from 'src/websocket/common/enums';
+} from 'src/websocket/common/events';
+import { Match, Player } from 'src/websocket/common/entities';
+import { EMatchPlayerStatus, EMatchStatus } from 'src/websocket/common/enums';
+
 import { GameResponse } from 'src/websocket/config/game-response.type';
+import { GameException } from 'src/websocket/config/game.exception';
 
 @Injectable()
 export class SendRematchRequestUseCase {
@@ -21,7 +22,7 @@ export class SendRematchRequestUseCase {
 
     if (!this._checkBothPlayersReady(match)) {
       opponent?.sendEvent(
-        EGameMatchListenerEvent.RematchRequest,
+        EGameMatchListenEvent.RematchRequest,
         `Player ${player.name} wants to play again. Send '${EGameMatchTriggerEvent.SendRematchRequest}' to accept.`,
         null,
       );
@@ -67,7 +68,7 @@ export class SendRematchRequestUseCase {
       senderPlayer.status = destPlayer.status = EMatchPlayerStatus.WaitingSync;
       [senderPlayer.player, destPlayer.player].forEach((p) =>
         p.sendEvent(
-          EGameMatchListenerEvent.PlayersReady,
+          EGameMatchListenEvent.PlayersReady,
           `Both players are ready to start. Send ${EGameMatchTriggerEvent.PingMatch} to sync times.`,
           { matchId: match.id },
         ),

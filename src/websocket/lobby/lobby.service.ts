@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
+import { ELobbyListenEvent } from '../common/events';
 
-import { ELobbyEvent } from './lobby-event.enum';
-import { PlayerListService } from '../player-list/player-list.service';
 import { GameException } from '../config/game.exception';
+import { PlayerListService } from '../player-list/player-list.service';
 
 @Injectable()
 export class LobbyService {
@@ -35,7 +35,7 @@ export class LobbyService {
     this._checkMessage(playerMsg);
 
     playerToSendMsg.sendEvent(
-      ELobbyEvent.PrivateMessageReceived,
+      ELobbyListenEvent.PrivateMessageReceived,
       `Player '${senderPlayer.name}' have sent you a private message.`,
       {
         playerId: senderPlayer.id,
@@ -57,7 +57,7 @@ export class LobbyService {
     this._checkMessage(playerMsg);
 
     this.playerListService.broadcast(
-      ELobbyEvent.PublicMessageReceived,
+      ELobbyListenEvent.PublicMessageReceived,
       `Player '${senderPlayer.name}' have sent a message.`,
       {
         playerId: senderPlayer.id,

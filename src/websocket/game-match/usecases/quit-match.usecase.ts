@@ -6,11 +6,10 @@ import {
   EPlayerStatus,
 } from 'src/websocket/common/enums';
 import { Match, Player } from 'src/websocket/common/entities';
+import { EGameMatchListenEvent } from 'src/websocket/common/events';
 
 import { GameResponse } from 'src/websocket/config/game-response.type';
 import { GameException } from 'src/websocket/config/game.exception';
-
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
 
 @Injectable()
 export class QuitMatchUseCase {
@@ -21,7 +20,7 @@ export class QuitMatchUseCase {
     this._removeMatch(player, match);
 
     opponent?.sendEvent(
-      EGameMatchListenerEvent.CloseMatch,
+      EGameMatchListenEvent.CloseMatch,
       `Player ${player.name} has quit to the game. Rematch is not possible.`,
       null,
     );

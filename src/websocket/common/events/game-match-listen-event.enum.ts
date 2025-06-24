@@ -1,4 +1,4 @@
-export enum EGameMatchListenerEvent {
+export enum EGameMatchListenEvent {
   PlayersReady = 'players-ready',
   MatchStart = 'match-start',
   ReceiveData = 'receive-game-data',
