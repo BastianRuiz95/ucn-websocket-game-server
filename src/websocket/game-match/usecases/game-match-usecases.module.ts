@@ -5,6 +5,7 @@ import { QuitMatchUseCase } from './quit-match.usecase';
 import { PingMatchUseCase } from './ping-match.usecase';
 import { FinishGameUseCase } from './finish-game.usecase';
 import { ConnectMatchUseCase } from './connect-match.usecase';
+import { SendRematchRequestUseCase } from './send-rematch-request.usecase';
 
 @Module({
   providers: [
@@ -12,6 +13,7 @@ import { ConnectMatchUseCase } from './connect-match.usecase';
     PingMatchUseCase,
     SendDataUseCase,
     FinishGameUseCase,
+    SendRematchRequestUseCase,
     QuitMatchUseCase,
   ],
   exports: [
@@ -19,6 +21,7 @@ import { ConnectMatchUseCase } from './connect-match.usecase';
     PingMatchUseCase,
     SendDataUseCase,
     FinishGameUseCase,
+    SendRematchRequestUseCase,
     QuitMatchUseCase,
   ],
 })

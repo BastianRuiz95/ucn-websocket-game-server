@@ -8,6 +8,7 @@ import {
   PingMatchUseCase,
   QuitMatchUseCase,
   SendDataUseCase,
+  SendRematchRequestUseCase,
 } from './usecases';
 import { GameException } from '../config/game.exception';
 
@@ -15,6 +16,7 @@ import { GameException } from '../config/game.exception';
 export class GameMatchService {
   constructor(
     private readonly quitMatchUseCase: QuitMatchUseCase,
+    private readonly sendRematchRequestUseCase: SendRematchRequestUseCase,
     private readonly finishGameUseCase: FinishGameUseCase,
     private readonly sendDataUseCase: SendDataUseCase,
     private readonly pingMatchUseCase: PingMatchUseCase,
@@ -43,7 +45,11 @@ export class GameMatchService {
     return this.finishGameUseCase.exec(player, opponent);
   }
 
-  sendRematchRequest(player: Player) {}
+  sendRematchRequest(player: Player) {
+    this._checkPlayerStatus(player);
+    const opponent = this._getOpponent(player);
+    return this.sendRematchRequestUseCase.exec(player, opponent);
+  }
 
   quitMatch(player: Player) {
     this._checkPlayerStatus(player);
