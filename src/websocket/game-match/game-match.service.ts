@@ -6,6 +6,7 @@ import {
   ConnectMatchUseCase,
   FinishGameUseCase,
   PingMatchUseCase,
+  QuitMatchUseCase,
   SendDataUseCase,
 } from './usecases';
 import { GameException } from '../config/game.exception';
@@ -13,6 +14,7 @@ import { GameException } from '../config/game.exception';
 @Injectable()
 export class GameMatchService {
   constructor(
+    private readonly quitMatchUseCase: QuitMatchUseCase,
     private readonly finishGameUseCase: FinishGameUseCase,
     private readonly sendDataUseCase: SendDataUseCase,
     private readonly pingMatchUseCase: PingMatchUseCase,
@@ -43,7 +45,11 @@ export class GameMatchService {
 
   sendRematchRequest(player: Player) {}
 
-  quitMatch(player: Player) {}
+  quitMatch(player: Player) {
+    this._checkPlayerStatus(player);
+    const opponent = this._getOpponent(player);
+    return this.quitMatchUseCase.exec(player, opponent);
+  }
 
   private _checkPlayerStatus(player: Player) {
     if (!player.match) {

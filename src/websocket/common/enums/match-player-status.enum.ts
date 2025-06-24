@@ -3,4 +3,5 @@ export enum EMatchPlayerStatus {
   WaitingConnection = 'WAITING_CONNECTION',
   WaitingSync = 'WAITING_SYNC',
   Connected = 'CONNECTED',
+  LeftTheMatch = 'LEFT_THE_MATCH',
 }
