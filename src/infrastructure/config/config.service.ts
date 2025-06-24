@@ -25,6 +25,10 @@ export class ConfigService {
     return this._checkVarExists<string>('JWT_SECRET');
   }
 
+  getValidationGameKeys(): string {
+    return this._checkVarExists<string>('VALIDATION_GAME_KEYS');
+  }
+
   private _checkVarExists<T>(name: string): T {
     const envVar = this.configService.get<T>(name);
     return envVar ?? null;
