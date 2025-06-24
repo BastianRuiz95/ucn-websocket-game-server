@@ -1,1 +1,1 @@
-export * from './ws-parse-result.interceptor';
+export * from './ws-event-handler.interceptor';

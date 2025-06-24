@@ -1,5 +1,5 @@
 export class GameException extends Error {
-  static throwException(message: string, data: object) {
+  static throwException(message: string, data: object = null) {
     throw new GameException(message, data);
   }
 
