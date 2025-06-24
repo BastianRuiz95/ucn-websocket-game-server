@@ -25,7 +25,11 @@ export class Player {
   }
 
   getPlayerData(): PlayerPresenter {
-    const { key, ...gameData } = this.game;
+    let gameData: Omit<Game, 'key'> = null;
+    if (this.game) {
+      const { key, ...gameWithoutKey } = this.game;
+      gameData = gameWithoutKey;
+    }
     return {
       id: this.id,
       name: this.name,
