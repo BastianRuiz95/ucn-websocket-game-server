@@ -267,7 +267,7 @@ En caso de ser el jugador que recibió una solicitud de partida, esta no se pued
 evento. Para eso, se debe llamar al evento [`reject-match`]().
 
 Ejemplo de solicitud correcta:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "cancel-match-request"
@@ -345,7 +345,7 @@ Este evento puede provocar error si el jugador no tiene una partida asociada, cu
 ya fue aprobada por el jugador o si se intenta aprobar una solicitud enviada por el mismo jugador.
 
 Ejemplo de solicitud correcta:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "accept-match"
@@ -422,7 +422,7 @@ Este evento puede retornan un error si el jugador no tiene una partida asociada,
 ya fue aprobada por el jugador o si se intenta aprobar una solicitud enviada por el mismo jugador.
 
 Ejemplo de solicitud correcta:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "reject-match"
