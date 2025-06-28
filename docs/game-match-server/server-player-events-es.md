@@ -2,12 +2,12 @@
 
 > Si necesitas volver al documento anterior, haz clic [aquí](./server-connect-and-use-es.md).
 
-- [Resumen de eventos](#resumen-de-eventos)
-- [Obtener datos del jugador](#obtener-datos-del-jugador)
-- [Cambiar nombre del jugador](#cambiar-nombre-del-jugador)
-
 Los eventos descritos acá son de gestión del jugador, con el fin que se deba cambiar algun comportamiento
 de este, como su nombre u otros parámetros a definir.
+
+- [Resumen de eventos](#resumen-de-eventos)
+- [Obtener datos del jugador (player-data)](#obtener-datos-del-jugador-player-data)
+- [Cambiar nombre del jugador (change-name)](#cambiar-nombre-del-jugador-change-name)
 
 ## Resumen de eventos
 
@@ -16,7 +16,7 @@ de este, como su nombre u otros parámetros a definir.
 | Datos del jugador          |`player-data`| Saliente | Obtiene los datos del jugador actual.  |
 | Cambiar nombre del jugador |`change-name`| Saliente | Permite cambiar el nombre del jugador. |
 
-# Obtener datos del jugador
+# Obtener datos del jugador (player-data)
 
 | Resumen         |                                                                                   |
 |-----------------|-----------------------------------------------------------------------------------|
@@ -26,6 +26,10 @@ de este, como su nombre u otros parámetros a definir.
 | __Parámetros__  | _Ninguno_.                                                                        |
 | __Respuesta__   | `id` (_string_): ID de jugador.                                                   |
 |                 | `name` (_string_): Nombre de jugador.                                             |
+|                 | `game` (_object_): Datos del cliente de juego.                                    |
+|                 | `game.id` (_string_): ID del juego conectado.                                     |
+|                 | `game.name` (_string_): Nombre del juego.                                         |
+|                 | `game.team` (_string_): Nombre del equipo desarrollador.                          |
 |                 | `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN_MATCH`). |
 
 Con este evento es posible recuperar la información actual del jugador, en caso que se haya perdido y deba
@@ -51,12 +55,17 @@ Ejemplo de solicitud:
   "data": {
     "id": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "name": "Player_Two",
+    "game": {
+      "id": "B",
+      "name": "Silent Strikers",
+      "team": "Phantom Bytes"
+    },
     "status": "AVAILABLE"
   }
 }
 ```
 
-# Cambiar nombre del jugador
+# Cambiar nombre del jugador (change-name)
 
 | Resumen         |                                                              |
 |-----------------|--------------------------------------------------------------|
@@ -66,9 +75,10 @@ Ejemplo de solicitud:
 | __Parámetros__  | `name` (_string_): Nombre nuevo del jugador.                 |
 | __Respuesta__   | `name` (_string_): Nuevo nombre establecido para el jugador. |
 
-Al conectarse, el servidor establece un nombre por defecto. Con este evento, es posible cambiar el nombre del
-jugador por el que estime conveniente, el cual se envía por parámetro a la solicitud. Si la solicitud esta
-correcta, se retornará el nuevo nombre establecido para el jugador.
+Al conectarse, el servidor establece un nombre por defecto (a menos que lo haya configurado con la
+propiedad `playerName` al momento de conectarse). Con este evento, es posible cambiar el nombre del jugador
+por el que estime conveniente, el cual se envía por parámetro a la solicitud. Si la solicitud esta correcta,
+se retornará el nuevo nombre establecido para el jugador.
 
 Ejemplo de solicitud:
 ```jsonc
@@ -90,3 +100,5 @@ Ejemplo de solicitud:
   }
 }
 ```
+
+En el caso
