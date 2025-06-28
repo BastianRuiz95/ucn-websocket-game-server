@@ -45,7 +45,7 @@ export class PlayerEvents {
     if (!player) return;
 
     this.playerListService.removePlayer(player);
-
+    player.status = EPlayerStatus.Disconnected;
     this.playerListService.broadcast(
       EConnectionListenEvent.PlayerDisconnected,
       `Player '${player.name}' (${player.id}) has disconnected`,
