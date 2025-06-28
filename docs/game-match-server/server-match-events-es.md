@@ -285,7 +285,7 @@ Ejemplo de solicitud correcta:
 ```
 
 Ejemplo de solicitudes incorrectas:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "cancel-match-request"
@@ -364,7 +364,7 @@ Ejemplo de solicitud correcta:
 ```
 
 Ejemplo de solicitudes incorrectas:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "accept-match"
@@ -440,7 +440,7 @@ Ejemplo de solicitud correcta:
 ```
 
 Ejemplo de solicitudes incorrectas:
-```json
+```jsonc
 // Evento enviado por el jugador
 {
   "event": "reject-match"
