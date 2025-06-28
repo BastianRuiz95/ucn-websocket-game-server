@@ -63,20 +63,20 @@ export class PlayerEvents {
 
       this.playerListService.broadcast(
         EConnectionListenEvent.PlayerConnected,
-        `Player '${player.name}' (${player.id}) has connected`,
+        `Player '${player.name}' (${player.id}) has connected.`,
         player.getPlayerData(),
         player.id,
       );
 
       return {
-        msg: 'Login Successfully',
+        msg: 'Login Successfully.',
         data: player.getPlayerData(),
       };
     }
-
-    return {
-      msg: 'Invalid GameKey.',
-    };
+    GameException.throwException(
+      'Invalid gameKey. Please check and try again.',
+      null,
+    );
   }
 
   changeUserName(player: Player, data: ChangeUserNameDto): GameResponse {
