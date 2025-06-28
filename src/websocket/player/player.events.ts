@@ -80,10 +80,12 @@ export class PlayerEvents {
   }
 
   changeUserName(player: Player, data: ChangeUserNameDto): GameResponse {
-    player.name = data.name;
+    this._checkNewName(data.name);
+
+    player.name = data.name.trim();
     return {
       msg: 'Name changed',
-      data: { name: player.name },
+      data: { name: player.name.trim() },
     };
   }
 
@@ -92,5 +94,13 @@ export class PlayerEvents {
       msg: 'Player list obtained',
       data: player.getPlayerData(),
     };
+  }
+
+  private _checkNewName(name: string) {
+    if (!name || name.trim().length === 0) {
+      GameException.throwException(`New name is not setted or is undefined.`, {
+        name: name ?? typeof name,
+      });
+    }
   }
 }
