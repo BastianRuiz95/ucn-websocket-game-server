@@ -101,4 +101,25 @@ Ejemplo de solicitud:
 }
 ```
 
-En el caso
+En el caso que el nombre no se envíe o no tenga el formato correcto, el servidor responderá con un error:
+
+Ejemplo de solicitud errónea:
+```jsonc
+// Evento enviado por el jugador
+{
+  "event": "change-name",
+  "data": {
+    "name": "        "
+  }
+}
+
+// Respuesta entregada por el servidor
+{
+  "event": "change-name",
+  "status": "ERROR",
+  "msg": "New name is not setted or is undefined.",
+  "data": {
+    "name": "        "
+  }
+}
+```
