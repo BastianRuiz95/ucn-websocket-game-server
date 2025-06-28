@@ -194,7 +194,7 @@ Son todos los eventos relacionados a las solicitudes de partida, como invitacion
 
 </details>
 
-### [Partidas en ejecución (Playing)](./server-playing-events-es.md)
+### [Partidas en ejecución (Playing)](./server-game-match-events-es.md)
 Son todos los eventos de la partida en ejecución, como el envío de datos a cada juego y las acciones de iniciar
 y terminar partida.
 
