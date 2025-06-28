@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
+import { LobbyService } from '../lobby/lobby.service';
 import { PlayerListService } from '../player-list/player-list.service';
 
 import {
@@ -18,7 +19,10 @@ import { GameException } from '../config/game.exception';
 
 @Injectable()
 export class MatchmakingService {
-  constructor(private readonly playerListService: PlayerListService) {}
+  constructor(
+    private readonly playerListService: PlayerListService,
+    private readonly lobbyService: LobbyService,
+  ) {}
 
   sendMatchRequest(senderPlayer: Player, playerId: string) {
     if (senderPlayer.id === playerId) {
@@ -185,7 +189,9 @@ export class MatchmakingService {
       status: EMatchStatus.Requested,
     });
 
-    senderPlayer.status = destPlayer.status = EPlayerStatus.Busy;
+    [senderPlayer, destPlayer].forEach((p) =>
+      this.lobbyService.updatePlayerStatus(p, EPlayerStatus.Busy),
+    );
     senderPlayer.match = destPlayer.match = match;
 
     return match;
@@ -239,7 +245,10 @@ export class MatchmakingService {
     const { player: destPlayer } = match.destPlayer;
 
     match.status = EMatchStatus.WaitingPlayers;
-    senderPlayer.status = destPlayer.status = EPlayerStatus.InMatch;
+    [senderPlayer, destPlayer].forEach((p) =>
+      this.lobbyService.updatePlayerStatus(p, EPlayerStatus.InMatch),
+    );
+
     match.senderPlayer.status = match.destPlayer.status =
       EMatchPlayerStatus.WaitingConnection;
   }
@@ -249,6 +258,8 @@ export class MatchmakingService {
     const { player: destPlayer } = match.destPlayer;
 
     senderPlayer.match = destPlayer.match = null;
-    senderPlayer.status = destPlayer.status = EPlayerStatus.Available;
+    [senderPlayer, destPlayer].forEach((p) =>
+      this.lobbyService.updatePlayerStatus(p, EPlayerStatus.Available),
+    );
   }
 }

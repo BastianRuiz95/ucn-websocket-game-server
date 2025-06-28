@@ -8,11 +8,15 @@ import {
 import { Match, Player } from 'src/websocket/common/entities';
 import { EGameMatchListenEvent } from 'src/websocket/common/events';
 
+import { LobbyService } from 'src/websocket/lobby/lobby.service';
+
 import { GameResponse } from 'src/websocket/config/game-response.type';
 import { GameException } from 'src/websocket/config/game.exception';
 
 @Injectable()
 export class QuitMatchUseCase {
+  constructor(private readonly lobbyService: LobbyService) {}
+
   exec(player: Player, opponent: Player): GameResponse {
     const { match } = player;
     this._validateMatch(match);
@@ -48,6 +52,6 @@ export class QuitMatchUseCase {
     if (destPlayer.player.id === player.id) {
       destPlayer.status = EMatchPlayerStatus.LeftTheMatch;
     }
-    player.status = EPlayerStatus.Available;
+    this.lobbyService.updatePlayerStatus(player, EPlayerStatus.Available);
   }
 }

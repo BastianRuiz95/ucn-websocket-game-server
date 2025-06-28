@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
+import { EPlayerStatus } from '../common/enums';
 import { ELobbyListenEvent } from '../common/events';
 
 import { GameException } from '../config/game.exception';
@@ -71,6 +72,19 @@ export class LobbyService {
       msg: 'Message sent to all players',
       data: { message: playerMsg },
     };
+  }
+
+  updatePlayerStatus(player: Player, status: EPlayerStatus) {
+    player.status = status;
+    this.playerListService.broadcast(
+      ELobbyListenEvent.PlayerStatusChanged,
+      `Player '${player.name}' change status to '${status}'`,
+      {
+        playerId: player.id,
+        playerStatus: player.status,
+      },
+      player.id,
+    );
   }
 
   private _checkMessage(message: string) {
