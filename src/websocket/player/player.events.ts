@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
+import {
+  EConnectionListenEvent,
+  EPlayerListenEvent,
+  EPlayerTriggerEvent,
+} from '../common/events';
 import { Player } from '../common/entities';
 import { EPlayerStatus } from '../common/enums';
-import { EConnectionListenEvent, EPlayerTriggerEvent } from '../common/events';
 
 import { GameResponse } from '../config/game-response.type';
 import { GameException } from '../config/game.exception';
@@ -83,6 +87,14 @@ export class PlayerEvents {
     this._checkNewName(data.name);
 
     player.name = data.name.trim();
+
+    this.playerListService.broadcast(
+      EPlayerListenEvent.PlayerNameChanged,
+      `Player '${player.name}' has a new name!`,
+      { playerId: player.id, playerName: player.name },
+      player.id,
+    );
+
     return {
       msg: 'Name changed',
       data: { name: player.name.trim() },

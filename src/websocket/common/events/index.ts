@@ -5,4 +5,5 @@ export * from './lobby-listen-event.enum';
 export * from './lobby-trigger-event.enum';
 export * from './matchmaking-listen-event.enum';
 export * from './matchmaking-trigger-event.enum';
+export * from './player-listen-event.enum';
 export * from './player-trigger-event.enum';
