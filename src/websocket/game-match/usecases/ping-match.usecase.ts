@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { Match, Player } from 'src/websocket/common/entities';
+
 import {
+  EGameMatchListenEvent,
   EGameMatchTriggerEvent,
-  EMatchPlayerStatus,
-  EMatchStatus,
-} from 'src/websocket/common/enums';
+} from 'src/websocket/common/events';
+import { Match, Player } from 'src/websocket/common/entities';
+import { EMatchPlayerStatus, EMatchStatus } from 'src/websocket/common/enums';
+
+import { GameResponse } from 'src/websocket/config/game-response.type';
 import { GameException } from 'src/websocket/config/game.exception';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
 
 @Injectable()
 export class PingMatchUseCase {
-  exec(player: Player) {
+  exec(player: Player): GameResponse {
     const { match } = player;
 
     const matchPlayer = this._checkMatchPlayerStatus(match, player);
@@ -48,6 +50,13 @@ export class PingMatchUseCase {
       );
     }
 
+    if (playerToCheck.status !== EMatchPlayerStatus.WaitingSync) {
+      GameException.throwException(
+        `The match has started. You cannot sent this event.`,
+        { matchId: match.id, matchStatus: match.status },
+      );
+    }
+
     return playerToCheck;
   }
 
@@ -63,7 +72,7 @@ export class PingMatchUseCase {
 
       [senderPlayer, destPlayer].forEach((p) =>
         p.sendEvent(
-          EGameMatchListenerEvent.MatchStart,
+          EGameMatchListenEvent.MatchStart,
           `Match is ready to receive events. Send it with '${EGameMatchTriggerEvent.SendData}'.`,
           { matchId: match.id },
         ),

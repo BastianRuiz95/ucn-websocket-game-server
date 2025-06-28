@@ -39,7 +39,7 @@ En la siguiente tabla se pueden visualizar un resumen de lo explicado:
 
 En la siguiente imagen se aprecia un diagrama de conectividad con un servidor:
 
-![http rest conectivity](./docs/img/rest-example.png)
+![http rest conectivity](../img/rest-example.png)
 
 En este caso, estamos haciendo una solicitud al servidor con el verbo HTTP GET a la ruta
 /scores. En palabras humanas, le estamos diciendo al servidor que queremos la información de
@@ -76,7 +76,7 @@ servidor reconoce el token como válido, se ejecutará la acción solicitada. En
 el servidor respondera con un error de tipo 401, que es un codigo de estado HTTP que indica que 
 el cliente no está autorizado para realizar la acción por la invalidez del token.
 
-```json
+```jsonc
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -162,7 +162,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Score List Received",
   "data": [
@@ -261,7 +261,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Score Submitted",
   "data": {
@@ -304,7 +304,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ```
 
 #### Ejemplo de respuesta exitosa
-```json
+```jsonc
 {
   "message": "Deleted All Scores Successfully",
 }

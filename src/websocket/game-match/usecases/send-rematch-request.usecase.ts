@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Match, Player } from 'src/websocket/common/entities';
-import { GameException } from 'src/websocket/config/game.exception';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
+
 import {
+  EGameMatchListenEvent,
   EGameMatchTriggerEvent,
-  EMatchPlayerStatus,
-  EMatchStatus,
-} from 'src/websocket/common/enums';
+} from 'src/websocket/common/events';
+import { Match, Player } from 'src/websocket/common/entities';
+import { EMatchPlayerStatus, EMatchStatus } from 'src/websocket/common/enums';
+
 import { GameResponse } from 'src/websocket/config/game-response.type';
+import { GameException } from 'src/websocket/config/game.exception';
 
 @Injectable()
 export class SendRematchRequestUseCase {
@@ -21,8 +22,8 @@ export class SendRematchRequestUseCase {
 
     if (!this._checkBothPlayersReady(match)) {
       opponent?.sendEvent(
-        EGameMatchListenerEvent.RematchRequest,
-        `Player ${player.name} wants to play again. Send '${EGameMatchTriggerEvent.SendRematchRequest}' to accept.`,
+        EGameMatchListenEvent.RematchRequest,
+        `Player '${player.name}' wants to play again. Send '${EGameMatchTriggerEvent.SendRematchRequest}' to accept.`,
         null,
       );
     }
@@ -34,7 +35,7 @@ export class SendRematchRequestUseCase {
     if (match.status !== EMatchStatus.Finished) {
       GameException.throwException(
         'You can only send a rematch request when the current match is over.',
-        { matchStatus: match.status },
+        { matchId: match.id, matchStatus: match.status },
       );
     }
   }
@@ -42,8 +43,8 @@ export class SendRematchRequestUseCase {
   private _checkOpponent(opponent: Player) {
     if (!opponent.match) {
       GameException.throwException(
-        `Player ${opponent.name} has quit the game.`,
-        { playerStatus: opponent.status },
+        `Player '${opponent.name}' has quit the game.`,
+        { playerId: opponent.id, playerStatus: opponent.status },
       );
     }
   }
@@ -67,8 +68,8 @@ export class SendRematchRequestUseCase {
       senderPlayer.status = destPlayer.status = EMatchPlayerStatus.WaitingSync;
       [senderPlayer.player, destPlayer.player].forEach((p) =>
         p.sendEvent(
-          EGameMatchListenerEvent.PlayersReady,
-          `Both players are ready to start. Send ${EGameMatchTriggerEvent.PingMatch} to sync times.`,
+          EGameMatchListenEvent.PlayersReady,
+          `Both players are ready to start. Send '${EGameMatchTriggerEvent.PingMatch}' to sync times.`,
           { matchId: match.id },
         ),
       );

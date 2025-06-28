@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Match, Player } from 'src/websocket/common/entities';
+
 import { EMatchStatus } from 'src/websocket/common/enums';
-import { GameException } from 'src/websocket/config/game.exception';
-import { EGameMatchListenerEvent } from '../game-match-events.enum';
+import { Match, Player } from 'src/websocket/common/entities';
+import { EGameMatchListenEvent } from 'src/websocket/common/events';
+
 import { GameResponse } from 'src/websocket/config/game-response.type';
+import { GameException } from 'src/websocket/config/game.exception';
 
 @Injectable()
 export class FinishGameUseCase {
@@ -14,28 +16,30 @@ export class FinishGameUseCase {
     this._finishGame(match);
 
     opponent.sendEvent(
-      EGameMatchListenerEvent.GameEnded,
-      `Game over! ${player.name} wins!`,
+      EGameMatchListenEvent.GameEnded,
+      `Game over! '${player.name}' wins!`,
       { matchStatus: match.status },
     );
 
     return {
-      msg: `Game over! ${player.name} wins!`,
-      data: { matchStatus: match.status },
+      msg: `Game over! '${player.name}' wins!`,
+      data: { matchId: match.id, matchStatus: match.status },
     };
   }
 
   private _validateMatch(match: Match) {
-    const { status } = match;
+    const { id, status } = match;
 
     if (status === EMatchStatus.Finished) {
       GameException.throwException(`The match has already finished.`, {
+        matchId: id,
         matchStatus: status,
       });
     }
 
     if (status !== EMatchStatus.Playing) {
       GameException.throwException(`The match has not been started yet.`, {
+        matchId: id,
         matchStatus: status,
       });
     }

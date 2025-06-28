@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 import { Player } from '../common/entities';
+import { EPlayerStatus } from '../common/enums';
+import { ELobbyListenEvent } from '../common/events';
 
-import { ELobbyEvent } from './lobby-event.enum';
-import { PlayerListService } from '../player-list/player-list.service';
 import { GameException } from '../config/game.exception';
+import { PlayerListService } from '../player-list/player-list.service';
 
 @Injectable()
 export class LobbyService {
@@ -27,7 +28,7 @@ export class LobbyService {
   ) {
     const playerToSendMsg = this.playerListService.getPlayerById(playerId);
     if (!playerToSendMsg) {
-      GameException.throwException(`Player with ID ${playerId} not exists.`, {
+      GameException.throwException(`Player with ID '${playerId}' not exists.`, {
         playerId: playerId,
       });
     }
@@ -35,7 +36,7 @@ export class LobbyService {
     this._checkMessage(playerMsg);
 
     playerToSendMsg.sendEvent(
-      ELobbyEvent.PrivateMessageReceived,
+      ELobbyListenEvent.PrivateMessageReceived,
       `Player '${senderPlayer.name}' have sent you a private message.`,
       {
         playerId: senderPlayer.id,
@@ -45,7 +46,7 @@ export class LobbyService {
     );
 
     return {
-      msg: `Message sent to ${playerToSendMsg.name}`,
+      msg: `Message sent to '${playerToSendMsg.name}'`,
       data: {
         playerId: playerToSendMsg.id,
         message: playerMsg.trim(),
@@ -57,7 +58,7 @@ export class LobbyService {
     this._checkMessage(playerMsg);
 
     this.playerListService.broadcast(
-      ELobbyEvent.PublicMessageReceived,
+      ELobbyListenEvent.PublicMessageReceived,
       `Player '${senderPlayer.name}' have sent a message.`,
       {
         playerId: senderPlayer.id,
@@ -71,6 +72,19 @@ export class LobbyService {
       msg: 'Message sent to all players',
       data: { message: playerMsg },
     };
+  }
+
+  updatePlayerStatus(player: Player, status: EPlayerStatus) {
+    player.status = status;
+    this.playerListService.broadcast(
+      ELobbyListenEvent.PlayerStatusChanged,
+      `Player '${player.name}' change status to '${status}'`,
+      {
+        playerId: player.id,
+        playerStatus: player.status,
+      },
+      player.id,
+    );
   }
 
   private _checkMessage(message: string) {

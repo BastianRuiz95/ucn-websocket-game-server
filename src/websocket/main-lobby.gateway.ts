@@ -15,7 +15,7 @@ import {
   ELobbyTriggerEvent,
   EMatchmakingTriggerEvent,
   EPlayerTriggerEvent,
-} from './common/enums';
+} from './common/events';
 import { Player } from './common/entities';
 import { ConnectedPlayer, WsEventListener } from './common/decorators';
 
