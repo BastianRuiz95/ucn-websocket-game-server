@@ -97,7 +97,7 @@ export class PlayerEvents {
   }
 
   private _checkNewName(name: string) {
-    if (!name || name.trim().length === 0) {
+    if (!name || typeof name !== 'string' || name.trim().length === 0) {
       GameException.throwException(`New name is not setted or is undefined.`, {
         name: name ?? typeof name,
       });
