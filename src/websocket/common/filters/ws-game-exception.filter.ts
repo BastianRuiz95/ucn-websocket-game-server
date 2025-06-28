@@ -14,9 +14,11 @@ export class WsGameExceptionFilter implements ExceptionFilter {
         event: this.event,
         status: 'ERROR',
         msg: exception.gameMessage,
-        data: {
-          ...exception.data,
-        },
+        data: !exception.data
+          ? null
+          : {
+              ...exception.data,
+            },
       }),
     );
   }
