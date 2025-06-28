@@ -1,17 +1,17 @@
 # Eventos de la sala de espera y comunicación (Lobby)
 
 > Si necesitas volver al documento anterior, haz clic [aquí](./server-connect-and-use-es.md).
- 
-- [Resumen de eventos](#resumen-de-eventos)
-- [Mensaje público recibido](#mensaje-público-recibido)
-- [Mensaje privado recibido](#mensaje-privado-recibido)
-- [Obtener todos los jugadores conectados](#obtener-todos-los-jugadores-conectados)
-- [Enviar un mensaje público](#enviar-un-mensaje-público)
-- [Enviar un mensaje privado](#enviar-un-mensaje-privado)
 
 Al conectarse al servidor de juego, el jugador será agregado automáticamente a la sala de espera y comunicación 
 (Lobby). De esta forma, el jugador podrá recibir eventos de mensajes recibidos, como también eventos de solicitud
 de partida (abordados en el documento [Eventos de emparejamiento y creación de partidas (Matchmaking)](./server-match-events-es.md)).
+
+- [Resumen de eventos](#resumen-de-eventos)
+- [Mensaje público recibido (public-message)](#mensaje-público-recibido-public-message)
+- [Mensaje privado recibido (private-message)](#mensaje-privado-recibido-private-message)
+- [Obtener todos los jugadores conectados (online-players)](#obtener-todos-los-jugadores-conectados-online-players)
+- [Enviar un mensaje público (send-public-message)](#enviar-un-mensaje-público-send-public-message)
+- [Enviar un mensaje privado (send-private-message)](#enviar-un-mensaje-privado-send-private-message)
 
 ## Resumen de eventos
 
@@ -23,7 +23,7 @@ de partida (abordados en el documento [Eventos de emparejamiento y creación de 
 | Enviar mensaje público   |`send-public-message` | Saliente | Manda un mensaje a todos los jugadores conectados.     |
 | Enviar mensaje privado   |`send-private-message`| Saliente | Manda un mensaje a un solo jugador indicado.           |
 
-## Mensaje público recibido
+## Mensaje público recibido (public-message)
 
 | Resumen         |                                                                                     |
 |-----------------|-------------------------------------------------------------------------------------|
@@ -51,7 +51,7 @@ Ejemplo de respuesta:
 }
 ```
 
-## Mensaje privado recibido
+## Mensaje privado recibido (private-message)
 
 | Resumen         |                                                                                 |
 |-----------------|---------------------------------------------------------------------------------|
@@ -79,7 +79,7 @@ Ejemplo de respuesta:
 }
 ```
 
-## Obtener todos los jugadores conectados
+## Obtener todos los jugadores conectados (online-players)
 
 | Resumen         |                                                                                     |
 |-----------------|-------------------------------------------------------------------------------------|
@@ -90,6 +90,10 @@ Ejemplo de respuesta:
 | __Respuesta__   | ___Array___ con la información de los jugadores conectados.                         |
 |                 | - `id` (_string_): ID de jugador.                                                   |
 |                 | - `name` (_string_): Nombre de jugador.                                             |
+|                 | - `game` (_object_): Datos del cliente de juego.                                    |
+|                 | - `game.id` (_string_): ID del juego conectado.                                     |
+|                 | - `game.name` (_string_): Nombre del juego.                                         |
+|                 | - `game.team` (_string_): Nombre del equipo desarrollador.                          |
 |                 | - `status` (_string_): Estado actual del jugador (`AVAILABLE`, `BUSY`, `IN_MATCH`). |
 
 Este evento se envia al servidor para obtener los jugadores que se encuentran conectados. Esta función no requiere
@@ -97,10 +101,11 @@ parámetros, por lo que se puede enviar sin un cuerpo establecido (parámetro "d
 recuperar la información de los jugadores al momento de conectarse al servidor, cuando se pierde la conexión por
 cualquier motivo, o cuando se vuelve a la sala de espera después de jugar una partida multijugador. 
 
-De la respuesta se obtienen tres elementos:
+De la respuesta se obtienen cuatro elementos:
 - El ID del jugador, el cual se utiliza para el funcionamiento interno del servicio.
 - El nombre del jugador, que ayuda a reconocer a cada uno y evitar que el jugador deba manejarse en la interfaz
   con el identificador.
+- Datos del cliente de juego, que permite reconocer el cliente de juego al que esta conectado el jugador.
 - El estado del jugador, que permite saber si se encuentra disponible para jugar (AVAILABLE), esta ocupado con una
   solicitud de partida (BUSY) o se encuentra actualmente en una partida (IN_MATCH).
 
@@ -120,18 +125,28 @@ Ejemplo de solicitud:
     {
       "id": "0f2cc688-dcf3-4952-b8f8-c52f75f316d4",
       "name": "Player_One",
+      "game": {
+        "id": "A",
+        "name": "Contaminación Mortal",
+        "team": "404 Studios"
+      },
       "status": "AVAILABLE"
     },
     {
       "id": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
       "name": "Player_Two",
+      "game": {
+        "id": "B",
+        "name": "Silent Strikers",
+        "team": "Phantom Bytes"
+      },
       "status": "IN_MATCH"
     }
   ]
 }
 ```
 
-## Enviar un mensaje público
+## Enviar un mensaje público (send-public-message)
 
 | Resumen         |                                                                                     |
 |-----------------|-------------------------------------------------------------------------------------|
@@ -144,7 +159,7 @@ Ejemplo de solicitud:
 Esta evento permite enviar un mensaje a la sala publica, con el fin de que el resto de jugadores reciban el
 mensaje y puedan comunicarse con usted. Si el mensaje se envió correctamente, usted recibirá una respuesta de
 confirmación, y el resto de jugadores recibirán el evento `public-message` con su mensaje enviado (véase 
-[Mensaje público recibido](#mensaje-público-recibido)).
+[Mensaje público recibido](#mensaje-público-recibido-public-message)).
 
 Ejemplo de solicitud:
 ```jsonc
@@ -189,7 +204,7 @@ Ejemplo de solicitud incorrecta:
 }
 ```
 
-## Enviar un mensaje privado
+## Enviar un mensaje privado (send-private-message)
 
 | Resumen         |                                                                          |
 |-----------------|--------------------------------------------------------------------------|
@@ -203,7 +218,7 @@ Ejemplo de solicitud incorrecta:
 
 Este evento sirve para mandar un mensaje a un jugador específico que se encuentre conectado. Si el mensaje
 se envió correctamente, recibirá una respuesta de confirmación. Acto seguido, el jugador destinatario del
-mensaje recibirá el evento `private-message`, indicando que recibió un mensaje nuevo (véase [Mensaje privado recibido](#mensaje-privado-recibido)).
+mensaje recibirá el evento `private-message`, indicando que recibió un mensaje nuevo (véase [Mensaje privado recibido](#mensaje-privado-recibido-private-message)).
 
 Ejemplo de solicitud:
 ```jsonc
