@@ -405,4 +405,76 @@ Ejemplo de solicitudes incorrectas:
 
 ## Rechazar solicitud de partida (reject-match)
 
+| Resumen         |                                                                          |
+|-----------------|--------------------------------------------------------------------------|
+| __Evento__      | `reject-match`                                                           |
+| __Tipo__        | Evento saliente (_Trigger_).                                             |
+| __Descripción__ | Evento para rechazar una solicitud de partida recibida.                  |
+| __Parámetros__  | Ninguno.                                                                 |
+| __Respuesta__   | `playerId` (_string_): ID del jugador que mandó la solicitud de partida. |
 
+Este evento permite rechazar una solicitud de partida que haya recibido el jugador. Con esta
+acción, la partida asociada se elimina de ambos jugadores, el jugador oponente recibe una
+notificación del rechazo de la solicitud, y todos los jugadores del lobby reciben un aviso del
+cambio de estado de ambos jugadores, de `BUSY` a `AVAILABLE`.
+
+Este evento puede retornan un error si el jugador no tiene una partida asociada, si la partida
+ya fue aprobada por el jugador o si se intenta aprobar una solicitud enviada por el mismo jugador.
+
+Ejemplo de solicitud correcta:
+```json
+// Evento enviado por el jugador
+{
+  "event": "reject-match"
+}
+
+// Respuesta entregada por el servidor
+{
+  "event": "reject-match",
+  "status": "OK",
+  "msg": "The match request from player 'Player_Two' has been rejected.",
+  "data": {
+    "playerId": "30c3d082-bcd9-48b0-9a90-76212636bc6f"
+  }
+}
+```
+
+Ejemplo de solicitudes incorrectas:
+```json
+// Evento enviado por el jugador
+{
+  "event": "reject-match"
+}
+
+// Respuesta entregada por el servidor si la partida no existe
+{
+  "event": "reject-match",
+  "status": "ERROR",
+  "msg": "You do not have an active match request.",
+  "data": {
+    "playerStatus": "AVAILABLE"
+  }
+}
+
+// Respuesta entregada por el servidor si la partida ya inició
+{
+  "event": "reject-match",
+  "status": "ERROR",
+  "msg": "Match is in progress and cannot be cancelled or rejected.",
+  "data": {
+    "matchId": "30c3d082-bcd9-48b0-9a90-76212636bc6f",
+    "matchStatus": "WAITING_PLAYERS"
+  }
+}
+
+// Respuesta entregada por el servidor si se intenta rechazar una solicitud enviada
+{
+  "event": "reject-match",
+  "status": "ERROR",
+  "msg": "You cannot reject a match request you have sent. You need to cancel it with the event 'cancel-match-request'.",
+  "data": {
+    "matchId": "30c3d082-bcd9-48b0-9a90-76212636bc6f",
+    "matchStatus": "REQUESTED"
+  }
+}
+```
