@@ -16,8 +16,8 @@ solicitud de cancelación, aprobación o rechazo, la solicitud fallará con el m
 - [Solicitud de partida rechazada (match-rejected)](#solicitud-de-partida-rechazada-match-rejected)
 - [Enviar solicitud de partida (send-match-request)](#enviar-solicitud-de-partida-send-match-request)
 - [Cancelar solicitud de partida (cancel-match-request)](#cancelar-solicitud-de-partida-cancel-match-request)
-- [Aceptar solicitud de partida (accept-match)]()
-- [Rechazar solicitud de partida (reject-match)]()
+- [Aceptar solicitud de partida (accept-match)](#aceptar-solicitud-de-partida-accept-match)
+- [Rechazar solicitud de partida (reject-match)](#rechazar-solicitud-de-partida-reject-match)
 
 ## Resumen de eventos
 
