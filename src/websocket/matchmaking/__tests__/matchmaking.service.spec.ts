@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 
+import { LobbyService } from '../../lobby/lobby.service';
 import { PlayerListService } from '../../player-list/player-list.service';
 import { MatchmakingService } from '../matchmaking.service';
 
@@ -22,7 +23,7 @@ describe('#MatchmakingService', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [PlayerListService, MatchmakingService],
+      providers: [PlayerListService, LobbyService, MatchmakingService],
     }).compile();
 
     playerListService = module.get(PlayerListService);
