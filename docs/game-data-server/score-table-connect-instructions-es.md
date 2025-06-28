@@ -39,7 +39,7 @@ En la siguiente tabla se pueden visualizar un resumen de lo explicado:
 
 En la siguiente imagen se aprecia un diagrama de conectividad con un servidor:
 
-![http rest conectivity](./docs/img/rest-example.png)
+![http rest conectivity](../img/rest-example.png)
 
 En este caso, estamos haciendo una solicitud al servidor con el verbo HTTP GET a la ruta
 /scores. En palabras humanas, le estamos diciendo al servidor que queremos la información de
