@@ -23,7 +23,7 @@ export class SendRematchRequestUseCase {
     if (!this._checkBothPlayersReady(match)) {
       opponent?.sendEvent(
         EGameMatchListenEvent.RematchRequest,
-        `Player ${player.name} wants to play again. Send '${EGameMatchTriggerEvent.SendRematchRequest}' to accept.`,
+        `Player '${player.name}' wants to play again. Send '${EGameMatchTriggerEvent.SendRematchRequest}' to accept.`,
         null,
       );
     }
@@ -43,7 +43,7 @@ export class SendRematchRequestUseCase {
   private _checkOpponent(opponent: Player) {
     if (!opponent.match) {
       GameException.throwException(
-        `Player ${opponent.name} has quit the game.`,
+        `Player '${opponent.name}' has quit the game.`,
         { playerStatus: opponent.status },
       );
     }
@@ -69,7 +69,7 @@ export class SendRematchRequestUseCase {
       [senderPlayer.player, destPlayer.player].forEach((p) =>
         p.sendEvent(
           EGameMatchListenEvent.PlayersReady,
-          `Both players are ready to start. Send ${EGameMatchTriggerEvent.PingMatch} to sync times.`,
+          `Both players are ready to start. Send '${EGameMatchTriggerEvent.PingMatch}' to sync times.`,
           { matchId: match.id },
         ),
       );

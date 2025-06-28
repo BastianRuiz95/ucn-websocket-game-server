@@ -66,7 +66,7 @@ export class ConnectMatchUseCase {
       [senderPlayer, destPlayer].forEach((p) =>
         p.sendEvent(
           EGameMatchListenEvent.PlayersReady,
-          `Both players are ready to start. Send ${EGameMatchTriggerEvent.PingMatch} to sync times.`,
+          `Both players are ready to start. Send '${EGameMatchTriggerEvent.PingMatch}' to sync times.`,
           { matchId: match.id },
         ),
       );

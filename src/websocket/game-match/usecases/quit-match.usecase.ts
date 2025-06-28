@@ -21,7 +21,7 @@ export class QuitMatchUseCase {
 
     opponent?.sendEvent(
       EGameMatchListenEvent.CloseMatch,
-      `Player ${player.name} has quit to the game. Rematch is not possible.`,
+      `Player '${player.name}' has quit to the game. Rematch is not possible.`,
       null,
     );
 

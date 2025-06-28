@@ -27,7 +27,7 @@ export class LobbyService {
   ) {
     const playerToSendMsg = this.playerListService.getPlayerById(playerId);
     if (!playerToSendMsg) {
-      GameException.throwException(`Player with ID ${playerId} not exists.`, {
+      GameException.throwException(`Player with ID '${playerId}' not exists.`, {
         playerId: playerId,
       });
     }
@@ -45,7 +45,7 @@ export class LobbyService {
     );
 
     return {
-      msg: `Message sent to ${playerToSendMsg.name}`,
+      msg: `Message sent to '${playerToSendMsg.name}'`,
       data: {
         playerId: playerToSendMsg.id,
         message: playerMsg.trim(),

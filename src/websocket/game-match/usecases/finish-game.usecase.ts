@@ -17,12 +17,12 @@ export class FinishGameUseCase {
 
     opponent.sendEvent(
       EGameMatchListenEvent.GameEnded,
-      `Game over! ${player.name} wins!`,
+      `Game over! '${player.name}' wins!`,
       { matchStatus: match.status },
     );
 
     return {
-      msg: `Game over! ${player.name} wins!`,
+      msg: `Game over! '${player.name}' wins!`,
       data: { matchStatus: match.status },
     };
   }
