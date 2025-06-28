@@ -107,7 +107,8 @@ Ejemplo de solicitud:
 Al conectarse, el servidor establece un nombre por defecto (a menos que lo haya configurado con la
 propiedad `playerName` al momento de conectarse). Con este evento, es posible cambiar el nombre del jugador
 por el que estime conveniente, el cual se envía por parámetro a la solicitud. Si la solicitud esta correcta,
-se retornará el nuevo nombre establecido para el jugador.
+se retornará el nuevo nombre establecido para el jugador. Este evento gatilla el evento `player-name-changed`
+con el fin que el resto de jugadores se entere del cambio.
 
 Ejemplo de solicitud:
 ```jsonc
