@@ -62,10 +62,7 @@ export class MatchmakingService {
     destPlayer.sendEvent(
       EMatchmakingListenEvent.MatchRequestCancelled,
       `Player '${senderPlayer.name}' has cancelled the match request.`,
-      {
-        playerId: senderPlayer.id,
-        playerName: senderPlayer.name,
-      },
+      { playerId: senderPlayer.id },
     );
 
     return {
@@ -87,7 +84,6 @@ export class MatchmakingService {
       `Player '${destPlayer.name}' has accepted your match request.`,
       {
         playerId: destPlayer.id,
-        playerName: destPlayer.name,
         matchId: match.id,
         matchStatus: match.status,
       },
@@ -96,7 +92,6 @@ export class MatchmakingService {
     return {
       msg: `The match request from player '${senderPlayer.name}' has been accepted.`,
       data: {
-        playerId: senderPlayer.id,
         matchId: match.id,
         matchStatus: match.status,
       },
@@ -156,7 +151,7 @@ export class MatchmakingService {
     }
 
     const playerStatus = dest.status;
-    const result = { playerId: dest.id, playerName: dest.name };
+    const result = { playerId: dest.id, playerStatus };
 
     if (playerStatus === EPlayerStatus.Busy) {
       GameException.throwException(
@@ -208,7 +203,7 @@ export class MatchmakingService {
     if (match.status !== EMatchStatus.Requested) {
       GameException.throwException(
         `Match is in progress and cannot be cancelled or rejected.`,
-        { matchStatus: match.status },
+        { matchId: match.id, matchStatus: match.status },
       );
     }
   }
@@ -217,7 +212,7 @@ export class MatchmakingService {
     if (match.senderPlayer.player.id !== senderPlayer.id) {
       GameException.throwException(
         `You cannot cancel an incoming match request. You need to reject it with the event '${EMatchmakingTriggerEvent.RejectMatch}'.`,
-        { matchStatus: match.status },
+        { matchId: match.id, matchStatus: match.status },
       );
     }
   }
@@ -235,7 +230,7 @@ export class MatchmakingService {
     if (match.destPlayer.player.id !== destPlayer.id) {
       GameException.throwException(
         `You cannot accept a match request you have sent.`,
-        { matchStatus: match.status },
+        { matchId: match.id, matchStatus: match.status },
       );
     }
   }
