@@ -6,17 +6,46 @@ Los eventos descritos acá son de gestión del jugador, con el fin que se deba c
 de este, como su nombre u otros parámetros a definir.
 
 - [Resumen de eventos](#resumen-de-eventos)
+- [Nombre de jugador cambiado (player-name-changed)](#nombre-de-jugador-cambiado-player-name-changed)
 - [Obtener datos del jugador (player-data)](#obtener-datos-del-jugador-player-data)
 - [Cambiar nombre del jugador (change-name)](#cambiar-nombre-del-jugador-change-name)
 
 ## Resumen de eventos
 
-| Nombre                     | Evento      | Tipo     | Descripción                            |
-|----------------------------|-------------|----------|----------------------------------------|
-| Datos del jugador          |`player-data`| Saliente | Obtiene los datos del jugador actual.  |
-| Cambiar nombre del jugador |`change-name`| Saliente | Permite cambiar el nombre del jugador. |
+| Evento                | Tipo     | Descripción                                 |
+|-----------------------|----------|---------------------------------------------|
+| `player-name-changed` | Entrante | Avisa que un jugador ha cambiado su nombre. |
+| `player-data`         | Saliente | Obtiene los datos del jugador actual.       |
+| `change-name`         | Saliente | Permite cambiar el nombre del jugador.      |
 
-# Obtener datos del jugador (player-data)
+## Nombre de jugador cambiado (player-name-changed)
+
+| Resumen         |                                                               |
+|-----------------|---------------------------------------------------------------|
+| __Evento__      | `player-name-changed`                                         |
+| __Tipo__        | Evento entrante (_Listen_).                                   |
+| __Descripción__ | Evento que indica que un jugador ha cambiado su nombre.       |
+| __Respuesta__   | `playerId` (_string_): ID de jugador cuyo nombre ha cambiado. |
+|                 | `playerName` (_string_): Nuevo nombre del jugador.            |
+
+Este evento alerta cuando un jugador ha cambiado su nombre con el evento [`change-name`](#cambiar-nombre-del-jugador-change-name),
+con el fin de que todos los clientes de juego puedan manejar este cambio en tiempo real. En el contenido
+de la respuesta se adjunta el identificador y el nuevo nombre para evitar llamadas innecesarias al evento
+`online-players`. Este evento no lo recibe el jugador que se cambia el nombre.
+
+Ejemplo de respuesta:
+```jsonc
+{
+  "event": "player-name-changed",
+  "msg": "Player 'Player_Two' has a new name!",
+  "data": {
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
+    "playerName": "Player_Two"
+  }
+}
+```
+
+## Obtener datos del jugador (player-data)
 
 | Resumen         |                                                                                   |
 |-----------------|-----------------------------------------------------------------------------------|
@@ -65,7 +94,7 @@ Ejemplo de solicitud:
 }
 ```
 
-# Cambiar nombre del jugador (change-name)
+## Cambiar nombre del jugador (change-name)
 
 | Resumen         |                                                              |
 |-----------------|--------------------------------------------------------------|

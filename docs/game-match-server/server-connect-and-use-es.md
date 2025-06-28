@@ -152,10 +152,11 @@ data importante.
 <details>
 <summary>Listado de eventos posibles:</summary>
 
-| Evento        | Tipo     | Descripción                            |
-|---------------|----------|----------------------------------------|
-| `player-data` | Saliente | Obtiene los datos del jugador actual.  |
-| `change-name` | Saliente | Permite cambiar el nombre del jugador. |
+| Evento                | Tipo     | Descripción                                 |
+|-----------------------|----------|---------------------------------------------|
+| `player-name-changed` | Entrante | Avisa que un jugador ha cambiado su nombre. |
+| `player-data`         | Saliente | Obtiene los datos del jugador actual.       |
+| `change-name`         | Saliente | Permite cambiar el nombre del jugador.      |
 
 </details>
 
