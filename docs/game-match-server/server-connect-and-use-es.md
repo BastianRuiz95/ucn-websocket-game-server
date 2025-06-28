@@ -165,13 +165,14 @@ Son todos los eventos de la sala de espera, como el envío de mensaje públicos 
 <details>
 <summary>Listado de eventos posibles:</summary>
 
-| Evento                 | Tipo     | Descripción                                            |
-|------------------------|----------|--------------------------------------------------------|
-| `public-message`       | Entrante | Avisa que un jugador ha mandando un mensaje a todos.   |
-| `private-message`      | Entrante | Avisa que un jugador te ha enviado un mensaje privado. |
-| `online-players`       | Saliente | Obtiene el listado de jugadores conectados.            |
-| `send-public-message`  | Saliente | Manda un mensaje a todos los jugadores conectados.     |
-| `send-private-message` | Saliente | Manda un mensaje a un solo jugador indicado.           |
+| Evento                  | Tipo     | Descripción                                            |
+|-------------------------|----------|--------------------------------------------------------|
+| `public-message`        | Entrante | Avisa que un jugador ha mandando un mensaje a todos.   |
+| `private-message`       | Entrante | Avisa que un jugador te ha enviado un mensaje privado. |
+| `player-status-changed` | Entrante | Avisa que un jugador ha cambiado de estado.            |
+| `online-players`        | Saliente | Obtiene el listado de jugadores conectados.            |
+| `send-public-message`   | Saliente | Manda un mensaje a todos los jugadores conectados.     |
+| `send-private-message`  | Saliente | Manda un mensaje a un solo jugador indicado.           |
 
 </details>
 

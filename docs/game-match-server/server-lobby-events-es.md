@@ -9,19 +9,21 @@ de partida (abordados en el documento [Eventos de emparejamiento y creación de 
 - [Resumen de eventos](#resumen-de-eventos)
 - [Mensaje público recibido (public-message)](#mensaje-público-recibido-public-message)
 - [Mensaje privado recibido (private-message)](#mensaje-privado-recibido-private-message)
+- [Actualización de estado del jugador (player-status-changed)](#actualización-de-estado-del-jugador-player-status-changed)
 - [Obtener todos los jugadores conectados (online-players)](#obtener-todos-los-jugadores-conectados-online-players)
 - [Enviar un mensaje público (send-public-message)](#enviar-un-mensaje-público-send-public-message)
 - [Enviar un mensaje privado (send-private-message)](#enviar-un-mensaje-privado-send-private-message)
 
 ## Resumen de eventos
 
-| Nombre                   | Evento               | Tipo     | Descripción                                            |
-|--------------------------|----------------------|----------|--------------------------------------------------------|
-| Mensaje público recibido |`public-message`      | Entrante | Avisa que un jugador ha mandando un mensaje a todos.   |
-| Mensaje privado recibido |`private-message`     | Entrante | Avisa que un jugador te ha enviado un mensaje privado. |
-| Jugadores conectados     |`online-players`      | Saliente | Obtiene el listado de jugadores conectados.            |
-| Enviar mensaje público   |`send-public-message` | Saliente | Manda un mensaje a todos los jugadores conectados.     |
-| Enviar mensaje privado   |`send-private-message`| Saliente | Manda un mensaje a un solo jugador indicado.           |
+| Evento                  | Tipo     | Descripción                                            |
+|-------------------------|----------|--------------------------------------------------------|
+| `public-message`        | Entrante | Avisa que un jugador ha mandando un mensaje a todos.   |
+| `private-message`       | Entrante | Avisa que un jugador te ha enviado un mensaje privado. |
+| `player-status-changed` | Entrante | Avisa que un jugador ha cambiado de estado.            |
+| `online-players`        | Saliente | Obtiene el listado de jugadores conectados.            |
+| `send-public-message`   | Saliente | Manda un mensaje a todos los jugadores conectados.     |
+| `send-private-message`  | Saliente | Manda un mensaje a un solo jugador indicado.           |
 
 ## Mensaje público recibido (public-message)
 
@@ -75,6 +77,33 @@ Ejemplo de respuesta:
     "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
     "playerName": "Player_Two",
     "playerMsg": "Como te encuentras? Quieres jugar una partida?"
+  }
+}
+```
+
+## Actualización de estado del jugador (player-status-changed)
+
+| Resumen         |                                                                                        |
+|-----------------|----------------------------------------------------------------------------------------|
+| __Evento__      | `player-status-changed`                                                                |
+| __Tipo__        | Evento entrante (_Listen_).                                                            |
+| __Descripción__ | Evento que indica que se ha actualizado el estado de un jugador.                       |
+| __Respuesta__   | `playerId` (_string_): ID de jugador actualizado.                                      |
+|                 | `playerStatus` (_string_): Estado nuevo del jugador (`IN_MATCH`, `AVAILABLE`, `BUSY`). |
+
+Este evento es recibido cuando se actualiza el estado de un jugador. Un jugador puede cambiar entre los estados
+disponible (`AVAILABLE`), ocupado (`BUSY`) o en partida (`IN_MATCH`) cuando ocurren ciertas acciones, como
+entrar a una partida o enviar/recibir solicitudes de partida. Este evento permite manejar de mejor forma el
+listado de jugadores sin la necesidad de llamar al evento `online-players` a cada momento.
+
+Ejemplo de respuesta recibida:
+```jsonc
+{
+  "event": "player-status-changed",
+  "msg": "Player 'Player_Two' change status to 'BUSY'",
+  "data": {
+    "playerId": "c3e5aca7-f1c0-40ed-8b5c-aac3f58d137f",
+    "playerStatus": "BUSY"
   }
 }
 ```
