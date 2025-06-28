@@ -93,8 +93,9 @@ Ejemplo de respuesta:
 
 Este evento es recibido cuando se actualiza el estado de un jugador. Un jugador puede cambiar entre los estados
 disponible (`AVAILABLE`), ocupado (`BUSY`) o en partida (`IN_MATCH`) cuando ocurren ciertas acciones, como
-entrar a una partida o enviar/recibir solicitudes de partida. Este evento permite manejar de mejor forma el
-listado de jugadores sin la necesidad de llamar al evento `online-players` a cada momento.
+entrar a una partida o enviar/recibir solicitudes de partida. Este evento contiene el identificador y el nuevo
+estado del jugador para un mejor manejo del cambio y evitar llamadas innecesarias al evento `online-players`.
+Este evento no lo recibe el jugador que cambia de estado.
 
 Ejemplo de respuesta recibida:
 ```jsonc
