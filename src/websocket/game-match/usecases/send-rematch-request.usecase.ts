@@ -35,7 +35,7 @@ export class SendRematchRequestUseCase {
     if (match.status !== EMatchStatus.Finished) {
       GameException.throwException(
         'You can only send a rematch request when the current match is over.',
-        { matchStatus: match.status },
+        { matchId: match.id, matchStatus: match.status },
       );
     }
   }
@@ -44,7 +44,7 @@ export class SendRematchRequestUseCase {
     if (!opponent.match) {
       GameException.throwException(
         `Player '${opponent.name}' has quit the game.`,
-        { playerStatus: opponent.status },
+        { playerId: opponent.id, playerStatus: opponent.status },
       );
     }
   }

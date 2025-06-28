@@ -35,20 +35,20 @@ export class ConnectMatchUseCase {
 
     const { status } = playerToCheck;
 
-    if (status === EMatchPlayerStatus.WaitingSync) {
+    if (status === EMatchPlayerStatus.WaitingApprove) {
+      GameException.throwException(
+        `You need to approve this match request first.`,
+        { matchId: match.id, matchStatus: match.status },
+      );
+    }
+
+    if (status !== EMatchPlayerStatus.WaitingConnection) {
       GameException.throwException(
         `You are already connected to this match. Wait '${EGameMatchListenEvent.PlayersReady}' event to sync.`,
         {
           matchId: match.id,
           matchPlayerStatus: playerToCheck.status,
         },
-      );
-    }
-
-    if (status === EMatchPlayerStatus.WaitingApprove) {
-      GameException.throwException(
-        `You need to approve this match request first.`,
-        { matchId: match.id, matchStatus: match.status },
       );
     }
 

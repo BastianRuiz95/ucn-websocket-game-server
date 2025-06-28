@@ -38,6 +38,7 @@ export class QuitMatchUseCase {
   private _validateMatch(match: Match) {
     if (match.status !== EMatchStatus.Finished) {
       GameException.throwException(`Match is not ended yet.`, {
+        matchId: match.id,
         matchStatus: match.status,
       });
     }

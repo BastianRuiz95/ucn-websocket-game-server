@@ -50,6 +50,13 @@ export class PingMatchUseCase {
       );
     }
 
+    if (playerToCheck.status !== EMatchPlayerStatus.WaitingSync) {
+      GameException.throwException(
+        `The match has started. You cannot sent this event.`,
+        { matchId: match.id, matchStatus: match.status },
+      );
+    }
+
     return playerToCheck;
   }
 

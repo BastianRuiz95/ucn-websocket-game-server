@@ -23,21 +23,23 @@ export class FinishGameUseCase {
 
     return {
       msg: `Game over! '${player.name}' wins!`,
-      data: { matchStatus: match.status },
+      data: { matchId: match.id, matchStatus: match.status },
     };
   }
 
   private _validateMatch(match: Match) {
-    const { status } = match;
+    const { id, status } = match;
 
     if (status === EMatchStatus.Finished) {
       GameException.throwException(`The match has already finished.`, {
+        matchId: id,
         matchStatus: status,
       });
     }
 
     if (status !== EMatchStatus.Playing) {
       GameException.throwException(`The match has not been started yet.`, {
+        matchId: id,
         matchStatus: status,
       });
     }
