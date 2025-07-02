@@ -57,11 +57,12 @@ export class PlayerEvents {
     );
   }
 
-  login(player: Player, { gameKey }: LoginDto): GameResponse {
+  login(player: Player, data: LoginDto): GameResponse {
     if (player.status !== EPlayerStatus.NoLogin) {
       GameException.throwException('You are already login in the server.');
     }
 
+    const gameKey = data?.gameKey || null;
     if (this.gameService.checkGameKey(player.game.id, gameKey)) {
       player.status = EPlayerStatus.Available;
 
