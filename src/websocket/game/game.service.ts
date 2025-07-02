@@ -15,6 +15,7 @@ export class GameService {
     { id: 'F', name: 'Jackpot Journey', team: 'Glitch Hunters', key: '' },
     { id: 'G', name: 'Shovel Hustle', team: 'Fruna Games', key: '' },
     { id: 'H', name: 'Snack Guardian', team: 'Retro-Machine Studios', key: '' },
+    { id: 'I', name: 'Example Game Test Only', team: 'Test Only', key: '' },
   ];
 
   constructor(private readonly configService: ConfigService) {
