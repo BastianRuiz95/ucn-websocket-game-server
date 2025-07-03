@@ -58,6 +58,12 @@ export class PlayerEvents {
   }
 
   login(player: Player, data: LoginDto): GameResponse {
+    if (player || player.status) {
+      GameException.throwException(
+        `You need to wait to the '${EConnectionListenEvent.ConnectedToServer}' event first.`,
+      );
+    }
+
     if (player.status !== EPlayerStatus.NoLogin) {
       GameException.throwException('You are already login in the server.');
     }
